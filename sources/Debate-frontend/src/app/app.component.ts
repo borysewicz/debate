@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Debate-frontend';
+  debateSearch = new FormGroup({
+    debate: new FormControl('')
+  });
+  debateSearchDummy: string[] = [
+    'Wykłady to marnowanie czasu',
+    'Dostęp do broni powinien być powszechny',
+    'Aborcja powinna być legalna'
+  ];
 }
