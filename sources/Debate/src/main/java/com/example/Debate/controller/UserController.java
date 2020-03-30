@@ -1,7 +1,6 @@
 package com.example.Debate.controller;
 
 import com.example.Debate.dto.UserDto;
-import com.example.Debate.model.User;
 import com.example.Debate.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
