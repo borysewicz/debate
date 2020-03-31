@@ -21,7 +21,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public HttpStatus addUser(@RequestBody UserDto userDto){
         return userService.addUser(userDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
     }
