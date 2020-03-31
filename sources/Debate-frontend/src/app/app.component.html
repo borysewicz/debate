@@ -1,29 +1,42 @@
-<mat-toolbar mode="side">
+<mat-toolbar mode="side" color="primary">
   <mat-toolbar-row>
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+    <span>
+      Debate
+    </span>
+    <span class="spacer"></span>
+    <mat-icon class="toolbar-icon">
+      notifications
+    </mat-icon>
+    <mat-icon class="toolbar-icon">
+      account_circle
+    </mat-icon>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container class="h100">
   <mat-sidenav #sidenav mode="side">
-    <form class="sidenavForm" [formGroup]="debateSearch">
-      <mat-form-field class="sidenavContent">
+    <!-- <form class="sidenav-form" [formGroup]="debateSearch"> -->
+      <mat-form-field class="sidenav-content w100">
         <input
           type="text"
           placeholder="Wyszukaj debatę.."
           aria-label="Text"
           matInput
-          formControlName="debate"
+          [formControl]="debateControl"
           [matAutocomplete]="auto"
         />
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of debateSearchDummy" [value]="option">
+          <mat-option *ngFor="let option of filteredDebates | async" [value]="option">
             {{ option }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-    </form>
+    <!-- </form> -->
+    <div class="sidenav-content">
+      <app-tag-search></app-tag-search>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
     <app-homepage></app-homepage>

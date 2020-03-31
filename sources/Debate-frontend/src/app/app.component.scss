@@ -1,8 +1,16 @@
-.sidenavForm {
+.sidenav-form {
     min-width: 250px;
 }
 
-.sidenavContent {
-    width: 100%;
+.sidenav-content {
     margin: 0.4rem;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.toolbar-icon {
+    padding: 0 14px;
+    font-size: 32px;
 }
