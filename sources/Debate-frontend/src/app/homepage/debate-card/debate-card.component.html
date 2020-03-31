@@ -1,5 +1,5 @@
 <mat-card class="debate-card">
-  <div id="debate-img" style='background-image: url({{debate.imageSrc}});'>
+  <div id="debate-img" style="background-image: url({{debate.imageSrc}});">
       <mat-chip-list class="debate-main-tags">
           <mat-chip color="primary" selected *ngFor="let tag of debate.mainTags"  >{{tag}}</mat-chip>
         </mat-chip-list>        
@@ -12,9 +12,9 @@
       {{debate.description | slice:0:sliceEnd}}       
       </p>
       <span *ngIf="!isExpanded">...</span>
-      <div *ngIf='isExpanded'>
-          <p class='debate-all-tags'>
-              Tagi: <span *ngFor='let tag of debate.allTags'>{{tag}} </span>
+      <div *ngIf="isExpanded">
+          <p class="debate-all-tags">
+              Tagi: <span *ngFor="let tag of debate.allTags">{{tag}} </span>
           </p>
           <div class="debate-statistics-container">
             <div class="debate-statistics">
@@ -40,7 +40,7 @@
         </div>
         </div>
           </mat-card-content>
-    <mat-card-actions class='debate-actions'>
+    <mat-card-actions class="debate-actions">
       <button mat-button>Przejdź do debaty</button>
       <button mat-button (click)="toggleExpand()">{{expandString}}</button>
     </mat-card-actions>

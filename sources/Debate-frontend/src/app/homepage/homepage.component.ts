@@ -8,7 +8,8 @@ import { Debate } from '../dto/debate.dto';
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-
+  debate: Debate;
+  
   constructor() { 
     this.debate = {
       id: 1,  
@@ -25,8 +26,6 @@ export class HomepageComponent implements OnInit {
       allTags: ['Polityka', 'COVID-19', 'Wybory', 'Zdrowie', 'Gospodarka']
     }
   }
-
-  debate: Debate;
 
   ngOnInit(): void {
   }

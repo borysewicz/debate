@@ -8,17 +8,15 @@ import {Debate} from '../../dto/debate.dto';
   styleUrls: ['./debate-card.component.scss']
 })
 export class DebateCardComponent implements OnInit {
-
-  constructor() { }
-
   @Input() debate: Debate;
   sliceEnd: number = 100;
   isExpanded: boolean = false;
   expandString: string = "Rozwiń";
 
+  constructor() { }
+  
   ngOnInit(): void {
   }
-
 
   toggleExpand(){
     console.log("Exoand");
@@ -33,5 +31,4 @@ export class DebateCardComponent implements OnInit {
     }
     console.log(this.debate);
   }
-
 }

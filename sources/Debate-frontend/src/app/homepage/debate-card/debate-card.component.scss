@@ -3,13 +3,13 @@
 }
 
 #debate-img{
-    width:500px; 
-   max-width:500px; 
-   height: 281.25px;
-   background-color: #cccccc; 
-   margin: 0 auto 2em auto;
-   background-size: cover;
-   position: relative;
+  width:500px; 
+  max-width:500px; 
+  height: 281.25px;
+  background-color: #cccccc; 
+  margin: 0 auto 2em auto;
+  background-size: cover;
+  position: relative;
 }
 
 .debate-main-tags{
@@ -35,7 +35,6 @@
   font-size: 1.9em;
   display: inline-block;
   position: relative;
-
 }
 
 .debate-statistics .tooltiptext {
@@ -53,7 +52,6 @@
   margin-left: -60px; 
   opacity: 0;
   transition: opacity 1s;
- 
   position: absolute;
   z-index: 1;
 }

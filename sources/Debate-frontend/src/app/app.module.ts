@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -43,7 +43,6 @@ import { DebateCardComponent } from './homepage/debate-card/debate-card.componen
 })
 export class AppModule {
 
-constructor(matIconRegistry: MatIconRegistry){
-  matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
+constructor(){
 }
 }
