@@ -4,7 +4,23 @@
             <mat-icon aria-hidden="false" aria-label="Polecane">trending_up</mat-icon>
             Polecane
         </ng-template>
-        Polecane content
+ 
+        <mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
+            <mat-grid-tile>
+                    <app-debate-card [debate]='debate'></app-debate-card>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                    <app-debate-card [debate]='debate'></app-debate-card>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                    <app-debate-card [debate]='debate'></app-debate-card>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                    <app-debate-card [debate]='debate'></app-debate-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+        
+
     </mat-tab>
     <mat-tab>
         <ng-template mat-tab-label>
