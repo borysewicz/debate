@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class ActivityDto {
-    private Long creationDate;
-    private String content;
+    protected String _id;
+    protected Long creationDate;
+    protected String content;
 }

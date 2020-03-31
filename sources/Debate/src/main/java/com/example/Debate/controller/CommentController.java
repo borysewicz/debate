@@ -1,11 +1,12 @@
 package com.example.Debate.controller;
 
-import com.example.Debate.dto.ArgumentDto;
 import com.example.Debate.dto.CommentDto;
 import com.example.Debate.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
@@ -27,10 +28,15 @@ public class CommentController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<CommentDto>> getAllComments(){
+        List<CommentDto> commentDtoList = commentService.getAllComments();
+        return commentDtoList.size() != 0 ? ResponseEntity.status(HttpStatus.OK).body(commentDtoList) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body(commentDtoList);
+    }
+
     @PostMapping("/add")
     public HttpStatus addComment(@RequestBody CommentDto commentDto){
-        if(commentService.addComment(commentDto))
-            return HttpStatus.OK;
-        return HttpStatus.NOT_FOUND;
+        return commentService.addComment(commentDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/argument")
@@ -26,10 +28,15 @@ public class ArgumentController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<ArgumentDto>> getAllArguments(){
+        List<ArgumentDto> argumentDtoList = argumentService.getAllArguments();
+        return argumentDtoList.size() != 0 ? ResponseEntity.status(HttpStatus.OK).body(argumentDtoList) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body(argumentDtoList);
+    }
+
     @PostMapping("/add")
     public HttpStatus addArgument(@RequestBody ArgumentDto argumentDto){
-        if(argumentService.addArgument(argumentDto))
-            return HttpStatus.OK;
-        return HttpStatus.NOT_FOUND;
+        return argumentService.addArgument(argumentDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
     }
 }

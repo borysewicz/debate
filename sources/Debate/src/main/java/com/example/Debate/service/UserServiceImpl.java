@@ -21,4 +21,11 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(id).get();
         return modelMapper.map(user,UserDto.class);
     }
+
+    @Override
+    public boolean addUser(UserDto userDto) {
+        User user = modelMapper.map(userDto,User.class);
+        userRepository.save(user);
+        return true;
+    }
 }

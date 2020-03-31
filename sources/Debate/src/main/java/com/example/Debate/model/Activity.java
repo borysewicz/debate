@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Setter
 public abstract class Activity {
     @Id
-    protected String ID;
+    protected String _id;
     protected Long creationDate;
     protected String content;
 }

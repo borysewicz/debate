@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/debate")
@@ -26,10 +28,15 @@ public class DebateController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<DebateDto>> getAllDebates(){
+        List<DebateDto> debateDtoList = debateService.getAllDebates();
+        return debateDtoList.size() != 0 ? ResponseEntity.status(HttpStatus.OK).body(debateDtoList) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body(debateDtoList);
+    }
+
     @PostMapping("/add")
     public HttpStatus addDebate(@RequestBody DebateDto debateDto){
-        if(debateService.addDebate(debateDto))
-            return HttpStatus.OK;
-        return HttpStatus.NOT_FOUND;
+        return debateService.addDebate(debateDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
     }
 }

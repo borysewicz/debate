@@ -6,6 +6,10 @@ import com.example.Debate.repository.DebateRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class DebateServiceImpl implements DebateService{
     private DebateRepository debateRepository;
@@ -18,8 +22,20 @@ public class DebateServiceImpl implements DebateService{
 
     @Override
     public DebateDto getDebateById(String id) {
-        Debate debate = debateRepository.findById(id).get();
-        return modelMapper.map(debate,DebateDto.class);
+        Optional<Debate> debateOptional = debateRepository.findById(id);
+        return debateOptional.isEmpty() ? null : modelMapper.map(debateOptional.get(),DebateDto.class);
+    }
+
+    @Override
+    public List<DebateDto> getAllDebates() {
+        List<Debate> debateList = debateRepository.findAll();
+        List<DebateDto> debateDtoList = new ArrayList<>();
+        if(debateList.size() != 0) {
+            for (Debate debate : debateList) {
+                debateDtoList.add(modelMapper.map(debate, DebateDto.class));
+            }
+        }
+        return debateDtoList;
     }
 
     @Override
