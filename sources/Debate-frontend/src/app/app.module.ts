@@ -7,14 +7,14 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {MatTabsModule} from '@angular/material/tabs'; 
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs'; 
 import {MatCardModule} from '@angular/material/card'; 
-import {MatGridListModule} from '@angular/material/grid-list'; 
-import {MatChipsModule} from '@angular/material/chips'; 
+import { MatGridListModule } from '@angular/material/grid-list'; 
+import { MatChipsModule } from '@angular/material/chips'; 
 
-import { AppComponent } from "./app.component";
+import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { DebateCardComponent } from './homepage/debate-card/debate-card.component';
 
@@ -41,8 +41,4 @@ import { DebateCardComponent } from './homepage/debate-card/debate-card.componen
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-constructor(){
-}
-}
+export class AppModule {}

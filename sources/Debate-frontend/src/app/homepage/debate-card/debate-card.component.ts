@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import {Debate} from '../../dto/debate.dto';
+import { Debate } from '../../dto/debate.dto';
 
 @Component({
   selector: 'app-debate-card',
@@ -24,7 +24,7 @@ export class DebateCardComponent implements OnInit {
       this.sliceEnd = 100;
       this.expandString = "Rozwiń";
       this.isExpanded = false;
-    }else {
+    } else {
         this.sliceEnd = this.debate.description.length;
         this.expandString = "Zwiń"
         this.isExpanded = true;
