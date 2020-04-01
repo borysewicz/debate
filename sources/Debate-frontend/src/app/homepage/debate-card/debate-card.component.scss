@@ -1,37 +1,36 @@
-.debate-card{
+.debate-card {
   max-width: 500px;
 }
 
-#debate-img{
-  width:500px; 
-  max-width:500px; 
+#debate-img {
+  width: 500px;
+  max-width: 500px;
   height: 281.25px;
-  background-color: #cccccc; 
+  background-color: #cccccc;
   margin: 0 auto 2em auto;
   background-size: cover;
   position: relative;
 }
 
-.debate-main-tags{
+.debate-main-tags {
   position: absolute;
   bottom: 5px;
   right: 5px;
 }
 
-.debate-description{
+.debate-description {
   line-height: 1.5;
   font-size: 1.2em;
   overflow: hidden;
   display: inline;
 }
 
-
-.debate-all-tags{
+.debate-all-tags {
   margin-top: 1em;
   color: rgb(38, 160, 154);
 }
 
-.debate-statistics{
+.debate-statistics {
   font-size: 1.9em;
   display: inline-block;
   position: relative;
@@ -49,7 +48,7 @@
   width: 120px;
   bottom: 100%;
   left: 50%;
-  margin-left: -60px; 
+  margin-left: -60px;
   opacity: 0;
   transition: opacity 1s;
   position: absolute;
@@ -61,11 +60,11 @@
   opacity: 1;
 }
 
-.debate-statistics-container{
+.debate-statistics-container {
   display: flex;
   justify-content: space-around;
 }
 
-.debate-actions{
+.debate-actions {
   color: blue;
 }
