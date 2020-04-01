@@ -4,6 +4,7 @@ import com.example.Debate.dto.NotificationDto;
 import com.example.Debate.model.Notification;
 import com.example.Debate.repository.NotificationRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {

@@ -18,8 +18,4 @@ public class User {
     private String password;
     private String eMail;
     private Role role;
-    //    @DBRef
-//    private Punishment punishment;
-//    @DBRef
-//    private Post post;
 }

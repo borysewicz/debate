@@ -6,6 +6,7 @@ import com.example.Debate.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 @Getter
 @Setter

@@ -4,6 +4,7 @@ import com.example.Debate.dto.PunishmentDto;
 import com.example.Debate.model.Punishment;
 import com.example.Debate.repository.PunishmentRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PunishmentServiceImpl implements PunishmentService

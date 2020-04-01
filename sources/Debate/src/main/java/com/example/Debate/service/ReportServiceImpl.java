@@ -4,6 +4,7 @@ import com.example.Debate.dto.ReportDto;
 import com.example.Debate.model.Report;
 import com.example.Debate.repository.ReportRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ReportServiceImpl implements  ReportService{
@@ -22,6 +23,7 @@ public class ReportServiceImpl implements  ReportService{
         return modelMapper.map(report,ReportDto.class);
     }
 
+    @Override
     public boolean addReport(ReportDto reportDto)
     {
         Report report = modelMapper.map(reportDto,Report.class);
