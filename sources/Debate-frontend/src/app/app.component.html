@@ -16,8 +16,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container class="h100">
-  <mat-sidenav #sidenav mode="side">
-    <!-- <form class="sidenav-form" [formGroup]="debateSearch"> -->
+  <mat-sidenav #sidenav mode="side" style="overflow-y: hidden;">
       <mat-form-field class="sidenav-content w100">
         <input
           type="text"
@@ -33,12 +32,11 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-    <!-- </form> -->
     <div class="sidenav-content">
       <app-tag-search></app-tag-search>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content style="overflow-y: hidden;">
     <app-homepage></app-homepage>
   </mat-sidenav-content>
 </mat-sidenav-container>
