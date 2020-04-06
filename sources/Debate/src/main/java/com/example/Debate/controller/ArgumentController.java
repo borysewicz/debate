@@ -1,6 +1,6 @@
 package com.example.Debate.controller;
 
-import com.example.Debate.dto.ArgumentDto;
+import com.example.Debate.dto.response.ArgumentResponse;
 import com.example.Debate.service.ArgumentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class ArgumentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArgumentDto> getArgumentById(@PathVariable(value = "id") String id){
-        ArgumentDto argumentDto;
+    public ResponseEntity<ArgumentResponse> getArgumentById(@PathVariable(value = "id") String id){
+        ArgumentResponse argumentDto;
         if((argumentDto = argumentService.getArgumentById(id)) != null){
             return ResponseEntity.status(HttpStatus.OK).body(argumentDto);
         }else{
@@ -29,14 +29,14 @@ public class ArgumentController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ArgumentDto>> getAllArguments(){
-        List<ArgumentDto> argumentDtoList = argumentService.getAllArguments();
+    public ResponseEntity<List<ArgumentResponse>> getAllArguments(){
+        List<ArgumentResponse> argumentDtoList = argumentService.getAllArguments();
         return argumentDtoList.size() != 0 ? ResponseEntity.status(HttpStatus.OK).body(argumentDtoList) :
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(argumentDtoList);
     }
 
     @PostMapping("/add")
-    public HttpStatus addArgument(@RequestBody ArgumentDto argumentDto){
+    public HttpStatus addArgument(@RequestBody ArgumentResponse argumentDto){
         return argumentService.addArgument(argumentDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
     }
 }

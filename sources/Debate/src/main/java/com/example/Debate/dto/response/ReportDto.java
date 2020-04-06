@@ -1,15 +1,11 @@
-package com.example.Debate.dto;
+package com.example.Debate.dto.response;
 
 import com.example.Debate.model.Activity;
 import com.example.Debate.model.Punishment;
 import com.example.Debate.model.User;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import lombok.Value;
 
-@Getter
-@Setter
+@Value
 public class ReportDto {
 
     String _id;

@@ -1,6 +1,6 @@
 package com.example.Debate.controller;
 
-import com.example.Debate.dto.DebateDto;
+import com.example.Debate.dto.response.DebateDto;
 import com.example.Debate.service.DebateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.NotificationDto;
+import com.example.Debate.dto.response.NotificationDto;
 import com.example.Debate.model.Notification;
 import com.example.Debate.repository.NotificationRepository;
 import org.modelmapper.ModelMapper;
