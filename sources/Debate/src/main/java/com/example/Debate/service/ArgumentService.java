@@ -1,11 +1,11 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.ArgumentDto;
+import com.example.Debate.dto.response.ArgumentResponse;
 
 import java.util.List;
 
 public interface ArgumentService {
-    public ArgumentDto getArgumentById(String id);
-    public List<ArgumentDto> getAllArguments();
-    public boolean addArgument(ArgumentDto argumentDto);
+    public ArgumentResponse getArgumentById(String id);
+    public List<ArgumentResponse> getAllArguments();
+    public boolean addArgument(ArgumentResponse argumentDto);
 }

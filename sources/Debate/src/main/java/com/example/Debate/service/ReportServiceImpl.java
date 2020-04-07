@@ -1,6 +1,6 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.ReportDto;
+import com.example.Debate.dto.response.ReportDto;
 import com.example.Debate.model.Report;
 import com.example.Debate.repository.ReportRepository;
 import org.modelmapper.ModelMapper;

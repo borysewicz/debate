@@ -1,6 +1,6 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.DebateDto;
+import com.example.Debate.dto.response.DebateDto;
 
 import java.util.List;
 
