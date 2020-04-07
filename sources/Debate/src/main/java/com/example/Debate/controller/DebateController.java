@@ -21,18 +21,13 @@ public class DebateController {
     @GetMapping("/{id}")
     public ResponseEntity<DebateDto> getDebateById(@PathVariable(value = "id") String id){
         DebateDto debateDto = debateService.getDebateById(id);
-        if(debateDto != null){
-            return ResponseEntity.status(HttpStatus.OK).body(debateDto);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(debateDto);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<DebateDto>> getAllDebates(){
         List<DebateDto> debateDtoList = debateService.getAllDebates();
-        return debateDtoList.size() != 0 ? ResponseEntity.status(HttpStatus.OK).body(debateDtoList) :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).body(debateDtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(debateDtoList);
     }
 
     @PostMapping("/add")
