@@ -1,6 +1,6 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.NotificationDto;
+import com.example.Debate.dto.response.NotificationDto;
 
 public interface NotificationService {
 

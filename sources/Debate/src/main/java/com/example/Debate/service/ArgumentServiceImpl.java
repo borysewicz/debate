@@ -1,6 +1,6 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.ArgumentDto;
+import com.example.Debate.dto.response.ArgumentResponse;
 import com.example.Debate.model.Argument;
 import com.example.Debate.repository.ArgumentRepository;
 import org.modelmapper.ModelMapper;
@@ -20,26 +20,26 @@ public class ArgumentServiceImpl implements ArgumentService{
     }
 
     @Override
-    public ArgumentDto getArgumentById(String id) {
+    public ArgumentResponse getArgumentById(String id) {
         Argument argument = argumentRepository.findById(id).get();
-        ArgumentDto argumentDto = modelMapper.map(argument,ArgumentDto.class);
+        ArgumentResponse argumentDto = modelMapper.map(argument, ArgumentResponse.class);
         return argumentDto;
     }
 
     @Override
-    public List<ArgumentDto> getAllArguments() {
+    public List<ArgumentResponse> getAllArguments() {
         List<Argument> argumentList = argumentRepository.findAll();
-        List<ArgumentDto> argumentDtoList = new ArrayList<>();
+        List<ArgumentResponse> argumentDtoList = new ArrayList<>();
         if(argumentList.size() != 0){
             for(Argument argument : argumentList){
-                argumentDtoList.add(modelMapper.map(argument,ArgumentDto.class));
+                argumentDtoList.add(modelMapper.map(argument, ArgumentResponse.class));
             }
         }
         return argumentDtoList;
     }
 
     @Override
-    public boolean addArgument(ArgumentDto argumentDto) {
+    public boolean addArgument(ArgumentResponse argumentDto) {
         Argument argument = modelMapper.map(argumentDto,Argument.class);
         argumentRepository.save(argument);
         return true;

@@ -1,9 +1,7 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.CommentDto;
-import com.example.Debate.dto.DebateDto;
+import com.example.Debate.dto.response.CommentDto;
 import com.example.Debate.model.Comment;
-import com.example.Debate.model.Debate;
 import com.example.Debate.repository.CommentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
