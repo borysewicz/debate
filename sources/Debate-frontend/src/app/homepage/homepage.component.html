@@ -5,16 +5,7 @@
       Polecane
     </ng-template>
     <mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
-      <mat-grid-tile>
-        <app-debate-card [debate]="debate"></app-debate-card>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <app-debate-card [debate]="debate"></app-debate-card>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <app-debate-card [debate]="debate"></app-debate-card>
-      </mat-grid-tile>
-      <mat-grid-tile>
+      <mat-grid-tile *ngFor="let debate of popularDebates">
         <app-debate-card [debate]="debate"></app-debate-card>
       </mat-grid-tile>
     </mat-grid-list>
@@ -24,13 +15,21 @@
       <mat-icon aria-hidden="false" aria-label="Polecane">fiber_new</mat-icon>
       Nowe
     </ng-template>
-    Nowe content
+    <mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
+      <mat-grid-tile *ngFor="let debate of newDebates">
+        <app-debate-card [debate]="debate"></app-debate-card>
+      </mat-grid-tile>
+    </mat-grid-list>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon aria-hidden="false" aria-label="Polecane">whatshot</mat-icon>
       Gorące
     </ng-template>
-    Gorące content
+    <mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
+      <mat-grid-tile *ngFor="let debate of hotDebates">
+        <app-debate-card [debate]="debate"></app-debate-card>
+      </mat-grid-tile>
+    </mat-grid-list>
   </mat-tab>
 </mat-tab-group>
