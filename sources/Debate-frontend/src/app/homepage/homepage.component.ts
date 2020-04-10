@@ -16,8 +16,8 @@ export class HomepageComponent implements OnInit {
   constructor(private debateService: DebateService) {}
 
   ngOnInit(): void {
-    this.debateService.getPopularDebates(10, 1).subscribe(data => this.popularDebates = data);
-    this.debateService.getHotDebates(10, 1).subscribe(data => this.hotDebates = data);
-    this.debateService.getNewDebates(10, 1).subscribe(data => this.newDebates = data);
+    this.debateService.getPopularDebates(10, 0).subscribe(data => this.popularDebates = data);
+    this.debateService.getHotDebates(10, 0).subscribe(data => this.hotDebates = data);
+    this.debateService.getNewDebates(10, 0).subscribe(data => this.newDebates = data);
   }
 }
