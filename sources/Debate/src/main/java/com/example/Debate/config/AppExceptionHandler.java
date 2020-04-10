@@ -1,8 +1,12 @@
-package com.example.Debate.common.exception;
+package com.example.Debate.config;
 
+import com.example.Debate.common.exception.BadRequestException;
+import com.example.Debate.common.exception.ResourceNotFoundException;
 import org.springframework.core.convert.ConversionFailedException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -24,6 +28,13 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConversionFailedException.class)
     public final ResponseEntity<String> handleConversionFailedExceptuon(ConversionFailedException ex, WebRequest request){
         return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public final ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                     HttpHeaders headers, HttpStatus status, WebRequest request){
+        var msg = ex.getBindingResult().getFieldError().getDefaultMessage();
+        return new ResponseEntity<>("Error: " +  msg, HttpStatus.BAD_REQUEST);
     }
 
 }

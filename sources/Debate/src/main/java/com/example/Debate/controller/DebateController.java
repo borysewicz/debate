@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class DebateController {
 
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data", "multipart/mixed"})
     public ResponseEntity<Void> updateDebate(@RequestPart(value = "img", required = false) MultipartFile debateCover,
-                                                           @RequestPart(value = "debate") AddOrUpdateDebateDto debateDto,
+                                                           @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto,
                                                            @PathVariable String id){
         debateService.update(id, debateDto, debateCover);
         return ResponseEntity.ok().build();
@@ -62,7 +63,7 @@ public class DebateController {
 
     @PostMapping(value = "/add", consumes = {"multipart/form-data", "multipart/mixed"})
     public ResponseEntity<FullDebateResponseDto> addDebate(@RequestPart(value = "img", required = false) MultipartFile debateCover,
-                                                           @RequestPart(value = "debate") AddOrUpdateDebateDto debateDto) {
+                                                           @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto) {
         var newDebate = debateService.addDebate(debateDto, debateCover);
         return ResponseEntity.created(URI.create("/api/debate/" + newDebate.get_id())).body(newDebate);
     }
