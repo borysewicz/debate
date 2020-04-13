@@ -8,7 +8,7 @@ import { Debate } from '../dto/debate.dto';
   providedIn: 'root',
 })
 export class DebateService {
-  private endpoint = 'https://localhost:80/api/debate';
+  private endpoint = 'http://localhost:8080/api/debate';
 
   constructor(private http: HttpClient) {}
 

@@ -22,6 +22,9 @@ import { DebateCardComponent } from './homepage/debate-card/debate-card.componen
 import { TagSearchComponent } from './tag-search/tag-search.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-debate.component';
+import { LoginpageComponent } from './loginpage/loginpage.component';
+import { RegistrationComponent } from './loginpage/registration/registration.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-
     HomepageComponent,
     TagSearchComponent,
     DebateCardComponent,
-    AddUpdateDebateComponent
+    AddUpdateDebateComponent,
+    LoginpageComponent,
+    RegistrationComponent
     ],
   imports: [
     BrowserModule,
