@@ -1,8 +1,7 @@
 export interface Debate {
-  id: number;
+  _id: string;
   title: string;
-  description: string;
-  imageSrc: string;
+  content: string;
   argumentCount: number;
   commentCount: number;
   voteCount: number;
