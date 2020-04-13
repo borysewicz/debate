@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean addUser(UserDto userDto) {
+    public UserDto addUser(UserDto userDto) {
         User user = modelMapper.map(userDto,User.class);
-        userRepository.save(user);
-        return true;
+        var saved = userRepository.save(user);
+        return modelMapper.map(saved,UserDto.class);
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/user")
@@ -22,7 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public HttpStatus addUser(@RequestBody UserDto userDto){
-        return userService.addUser(userDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto){
+        var newUser = userService.addUser(userDto);
+        return ResponseEntity.created(URI.create("/api/user/")).body(newUser);
     }
 }
