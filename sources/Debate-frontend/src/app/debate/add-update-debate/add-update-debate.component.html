@@ -5,8 +5,8 @@
 
         <mat-form-field hintLabel="5-50 znaków" class="form-field">
             <mat-label>Tytuł debaty</mat-label>
-            <input matInput maxlength="50" minlength="5" required type="text" name="title" placeholder="Tytuł..." [(ngModel)]="model.title">
-            <mat-error *ngIf="model.title.length < 5">Tytuł musi mieć co najmniej 5 znaków</mat-error>
+            <input matInput maxlength="50" minlength="5" required type="text" name="title" placeholder="Tytuł..." [(ngModel)]="model.title" #title="ngModel">
+            <mat-error *ngIf="title.errors?.minlength">Tytuł musi mieć co najmniej 5 znaków</mat-error>
         </mat-form-field>
 
         <mat-form-field hintLabel="5-600 znaków" class="form-field">
@@ -16,8 +16,9 @@
                   [(ngModel)]="model.description"
                   cdkTextareaAutosize
                   cdkAutosizeMinRows="3"
+                  #description = "ngModel"
                   ></textarea>
-                <mat-error *ngIf="model.description.length < 5">Opis musi mieć co najmniej 5 znaków</mat-error>
+                <mat-error *ngIf="description.errors?.minlength">Opis musi mieć co najmniej 5 znaków</mat-error>
         </mat-form-field>
 
         <mat-form-field hintLabel="Dodaj od 3 do 7 tagów opisujących Twoją debatę. Wyrazy oddzielaj enterem lub przecinkiem. 3 pierwsze tagi będą głównymi">

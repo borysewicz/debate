@@ -14,11 +14,11 @@ export class AddUpdateDebateComponent implements OnInit {
 
   model: AddUpdateDebateDto;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  imageUrl: any;
+  imageUrl: string | ArrayBuffer;
   imageData: File;
   imageInvalid: boolean = false;
 
-  @ViewChild("tagList") tagList;
+  @ViewChild("tagList") tagList: MatChipList;
   @ViewChild("debateForm") debateForm: HTMLFormElement;
 
   constructor(private debateService: DebateService, private router: Router) { 
@@ -74,16 +74,17 @@ export class AddUpdateDebateComponent implements OnInit {
     }
   }
 
-  onFileChanged(fileEvent: any){
-    if (fileEvent.target.files[0].size > 4000000){ // 4MB = 4 000 000 B
+  onFileChanged(fileEvent: Event){
+    const fileEventTarget = fileEvent.target as HTMLInputElement;
+    if (fileEventTarget.files[0].size > 4000000){ // 4MB = 4 000 000 B
       this.imageInvalid = true;
       return;
     }
-    this.imageData = fileEvent.target.files[0];
+    this.imageData = fileEventTarget.files[0];
     this.imageInvalid = false;
     const reader = new FileReader();
     reader.readAsDataURL(this.imageData);
-    reader.onload = (_event) => {
+    reader.onload = () => {
       this.imageUrl = reader.result;
     }    
   }
