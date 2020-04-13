@@ -3,16 +3,25 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span>
+    <a routerLink="/" class="app-title">
       Debate
-    </span>
+    </a>
     <span class="spacer"></span>
-    <mat-icon class="toolbar-icon">
-      notifications
-    </mat-icon>
+    <button mat-button class="add-button" routerLink="/addDebate" >
+      <mat-icon class="toolbar-icon create-debate">
+          create
+      </mat-icon>
+    </button>
+   <button mat-button>
+      <mat-icon class="toolbar-icon ">
+        notifications
+      </mat-icon>
+    </button>
+    <button mat-button>
     <mat-icon class="toolbar-icon">
       account_circle
     </mat-icon>
+  </button>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container class="h100">
@@ -36,7 +45,7 @@
       <app-tag-search></app-tag-search>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content style="overflow-y: hidden;">
-    <app-homepage></app-homepage>
+  <mat-sidenav-content >
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

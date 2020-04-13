@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
   ];
   filteredDebates: Observable<string[]>;
 
+  constructor(){}
+
   ngOnInit(): void {
     this.filteredDebates = this.debateControl.valueChanges.pipe(
       // tslint:disable-next-line: deprecation
@@ -33,4 +35,5 @@ export class AppComponent implements OnInit {
       debate.toLowerCase().includes(filterValue)
     );
   }
+
 }

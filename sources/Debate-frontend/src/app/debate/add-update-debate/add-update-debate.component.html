@@ -1,0 +1,47 @@
+<div class="content">
+    <h1>Dodaj debatę</h1>
+
+    <form class="debate-form" #debateForm="ngForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field hintLabel="5-50 znaków" class="form-field">
+            <mat-label>Tytuł debaty</mat-label>
+            <input matInput maxlength="50" minlength="5" required type="text" name="title" placeholder="Tytuł..." [(ngModel)]="model.title">
+            <mat-error *ngIf="model.title.length < 5">Tytuł musi mieć co najmniej 5 znaków</mat-error>
+        </mat-form-field>
+
+        <mat-form-field hintLabel="5-600 znaków" class="form-field">
+                <mat-label>Opis debaty</mat-label>
+                <textarea matInput minlength="5" maxlength="600" required name="description" placeholder="Opis" [(ngModel)]="model.description"></textarea>
+                <mat-error *ngIf="model.description.length < 5">Opis musi mieć co najmniej 5 znaków</mat-error>
+        </mat-form-field>
+
+        <mat-form-field hintLabel="Dodaj od 3 do 7 tagów opisujących Twoją debatę. Wyrazy oddzielaj enterem lub przecinkiem. 3 pierwsze tagi będą głównymi">
+            <mat-label>Tagi</mat-label>
+            <mat-chip-list #tagList>
+                <mat-chip *ngFor="let tag of model.allTags" (removed)="removeTag(tag)">{{tag}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Dodaj tag..." [matChipInputFor]="tagList" 
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addTag($event)" >
+                    <mat-error *ngIf="tagList.errorState">Dodaj od 3 do 7 tagów </mat-error>
+            </mat-chip-list>
+        </mat-form-field>
+
+        <div class="image-input">
+            <img *ngIf="imageUrl" [src]="imageUrl">
+            <label for="cover">Wybierz tło debaty (maksymalny rozmiar 4MB)</label>
+            <input type="file" (change)="onFileChanged($event)"
+            id="cover" name="cover" accept="image/png, image/jpeg">
+            <span *ngIf="imageInvalid">
+                Zdjęcie ma ponad 4MB
+            </span>
+        </div>
+        
+        <button mat-raised-button color="primary" type="submit" style="margin-bottom: 7em" >
+            Dodaj debatę</button>
+
+    </form>
+
+ 
+
+</div>
