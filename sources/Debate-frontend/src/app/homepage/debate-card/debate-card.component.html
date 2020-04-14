@@ -1,5 +1,5 @@
 <mat-card class="debate-card">
-  <div id="debate-img" style="background-image: url({{debate.imageSrc}});">
+    <div id="debate-img" [style.background-image]="getCoverUrl()">
       <mat-chip-list class="debate-main-tags">
           <mat-chip color="primary" selected *ngFor="let tag of debate.mainTags"  >{{tag}}</mat-chip>
         </mat-chip-list>        
@@ -9,7 +9,7 @@
     </mat-card-header>
     <mat-card-content>
       <p class="debate-description">
-      {{debate.description | slice:0:sliceEnd}}       
+      {{debate.content | slice:0:sliceEnd}}       
       </p>
       <span *ngIf="!isExpanded">...</span>
       <div *ngIf="isExpanded">

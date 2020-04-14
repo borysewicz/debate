@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Debate } from '../../dto/debate.dto';
+import { DebateService } from 'src/app/services/debate.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-debate-card',
@@ -13,7 +15,7 @@ export class DebateCardComponent implements OnInit {
   isExpanded: boolean = false;
   expandString: string = "Rozwiń";
 
-  constructor() { }
+  constructor(private debateService: DebateService, private sanitizer: DomSanitizer) { }
   
   ngOnInit(): void {
   }
@@ -25,10 +27,15 @@ export class DebateCardComponent implements OnInit {
       this.expandString = "Rozwiń";
       this.isExpanded = false;
     } else {
-        this.sliceEnd = this.debate.description.length;
+        this.sliceEnd = this.debate.content.length;
         this.expandString = "Zwiń"
         this.isExpanded = true;
     }
-    console.log(this.debate);
   }
+
+ getCoverUrl(){
+   const urlPath = 'http://localhost:8080/api/debate/cover/' + this.debate._id;
+   return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + ')');
+ }
+
 }

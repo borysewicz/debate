@@ -2,7 +2,6 @@ package com.example.Debate.dto.request;
 
 import lombok.Value;
 import lombok.experimental.NonFinal;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,7 +12,7 @@ public class AddOrUpdateDebateDto {
 
     @Size(min = 5, max = 50, message = "The title has to be between 5 and 50 characters long")
     String title;
-    @Size(min = 5, max = 300, message = "The description has to be between 5 and 300 characters long")
+    @Size(min = 5, max = 600, message = "The description has to be between 5 and 600 characters long")
     String description;
     @NotNull
     @Size(min = 3, max = 3, message = "Exactly 3 main tags are required")

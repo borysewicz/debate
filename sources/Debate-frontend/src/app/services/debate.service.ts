@@ -3,14 +3,25 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Debate } from '../dto/debate.dto';
+import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DebateService {
-  private endpoint = 'https://localhost:80/api/debate';
+  private endpoint = 'http://localhost:8080/api/debate';
 
   constructor(private http: HttpClient) {}
+
+  addDebate(debate: AddUpdateDebateDto, cover?: File): Observable<Debate>{
+    const formData = new FormData();
+    const debateBlob = new Blob([JSON.stringify(debate) as BlobPart],{ type: "application/json"});
+    formData.append("debate", debateBlob);
+    if (cover){
+      formData.append("img",cover);
+    }
+    return this.http.post<Debate>(this.endpoint + "/add", formData);
+  }
 
   getPopularDebates(limit: number, page: number): Observable<Debate[]> {
     return this.getDebates('popular', limit ,page);

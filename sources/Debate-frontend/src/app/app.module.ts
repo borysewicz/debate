@@ -15,19 +15,23 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
+import { TextFieldModule } from '@angular/cdk/text-field'; 
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { DebateCardComponent } from './homepage/debate-card/debate-card.component';
 import { TagSearchComponent } from './tag-search/tag-search.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-debate.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     TagSearchComponent,
-    DebateCardComponent
-  ],
+    DebateCardComponent,
+    AddUpdateDebateComponent
+    ],
   imports: [
     BrowserModule,
     MatToolbarModule,
@@ -44,7 +48,9 @@ import { TagSearchComponent } from './tag-search/tag-search.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    TextFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
