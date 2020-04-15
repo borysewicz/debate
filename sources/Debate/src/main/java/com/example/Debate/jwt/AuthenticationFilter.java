@@ -1,7 +1,9 @@
 package com.example.Debate.jwt;
 
 import com.example.Debate.service.UserPrincipalService;
+import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -9,13 +11,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.naming.Context;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class AuthenticationFilter extends OncePerRequestFilter {
     private static final String HEADER = "Bearer";

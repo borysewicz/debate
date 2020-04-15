@@ -57,7 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                     .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
@@ -65,7 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/debate/hello")
-                .hasRole("USER");
+                .antMatchers("/userLogin/logIn")
+                .permitAll()
+                .antMatchers("/debate/hello")
+                .hasAuthority("USER")
+                .and()
+                .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.httpBasic().disable();
     }
 }

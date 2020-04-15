@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class TokenProvider {
     private String secretKey = "dupa";
-    private long timeLiveOfCookie = 2000;
+    private long timeLiveOfCookie = 2000000;
 
     public String generateToken(Authentication authentication){
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
