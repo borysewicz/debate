@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         //todo orElseThrow if user not exists in database
-        return userRepository.findUserByLogin(s).get();
+        return userRepository.findUserByLogin(s).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("Username %s not found", s))
+        );
     }
 }
