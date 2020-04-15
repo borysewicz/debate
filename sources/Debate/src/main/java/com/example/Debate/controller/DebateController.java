@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -25,6 +26,16 @@ public class DebateController {
 
     public DebateController(DebateService debateService) {
         this.debateService = debateService;
+    }
+
+    @GetMapping("/hello")
+    public String sayHello(Principal principal){
+        return "HELLO";
+    }
+
+    @GetMapping("/sth")
+    public String saySth(Principal principal){
+        return principal.getName();
     }
 
     @GetMapping("/{id}")
@@ -63,7 +74,6 @@ public class DebateController {
     }
 
     @PostMapping(value = "/add", consumes = {"multipart/form-data", "multipart/mixed"})
-    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<FullDebateResponseDto> addDebate(@RequestPart(value = "img", required = false) MultipartFile debateCover,
                                                            @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto) {
         var newDebate = debateService.addDebate(debateDto, debateCover);

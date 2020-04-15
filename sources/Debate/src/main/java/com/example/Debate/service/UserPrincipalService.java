@@ -1,5 +1,7 @@
 package com.example.Debate.service;
 
+import com.example.Debate.model.User;
+import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +19,8 @@ public class UserPrincipalService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepository.findUserByLogin(s).orElseThrow(new UsernameNotFoundException("Username %s not found",s));
+        User user = userRepository.findUserByLogin(s).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", s)));
+        UserPrincipal userPrincipal = new UserPrincipal(user.getLogin(),user.getPassword(),user.getRole());
+        return userPrincipal;
     }
 }

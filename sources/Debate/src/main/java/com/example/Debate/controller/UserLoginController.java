@@ -1,10 +1,10 @@
 package com.example.Debate.controller;
 
+import com.example.Debate.dto.response.LoginResponse;
 import com.example.Debate.dto.response.UserDto;
+import com.example.Debate.jwt.TokenProvider;
 import com.example.Debate.service.UserPrincipalService;
-import com.example.Debate.service.UserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,27 +21,20 @@ public class UserLoginController {
     private UserPrincipalService userPrincipalService;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+    private TokenProvider tokenProvider;
 
-    public UserLoginController(UserPrincipalService userPrincipalService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    public UserLoginController(UserPrincipalService userPrincipalService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
         this.userPrincipalService = userPrincipalService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/logIn")
-    public String login(@RequestBody UserDto userDto){
-        long currentTime = System.currentTimeMillis();
+    public ResponseEntity<LoginResponse> login(@RequestBody UserDto userDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getLogin(),userDto.getPassword()));
-//        if(userPrincipalService.loadUserByUsername(userDto.getLogin()).getUsername().equals(userDto.getLogin())) {
-//            return Jwts.builder()
-//                    .setSubject(userDto.getLogin())
-//                    .claim("roles", String.valueOf(userDto.getRole()))
-//                    .setIssuedAt(new Date(currentTime))
-//                    .setExpiration(new Date(currentTime + 200000))
-//                    .signWith(SignatureAlgorithm.HS512, userDto.getPassword().getBytes())
-//                    .compact();
-//        }
-//        return "NOT EXIST";
-
+        String token = tokenProvider.generateToken(authentication);
+        LoginResponse loginResponse = new LoginResponse(token,authentication.getAuthorities().toString());
+        return ResponseEntity.ok(loginResponse);
     }
 }

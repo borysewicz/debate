@@ -1,36 +1,35 @@
 package com.example.Debate.config;
 
-import com.example.Debate.jwt.JwtConfig;
-import com.example.Debate.jwt.JwtTokenVerifier;
-import com.example.Debate.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import com.example.Debate.jwt.AuthenticationFilter;
+import com.example.Debate.jwt.JwtAuthenticationEntryPoint;
+import com.example.Debate.jwt.TokenProvider;
 import com.example.Debate.model.Role;
+import com.example.Debate.service.UserPrincipalService;
 import com.example.Debate.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.crypto.SecretKey;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
-    private final SecretKey secretKey;
-    private final JwtConfig jwtConfig;
+    private UserPrincipalService userPrincipalService;
+    private TokenProvider tokenProvider;
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    public WebSecurityConfig(UserService userService, SecretKey secretKey, JwtConfig jwtConfig) {
-        this.userService = userService;
-        this.secretKey = secretKey;
-        this.jwtConfig = jwtConfig;
+    public WebSecurityConfig(UserPrincipalService userPrincipalService, TokenProvider tokenProvider, JwtAuthenticationEntryPoint authenticationEntryPoint) {
+        this.userPrincipalService = userPrincipalService;
+        this.tokenProvider = tokenProvider;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
@@ -38,23 +37,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationFilter getAuthenticationFilter(){
+        return new AuthenticationFilter(tokenProvider,userPrincipalService);
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(userPrincipalService).passwordEncoder(getPasswordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/*").hasRole(String.valueOf(Role.USER))
-                .anyRequest()
-                .authenticated();
+                .antMatchers("/api/debate/hello")
+                .hasRole("USER");
     }
 }

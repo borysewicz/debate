@@ -35,12 +35,4 @@ public class UserServiceImpl implements UserService{
         var saved = userRepository.save(user);
         return modelMapper.map(saved,UserDto.class);
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        //todo orElseThrow if user not exists in database
-        return userRepository.findUserByLogin(s).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("Username %s not found", s))
-        );
-    }
 }
