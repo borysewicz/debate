@@ -1,0 +1,14 @@
+.grid {
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  column-gap: 1em;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.header {
+    margin: 1em auto 2em;
+}

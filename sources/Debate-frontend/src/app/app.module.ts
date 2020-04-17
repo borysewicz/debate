@@ -11,6 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -23,6 +24,8 @@ import { DebateCardComponent } from './homepage/debate-card/debate-card.componen
 import { TagSearchComponent } from './tag-search/tag-search.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-debate.component';
+import { DebateComponent } from './debate/debate.component';
+import { DebateArgumentComponent } from './debate/debate-argument/debate-argument.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,9 @@ import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-
     HomepageComponent,
     TagSearchComponent,
     DebateCardComponent,
-    AddUpdateDebateComponent
+    AddUpdateDebateComponent,
+    DebateComponent,
+    DebateArgumentComponent
     ],
   imports: [
     BrowserModule,
@@ -43,6 +48,7 @@ import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-
     MatFormFieldModule,
     MatChipsModule,
     MatTabsModule,
+    MatExpansionModule,
     MatCardModule,
     MatGridListModule,
     HttpClientModule,

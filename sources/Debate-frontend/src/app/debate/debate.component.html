@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="header">
+    <h1 class="text-center">{{ debate?.title }}</h1>
+    <h3 class="text-center">{{ debate?.content }}</h3>
+  </div>
+  <div class="grid">
+    <mat-accordion>
+      <app-debate-argument
+        *ngFor="let pro of pros"
+        [argument]="pro"
+      ></app-debate-argument>
+    </mat-accordion>
+    <mat-accordion>
+      <app-debate-argument
+        *ngFor="let con of cons"
+        [argument]="con"
+      ></app-debate-argument>
+    </mat-accordion>
+  </div>
+</div>
