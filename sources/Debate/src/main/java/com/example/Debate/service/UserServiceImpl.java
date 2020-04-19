@@ -1,12 +1,10 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.response.UserDto;
+import com.example.Debate.dto.request.UserDto;
 import com.example.Debate.model.User;
 import com.example.Debate.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

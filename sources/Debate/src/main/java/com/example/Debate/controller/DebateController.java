@@ -9,13 +9,11 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -28,16 +26,6 @@ public class DebateController {
         this.debateService = debateService;
     }
 
-    @GetMapping("/hello")
-    public String sayHello(Principal principal){
-        return "HELLO";
-    }
-
-    @GetMapping("/sth")
-    public String saySth(Principal principal){
-        return principal.getName();
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<FullDebateResponseDto> getDebateById(@PathVariable(value = "id") String id) {
         var debateDto = debateService.getDebateById(id);
@@ -45,21 +33,21 @@ public class DebateController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDebate(@PathVariable String id){
+    public ResponseEntity<Void> deleteDebate(@PathVariable String id) {
         debateService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data", "multipart/mixed"})
     public ResponseEntity<Void> updateDebate(@RequestPart(value = "img", required = false) MultipartFile debateCover,
-                                                           @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto,
-                                                           @PathVariable String id){
+                                             @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto,
+                                             @PathVariable String id) {
         debateService.update(id, debateDto, debateCover);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/cover/{id}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
-    public ResponseEntity<ByteArrayResource> getCoverImage(@PathVariable String id){
+    public ResponseEntity<ByteArrayResource> getCoverImage(@PathVariable String id) {
         Binary image = debateService.getDebateCover(id);
         return ResponseEntity.ok()
                 .body(new ByteArrayResource(image.getData()));

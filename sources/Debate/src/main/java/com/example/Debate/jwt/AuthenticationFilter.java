@@ -1,12 +1,10 @@
 package com.example.Debate.jwt;
 
 import com.example.Debate.service.UserPrincipalService;
-import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthenticationFilter extends OncePerRequestFilter {
-    private static final String HEADER = "Bearer";
+    private static final String BEARER_HEADER = "Bearer";
+    private static final String REFRESH_HEADER = "New_Token";
     private TokenProvider tokenProvider;
     private UserPrincipalService userPrincipalService;
 
@@ -32,22 +31,25 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try {
             String header = httpServletRequest.getHeader("Authorization");
             String token = getTokenFromHeader(header);
-            if (token != null){
+            if (token != null) {
                 UsernamePasswordAuthenticationToken authenticationToken = createAuthenticationForUser(httpServletRequest, token);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                httpServletResponse.addHeader(REFRESH_HEADER, tokenProvider.generateToken(authenticationToken));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        filterChain.doFilter(httpServletRequest,httpServletResponse);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    private String getTokenFromHeader(String header){
-        if(StringUtils.hasText(header) && header.startsWith(HEADER))
+    private String getTokenFromHeader(String header) {
+        if (StringUtils.hasText(header) && header.startsWith(BEARER_HEADER))
             return header.substring(7);
         else
             return null;
     }
+
+
 
     private UsernamePasswordAuthenticationToken createAuthenticationForUser(HttpServletRequest request, String token) {
         String login = tokenProvider.getLoginFromToken(token);

@@ -3,11 +3,10 @@ package com.example.Debate.config;
 import com.example.Debate.jwt.AuthenticationFilter;
 import com.example.Debate.jwt.JwtAuthenticationEntryPoint;
 import com.example.Debate.jwt.TokenProvider;
-import com.example.Debate.model.Role;
 import com.example.Debate.service.UserPrincipalService;
-import com.example.Debate.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,13 +32,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationFilter getAuthenticationFilter(){
-        return new AuthenticationFilter(tokenProvider,userPrincipalService);
+    public AuthenticationFilter getAuthenticationFilter() {
+        return new AuthenticationFilter(tokenProvider, userPrincipalService);
     }
 
     @Bean
@@ -58,18 +57,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .exceptionHandling()
-                    .authenticationEntryPoint(authenticationEntryPoint)
+                .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/userLogin/logIn")
                 .permitAll()
-                .antMatchers("/debate/hello")
-                .hasAuthority("USER")
-                .and()
-                .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.httpBasic().disable();
+                .antMatchers(HttpMethod.GET, "/debate/**")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/debate")
+                .permitAll()
+                .antMatchers("/user/add")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.response.UserDto;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.example.Debate.dto.request.UserDto;
 
 public interface UserService {
     public UserDto getUserById(String id);

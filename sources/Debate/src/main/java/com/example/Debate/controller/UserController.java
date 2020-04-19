@@ -1,8 +1,7 @@
 package com.example.Debate.controller;
 
-import com.example.Debate.dto.response.UserDto;
+import com.example.Debate.dto.request.UserDto;
 import com.example.Debate.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
