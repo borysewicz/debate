@@ -52,3 +52,22 @@
 .mat-expansion-panel-header-title {
   align-items: center;
 }
+
+.mat-list-base .mat-list-item .mat-list-item-content,
+.mat-list-base .mat-list-option .mat-list-item-content {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.comment-section {
+  list-style: none;
+  padding-left: 3em;
+}
+
+.comment-section-header {
+  font-weight: bold;
+  padding: 1em 1em 0;
+}

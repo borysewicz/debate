@@ -1,7 +1,9 @@
+import { Component, OnInit, Input } from '@angular/core';
+
 import { ArgumentService } from './../../services/argument.service';
 import { UserVote } from './../../dto/userVote.enum';
 import { Argument, ArgumentAttitude } from './../../dto/argument.dto';
-import { Component, OnInit, Input } from '@angular/core';
+import { Comment } from '../../dto/comment.dto';
 
 @Component({
   selector: 'app-debate-argument',
@@ -34,5 +36,9 @@ export class DebateArgumentComponent implements OnInit {
 
     this.argumentService.rateArgument(this.argument._id, rateValue);
     event.stopPropagation();
+  }
+
+  getComments(): void {
+    this.argumentService.getCommentsForArgument(this.argument._id).subscribe(comments => this.comments = comments);
   }
 }

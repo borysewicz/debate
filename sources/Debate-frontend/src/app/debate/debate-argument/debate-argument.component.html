@@ -1,4 +1,4 @@
-<mat-expansion-panel [expanded]="isPanelExpanded">
+<mat-expansion-panel [expanded]="isPanelExpanded" (opened)="getComments()">
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-icon
@@ -46,4 +46,12 @@
   </mat-expansion-panel-header>
   <p>{{ argument.authorName }}</p>
   <p>{{ argument.content }}</p>
+  <mat-divider></mat-divider>
+  <h3 class="comment-section-header">Komentarze</h3>
+  <ul class="comment-section">
+    <app-comment
+      *ngFor="let comment of comments"
+      [comment]="comment"
+    ></app-comment>
+  </ul>
 </mat-expansion-panel>

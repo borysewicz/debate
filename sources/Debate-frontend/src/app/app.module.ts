@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatListModule } from '@angular/material/list';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { AppComponent } from './app.component';
@@ -51,6 +52,7 @@ import { CommentComponent } from './debate/comment/comment.component';
     MatFormFieldModule,
     MatChipsModule,
     MatTabsModule,
+    MatListModule,
     MatExpansionModule,
     MatButtonToggleModule,
     MatCardModule,
