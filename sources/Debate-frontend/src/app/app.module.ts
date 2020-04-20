@@ -18,7 +18,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatListModule } from '@angular/material/list';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -39,8 +40,8 @@ import { CommentComponent } from './debate/comment/comment.component';
     AddUpdateDebateComponent,
     DebateComponent,
     DebateArgumentComponent,
-    CommentComponent
-    ],
+    CommentComponent,
+  ],
   imports: [
     BrowserModule,
     MatToolbarModule,
@@ -56,15 +57,16 @@ import { CommentComponent } from './debate/comment/comment.component';
     MatExpansionModule,
     MatButtonToggleModule,
     MatCardModule,
+    MatProgressBarModule,
     MatGridListModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    TextFieldModule
+    TextFieldModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

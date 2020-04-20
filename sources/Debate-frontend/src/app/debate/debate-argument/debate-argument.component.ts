@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { ArgumentService } from './../../services/argument.service';
-import { UserVote } from './../../dto/userVote.enum';
-import { Argument, ArgumentAttitude } from './../../dto/argument.dto';
 import { Comment } from '../../dto/comment.dto';
+import { Argument, ArgumentAttitude } from './../../dto/argument.dto';
+import { UserVote } from './../../dto/userVote.enum';
+import { ArgumentService } from './../../services/argument.service';
 
 @Component({
   selector: 'app-debate-argument',
@@ -19,9 +19,16 @@ export class DebateArgumentComponent implements OnInit {
   isPanelExpanded: boolean;
   comments: Comment[];
 
+  isCommentSectionLoading: boolean;
+  isCommentLoadingError: boolean;
+  isRefreshing: boolean;
+
   constructor(private argumentService: ArgumentService) {}
 
   ngOnInit(): void {
+    this.isCommentSectionLoading = false;
+    this.isCommentLoadingError = false;
+    this.comments = [];
     this.iconName =
       this.argument.attitude === ArgumentAttitude.POSITIVE ? 'add' : 'remove';
   }
@@ -39,6 +46,22 @@ export class DebateArgumentComponent implements OnInit {
   }
 
   getComments(): void {
-    this.argumentService.getCommentsForArgument(this.argument._id).subscribe(comments => this.comments = comments);
+    this.isCommentSectionLoading = true;
+    this.isCommentLoadingError = false;
+    this.argumentService.getCommentsForArgument(this.argument._id).subscribe(comments => {
+      this.comments = comments;
+      this.isRefreshing = false;
+      this.isCommentSectionLoading = false;
+    },
+    err => {
+      this.isCommentLoadingError = true;
+      this.isRefreshing = false;
+      this.isCommentSectionLoading = false;
+    });
+  }
+
+  onReloadCommentsButtonClicked() {
+    this.isRefreshing = true;
+    this.getComments();
   }
 }
