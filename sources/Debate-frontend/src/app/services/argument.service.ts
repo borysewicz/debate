@@ -1,3 +1,4 @@
+import { UserVote } from './../dto/userVote.enum';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Argument, ArgumentAttitude } from '../dto/argument.dto';
@@ -12,6 +13,8 @@ export class ArgumentService {
   private readonly dummy = new BehaviorSubject<Argument[]>([
     {
       _id: '31231311',
+      authorName: 'Marcel',
+      userVote: UserVote.NONE,
       title: 'Pro 1',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       attitude: ArgumentAttitude.POSITIVE,
@@ -20,6 +23,8 @@ export class ArgumentService {
     },
     {
       _id: '54523424',
+      authorName: 'Jan',
+      userVote: UserVote.POSITIVE,
       title: 'Con 1',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       attitude: ArgumentAttitude.NEGATIVE,
@@ -28,6 +33,8 @@ export class ArgumentService {
     },
     {
       _id: '987979789',
+      authorName: 'Julian',
+      userVote: UserVote.NEGATIVE,
       title: 'Pro 2',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       attitude: ArgumentAttitude.POSITIVE,
@@ -36,6 +43,8 @@ export class ArgumentService {
     },
     {
       _id: '253452435',
+      authorName: 'Marcel',
+      userVote: UserVote.NONE,
       title: 'Con 3',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       attitude: ArgumentAttitude.NEGATIVE,
@@ -44,6 +53,8 @@ export class ArgumentService {
     },
     {
       _id: '6434124132',
+      authorName: 'Michał',
+      userVote: UserVote.POSITIVE,
       title: 'Con 2',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       attitude: ArgumentAttitude.NEGATIVE,
@@ -56,5 +67,9 @@ export class ArgumentService {
 
   getArgumentsForDebate(id: string): Observable<Argument[]> {
     return this.dummy.asObservable();
+  }
+
+  rateArgument(argumentId: string, userVote: UserVote): void {
+
   }
 }

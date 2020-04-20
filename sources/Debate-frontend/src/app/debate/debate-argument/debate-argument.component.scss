@@ -1,9 +1,9 @@
 .green {
-  background-color: rgb(205, 220, 57);
+  color: rgb(100, 221, 23);
 }
 
 .red {
-  background-color: rgb(255, 134, 127);//rgb(255, 82, 82);
+  color: rgb(255, 82, 82);
 }
 
 .pull-right {
@@ -11,9 +11,44 @@
 }
 
 .mat-expansion-panel-header-description > .mat-icon {
-    padding: 0 .5em;
+  padding: 0 0.5em;
 }
 
-.p-1 {
-    padding: 0 .5em;
+.px-1 {
+  padding: 0 0.5em;
+}
+
+.rate-button {
+  width: 10ch;
+  max-width: 10ch;
+  text-align: start;
+  padding: 0;
+  letter-spacing: 0.1em;
+  margin-right: 0.3em;
+}
+
+.rate-button-text {
+  display: inline-block;
+  width: 10ch;
+  max-width: 10ch;
+}
+
+.rate-pressed {
+  color: black;
+  .rate-button-text {
+    font-weight: 1000;
+    ::before {
+      font-weight: 900;
+      display: block;
+      content: attr(title);
+      font-weight: bold;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+  }
+}
+
+.mat-expansion-panel-header-title {
+  align-items: center;
 }

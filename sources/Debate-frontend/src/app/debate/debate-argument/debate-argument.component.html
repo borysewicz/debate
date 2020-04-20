@@ -1,20 +1,49 @@
-<mat-expansion-panel
-  [ngClass]="{
-    green: argument.attitude === argumentAttitude.POSITIVE,
-    red: argument.attitude === argumentAttitude.NEGATIVE
-  }"
->
+<mat-expansion-panel [expanded]="isPanelExpanded">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      <mat-icon class="p-1">{{ iconName }}</mat-icon>
+      <mat-icon
+        class="px-1"
+        [ngClass]="{
+          green: argument.attitude === ArgumentAttitude.POSITIVE,
+          red: argument.attitude === ArgumentAttitude.NEGATIVE
+        }"
+        >{{ iconName }}</mat-icon
+      >
       {{ argument.title }}
     </mat-panel-title>
     <mat-panel-description class="pull-right">
-      <mat-icon>thumb_up</mat-icon>
-      {{ argument.upVotes }}
-      <mat-icon>thumb_down</mat-icon>
-      {{ argument.downVotes }}
+      <button
+        mat-button
+        class="rate-button"
+        [ngClass]="{
+          'rate-pressed': argument.userVote === UserVote.POSITIVE
+        }"
+        (click)="onRateButtonPressed($event, UserVote.POSITIVE)"
+      >
+        <mat-icon>thumb_up</mat-icon>
+        <span
+          class="px-1 rate-button-text"
+          [attr.data-text]="argument.upVotes"
+          >{{ argument.upVotes }}</span
+        >
+      </button>
+      <button
+        mat-button
+        class="rate-button"
+        [ngClass]="{
+          'rate-pressed': argument.userVote === UserVote.NEGATIVE
+        }"
+        (click)="onRateButtonPressed($event, UserVote.NEGATIVE)"
+      >
+        <mat-icon>thumb_down</mat-icon>
+        <span
+          class="px-1 rate-button-text"
+          [attr.data-text]="argument.downVotes"
+          >{{ argument.downVotes }}</span
+        >
+      </button>
     </mat-panel-description>
   </mat-expansion-panel-header>
+  <p>{{ argument.authorName }}</p>
   <p>{{ argument.content }}</p>
 </mat-expansion-panel>

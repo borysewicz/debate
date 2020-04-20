@@ -16,7 +16,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
-import { TextFieldModule } from '@angular/cdk/text-field'; 
+import { TextFieldModule } from '@angular/cdk/text-field';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -26,6 +27,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-debate.component';
 import { DebateComponent } from './debate/debate.component';
 import { DebateArgumentComponent } from './debate/debate-argument/debate-argument.component';
+import { CommentComponent } from './debate/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { DebateArgumentComponent } from './debate/debate-argument/debate-argumen
     DebateCardComponent,
     AddUpdateDebateComponent,
     DebateComponent,
-    DebateArgumentComponent
+    DebateArgumentComponent,
+    CommentComponent
     ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { DebateArgumentComponent } from './debate/debate-argument/debate-argumen
     MatChipsModule,
     MatTabsModule,
     MatExpansionModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatGridListModule,
     HttpClientModule,
