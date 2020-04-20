@@ -25,3 +25,23 @@ body {
    position: relative;
    width: auto;
 }
+
+.d-flex {
+   display: flex;
+}
+
+.column {
+   flex-direction: column;
+}
+
+.text-center {
+   text-align: center;
+}
+
+.justify-center {
+   justify-content: center;
+}
+
+.align-self-center {
+   align-self: center;
+}
