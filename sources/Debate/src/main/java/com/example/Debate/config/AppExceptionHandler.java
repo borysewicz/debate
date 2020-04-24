@@ -2,6 +2,7 @@ package com.example.Debate.config;
 
 import com.example.Debate.common.exception.BadRequestException;
 import com.example.Debate.common.exception.ResourceNotFoundException;
+import com.example.Debate.common.exception.UnauthorizedAccessException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,11 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConversionFailedException.class)
     public final ResponseEntity<String> handleConversionFailedExceptuon(ConversionFailedException ex, WebRequest request){
         return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public final ResponseEntity<String> handleUnauthorizedException(UnauthorizedAccessException ex, WebRequest request){
+        return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @Override

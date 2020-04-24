@@ -19,4 +19,5 @@ public class FullDebateResponseDto {
     int voteCount;
     int participantCount;
     int viewCount;
+    String author;
 }

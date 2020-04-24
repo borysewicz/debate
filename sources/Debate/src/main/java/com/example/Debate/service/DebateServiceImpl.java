@@ -3,10 +3,13 @@ package com.example.Debate.service;
 import com.example.Debate.common.api.SortingType;
 import com.example.Debate.common.exception.BadRequestException;
 import com.example.Debate.common.exception.ResourceNotFoundException;
+import com.example.Debate.common.exception.UnauthorizedAccessException;
 import com.example.Debate.dto.request.AddOrUpdateDebateDto;
 
 import com.example.Debate.dto.response.FullDebateResponseDto;
+import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.model.Debate;
+import com.example.Debate.model.Role;
 import com.example.Debate.repository.DebateRepository;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -14,10 +17,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,8 +57,9 @@ public class DebateServiceImpl implements DebateService{
     }
 
     @Override
-    public FullDebateResponseDto addDebate(AddOrUpdateDebateDto debateDto, MultipartFile debateCover) {
+    public FullDebateResponseDto addDebate(AddOrUpdateDebateDto debateDto, MultipartFile debateCover, Principal principal) {
         Debate debate = modelMapper.map(debateDto,Debate.class);
+        debate.setAuthor(principal.getName());
         if (debateCover != null){
             try {
                 debate.setImage(new Binary(BsonBinarySubType.BINARY, debateCover.getBytes()));
@@ -75,29 +83,42 @@ public class DebateServiceImpl implements DebateService{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(String id, Principal principal) {
         if(!debateRepository.existsById(id)){
             throw new ResourceNotFoundException("Debate with id: " + id + " not found");
         }
-        debateRepository.deleteById(id);
+        var debate = debateRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Debate with id: " + id + " not found"));
+        if (isAuthorized(debate.getAuthor(), principal)){
+            debateRepository.deleteById(id);
+        }
+        else throw new UnauthorizedAccessException("You are not allowed to modify this resource");
     }
 
     @Override
-    public void update(String id, AddOrUpdateDebateDto debateDto, MultipartFile debateCover) {
+    public void update(String id, AddOrUpdateDebateDto debateDto, MultipartFile debateCover, Principal principal) {
         var debate = debateRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Debate with id: " + id + " not found"));
-        debate.setTitle(debateDto.getTitle());
-        debate.setContent(debateDto.getDescription());
-        debate.setAllTags(debateDto.getAllTags());
-        debate.setMainTags(debateDto.getMainTags());
-        if (debateCover != null){
-            try {
-                debate.setImage(new Binary(BsonBinarySubType.BINARY, debateCover.getBytes()));
-            } catch (IOException e) {
-                throw new BadRequestException("Server encountered error while processing image, try again");
+        if (isAuthorized(debate.getAuthor(), principal)){
+            debate.setTitle(debateDto.getTitle());
+            debate.setContent(debateDto.getDescription());
+            debate.setAllTags(debateDto.getAllTags());
+            debate.setMainTags(debateDto.getMainTags());
+            if (debateCover != null){
+                try {
+                    debate.setImage(new Binary(BsonBinarySubType.BINARY, debateCover.getBytes()));
+                } catch (IOException e) {
+                    throw new BadRequestException("Server encountered error while processing image, try again");
+                }
             }
+            debateRepository.save(debate);
         }
-        debateRepository.save(debate);
+        else throw new UnauthorizedAccessException("You are not allowed to modify this resource");
+    }
+
+    private boolean isAuthorized(String debateAuthor, Principal principal){
+        var userDetails = (UsernamePasswordAuthenticationToken) principal;
+        return debateAuthor.equals(userDetails.getName())
+                || userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMINISTRATOR.toString()));
     }
 
 }

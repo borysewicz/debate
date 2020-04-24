@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -33,16 +34,17 @@ public class DebateController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDebate(@PathVariable String id) {
-        debateService.delete(id);
+    public ResponseEntity<Void> deleteDebate(@PathVariable String id, Principal principal) {
+        debateService.delete(id, principal);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data", "multipart/mixed"})
     public ResponseEntity<Void> updateDebate(@RequestPart(value = "img", required = false) MultipartFile debateCover,
                                              @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto,
-                                             @PathVariable String id) {
-        debateService.update(id, debateDto, debateCover);
+                                             @PathVariable String id,
+                                             Principal principal) {
+        debateService.update(id, debateDto, debateCover, principal);
         return ResponseEntity.ok().build();
     }
 
@@ -63,8 +65,9 @@ public class DebateController {
 
     @PostMapping(value = "/add", consumes = {"multipart/form-data", "multipart/mixed"})
     public ResponseEntity<FullDebateResponseDto> addDebate(@RequestPart(value = "img", required = false) MultipartFile debateCover,
-                                                           @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto) {
-        var newDebate = debateService.addDebate(debateDto, debateCover);
+                                                           @RequestPart(value = "debate") @Valid AddOrUpdateDebateDto debateDto,
+                                                           Principal principal) {
+        var newDebate = debateService.addDebate(debateDto, debateCover, principal);
         return ResponseEntity.created(URI.create("/api/debate/" + newDebate.get_id())).body(newDebate);
     }
 
