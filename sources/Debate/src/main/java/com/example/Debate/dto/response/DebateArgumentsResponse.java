@@ -5,7 +5,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class DebateArgumentResponse {
+public class DebateArgumentsResponse {
     List<ArgumentResponse> positive;
     List<ArgumentResponse> negative;
 }

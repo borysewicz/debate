@@ -2,6 +2,7 @@ package com.example.Debate.controller;
 
 import com.example.Debate.common.api.SortingType;
 import com.example.Debate.dto.request.AddOrUpdateDebateDto;
+import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.FullDebateResponseDto;
 import com.example.Debate.service.DebateService;
 import org.bson.types.Binary;
@@ -69,6 +70,12 @@ public class DebateController {
                                                            Principal principal) {
         var newDebate = debateService.addDebate(debateDto, debateCover, principal);
         return ResponseEntity.created(URI.create("/api/debate/" + newDebate.get_id())).body(newDebate);
+    }
+
+    @GetMapping("/edits/{id}")
+    public ResponseEntity<ActivityHistoryResponse> getDebateHistory(@PathVariable String id){
+        var history =  this.debateService.getDebateHistory(id);
+        return ResponseEntity.ok(history);
     }
 
 }

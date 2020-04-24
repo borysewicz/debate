@@ -1,6 +1,8 @@
 package com.example.Debate.service;
 
+import com.example.Debate.common.exception.UnauthorizedAccessException;
 import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
+import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
 import com.example.Debate.model.Argument;
 import com.example.Debate.model.Attitude;
@@ -12,13 +14,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class ArgumentServiceImpl implements ArgumentService{
+public class ArgumentServiceImpl implements ArgumentService {
     private ArgumentRepository argumentRepository;
     private ModelMapper modelMapper;
 
@@ -32,8 +35,8 @@ public class ArgumentServiceImpl implements ArgumentService{
     public List<ArgumentResponse> getArgumentsForDebate(String debateId, int limit, int page, Optional<String> userId) {
         var pageRequest = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "rating"));
         return Stream.concat(
-                argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.POSITIVE,debateId, pageRequest).get(),
-                argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.NEGATIVE,debateId, pageRequest).get()
+                argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.POSITIVE, debateId, pageRequest).get(),
+                argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.NEGATIVE, debateId, pageRequest).get()
         ).map(argumentEntity -> mapToArgumentResponse(argumentEntity, userId))
                 .collect(Collectors.toList());
     }
@@ -54,7 +57,38 @@ public class ArgumentServiceImpl implements ArgumentService{
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    private ArgumentResponse mapToArgumentResponse(Argument argument, Optional<String> userId){
+    @Override
+    public void deleteArgument(String id, Principal principal) {
+        if (!argumentRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Debate with id: " + id + " not found");
+        }
+        var argument = argumentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Argument with id: " + id + " not found"));
+        if (argument.isAuthorized(principal)) {
+            argumentRepository.deleteById(id);
+        } else throw new UnauthorizedAccessException("You are not allowed to modify this resource");
+    }
+
+    @Override
+    public void updateArgument(String id, AddOrUpdateArgumentDto argumentDto, Principal principal) {
+        var argument = argumentRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Argument with id: " + id + " not found"));
+        if (argument.isAuthorized(principal)){
+            argument.saveEdit();
+            argument.setTitle(argumentDto.getTitle());
+            argument.setContent(argumentDto.getContent());
+            argumentRepository.save(argument);
+        }
+        else throw new UnauthorizedAccessException("You are not allowed to modify this resource");
+    }
+
+    @Override
+    public ActivityHistoryResponse getArgumentHistory(String id) {
+        var debate = argumentRepository.findById(id).orElseThrow(() ->
+                new com.example.Debate.common.exception.ResourceNotFoundException("Debate with id : " + id + " + not found"));
+        return new ActivityHistoryResponse(debate.getEditHistory());
+    }
+
+    private ArgumentResponse mapToArgumentResponse(Argument argument, Optional<String> userId) {
         return new ArgumentResponse(
                 argument.get_id(),
                 argument.getTitle(),

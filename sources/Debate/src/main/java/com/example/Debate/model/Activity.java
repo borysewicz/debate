@@ -3,8 +3,11 @@ package com.example.Debate.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.Id;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +37,17 @@ public abstract class Activity {
         var currentTime = System.currentTimeMillis();
         this.putOldContent(currentTime);
         this.lastEditionTime = currentTime;
+    }
+
+    /**
+     * Method checks whether the principal passed to the method is the activity's creator or the administrator
+     * @param principal Principal object containing data about user performing the action
+     * @return Boolean indicating whether the user can perform edition or deletion of activity
+     */
+    public boolean isAuthorized(Principal principal){
+        var userDetails = (UsernamePasswordAuthenticationToken) principal;
+        return author.equals(userDetails.getName())
+                || userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMINISTRATOR.toString()));
     }
 
     protected abstract void putOldContent(long editTime);

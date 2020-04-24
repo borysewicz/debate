@@ -36,8 +36,8 @@ public class Argument extends Post{
     @Override
     protected void putOldContent(long editTime) {
         this.editHistory.put(editTime,
-                "Title: " + this.title +
-                "\nContent: " + this.content
+                " Title: " + this.title +
+                " Content: " + this.content
         );
     }
 

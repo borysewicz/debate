@@ -32,8 +32,8 @@ public class Debate extends Activity{
     protected void putOldContent(long editTime) {
         this.editHistory.put(editTime,
                 "Title: " + this.title +
-                    "\nContent: " + this.content +
-                    "\nallTags: " + Arrays.toString(this.allTags)
+                    " Content: " + this.content +
+                    " allTags: " + Arrays.toString(this.allTags)
         );
     }
 

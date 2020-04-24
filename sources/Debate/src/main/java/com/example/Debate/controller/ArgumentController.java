@@ -1,6 +1,7 @@
 package com.example.Debate.controller;
 
 import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
+import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
 import com.example.Debate.service.ArgumentService;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,26 @@ public class ArgumentController {
                                                         Principal principal){
         var newArgument = argumentService.addArgument(argumentDto, principal.getName());
         return ResponseEntity.created(URI.create("api/argument/" + newArgument.get_id())).body(newArgument);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArgument(@PathVariable(name= "id") String argId, Principal principal){
+        argumentService.deleteArgument(argId, principal);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateArgument(@PathVariable String id,
+                                               @RequestBody AddOrUpdateArgumentDto argumentDto,
+                                               Principal principal){
+        argumentService.updateArgument(id, argumentDto, principal);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/edits/{id}")
+    public ResponseEntity<ActivityHistoryResponse> getDebateHistory(@PathVariable String id){
+        var history = this.argumentService.getArgumentHistory(id);
+        return ResponseEntity.ok(history);
     }
 
     private Optional<String> getUserId(Principal principal){
