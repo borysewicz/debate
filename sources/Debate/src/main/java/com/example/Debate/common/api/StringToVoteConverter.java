@@ -1,6 +1,6 @@
 package com.example.Debate.common.api;
 
-import com.example.Debate.model.Vote;
+import com.example.Debate.model.enums.Vote;
 import org.springframework.core.convert.converter.Converter;
 
 public class StringToVoteConverter implements Converter<String, Vote> {

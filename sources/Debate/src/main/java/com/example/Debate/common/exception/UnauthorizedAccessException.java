@@ -6,4 +6,8 @@ public class UnauthorizedAccessException extends  RuntimeException{
         super(msg);
     }
 
+    public UnauthorizedAccessException(){
+        super("You are not allowed to modify this resource");
+    }
+
 }

@@ -11,6 +11,7 @@ import java.security.Principal;
 import java.util.List;
 
 public interface DebateService {
+
     FullDebateResponseDto getDebateById(String id);
 
     List<FullDebateResponseDto> getDebates(SortingType sortingType, int limit, int skip);

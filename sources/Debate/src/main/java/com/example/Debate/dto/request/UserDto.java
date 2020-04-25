@@ -1,7 +1,7 @@
 package com.example.Debate.dto.request;
 
 
-import com.example.Debate.model.Role;
+import com.example.Debate.model.enums.Role;
 
 public class UserDto {
     private String login;

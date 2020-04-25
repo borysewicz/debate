@@ -1,5 +1,6 @@
 package com.example.Debate.model;
 
+import com.example.Debate.model.enums.Role;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;

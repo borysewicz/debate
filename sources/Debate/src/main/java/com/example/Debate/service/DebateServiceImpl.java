@@ -22,11 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class DebateServiceImpl implements DebateService{
+public class DebateServiceImpl implements DebateService {
     private DebateRepository debateRepository;
     private ModelMapper modelMapper;
 
@@ -40,7 +39,7 @@ public class DebateServiceImpl implements DebateService{
     public FullDebateResponseDto getDebateById(String id) {
         return modelMapper.map(
                 debateRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Debate with id: " + id + " not found")),
+                        .orElseThrow(() -> new ResourceNotFoundException("Debate", id)),
                 FullDebateResponseDto.class);
     }
 
@@ -55,9 +54,9 @@ public class DebateServiceImpl implements DebateService{
 
     @Override
     public FullDebateResponseDto addDebate(AddOrUpdateDebateDto debateDto, MultipartFile debateCover, Principal principal) {
-        Debate debate = modelMapper.map(debateDto,Debate.class);
+        Debate debate = modelMapper.map(debateDto, Debate.class);
         debate.setAuthor(principal.getName());
-        if (debateCover != null){
+        if (debateCover != null) {
             try {
                 debate.setImage(new Binary(BsonBinarySubType.BINARY, debateCover.getBytes()));
             } catch (IOException e) {
@@ -73,7 +72,7 @@ public class DebateServiceImpl implements DebateService{
         var debate = debateRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(String.format("Debate  with id %s not found", id)));
         var img = debate.getImage();
-        if(img == null){
+        if (img == null) {
             throw new ResourceNotFoundException(String.format("Debate with id %s has no cover image", id));
         }
         return img;
@@ -81,24 +80,24 @@ public class DebateServiceImpl implements DebateService{
 
     @Override
     public void delete(String id, Principal principal) {
-        var debate = debateRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Debate with id: " + id + " not found"));
-        if (debate.isAuthorized(principal)){
+        var debate = debateRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Debate", id));
+        if (debate.isAuthorized(principal)) {
             debateRepository.deleteById(id);
-        }
-        else throw new UnauthorizedAccessException("You are not allowed to modify this resource");
+        } else throw new UnauthorizedAccessException();
     }
 
     @Override
     public void update(String id, AddOrUpdateDebateDto debateDto, MultipartFile debateCover, Principal principal) {
         var debate = debateRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Debate with id: " + id + " not found"));
-        if (debate.isAuthorized(principal)){
+                new ResourceNotFoundException("Debate", id));
+        if (debate.isAuthorized(principal)) {
             debate.saveEdit();
             debate.setTitle(debateDto.getTitle());
             debate.setContent(debateDto.getDescription());
             debate.setAllTags(debateDto.getAllTags());
             debate.setMainTags(debateDto.getMainTags());
-            if (debateCover != null){
+            if (debateCover != null) {
                 try {
                     debate.setImage(new Binary(BsonBinarySubType.BINARY, debateCover.getBytes()));
                 } catch (IOException e) {
@@ -106,14 +105,13 @@ public class DebateServiceImpl implements DebateService{
                 }
             }
             debateRepository.save(debate);
-        }
-        else throw new UnauthorizedAccessException("You are not allowed to modify this resource");
+        } else throw new UnauthorizedAccessException();
     }
 
     @Override
     public ActivityHistoryResponse getDebateHistory(String id) {
         var debate = debateRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Debate with id : " + id + " + not found"));
+                new ResourceNotFoundException("Debate", id));
         return new ActivityHistoryResponse(debate.getEditHistory());
     }
 

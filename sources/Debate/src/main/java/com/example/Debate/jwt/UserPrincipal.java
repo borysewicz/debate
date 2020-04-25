@@ -1,6 +1,6 @@
 package com.example.Debate.jwt;
 
-import com.example.Debate.model.Role;
+import com.example.Debate.model.enums.Role;
 import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
