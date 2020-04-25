@@ -1,8 +1,10 @@
 package com.example.Debate.controller;
 
 import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
+import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
+import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.service.ArgumentService;
 import org.springframework.http.ResponseEntity;
@@ -65,4 +67,11 @@ public class ArgumentController {
         return ResponseEntity.ok(history);
     }
 
+    @PatchMapping("/rate/{id}")
+    public ResponseEntity<RatingResponse> rateArgument(@RequestBody RatingRequest rating,
+                                                       @PathVariable(name="id") String argumentId,
+                                                       Principal principal){
+        var response = this.argumentService.rateArgument(rating, principal, argumentId);
+        return ResponseEntity.ok(response);
+    }
 }

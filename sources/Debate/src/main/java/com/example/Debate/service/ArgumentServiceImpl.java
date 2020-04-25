@@ -2,8 +2,10 @@ package com.example.Debate.service;
 
 import com.example.Debate.common.exception.UnauthorizedAccessException;
 import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
+import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
+import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.model.Argument;
 import com.example.Debate.model.Attitude;
 import com.example.Debate.model.Vote;
@@ -85,6 +87,16 @@ public class ArgumentServiceImpl implements ArgumentService {
         var debate = argumentRepository.findById(id).orElseThrow(() ->
                 new com.example.Debate.common.exception.ResourceNotFoundException("Debate with id : " + id + " + not found"));
         return new ActivityHistoryResponse(debate.getEditHistory());
+    }
+
+    @Override
+    public RatingResponse rateArgument(RatingRequest rating, Principal principal, String argumentId) {
+        var argument = argumentRepository.findById(argumentId).orElseThrow(() ->
+                new ResourceNotFoundException("Argument with id: "  + argumentId + " not found"));
+        String name = principal.getName();
+        argument.ratePost(name, rating.getVote());
+        var saved = argumentRepository.save(argument);
+        return modelMapper.map(saved, RatingResponse.class);
     }
 
 }

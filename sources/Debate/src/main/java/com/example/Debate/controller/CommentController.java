@@ -1,8 +1,10 @@
 package com.example.Debate.controller;
 
 import com.example.Debate.dto.request.AddOrUpdateCommentDto;
+import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.CommentResponse;
+import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.service.CommentService;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +61,14 @@ public class CommentController {
                                               Principal principal){
         this.commentService.deleteComment(commentId, principal);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/rate/{id}")
+    public ResponseEntity<RatingResponse> rateComment(@PathVariable(name="id") String commentId,
+                                                      @RequestBody RatingRequest ratingRequest,
+                                                      Principal principal){
+        var response = this.commentService.rateComment(commentId, ratingRequest, principal);
+        return ResponseEntity.ok(response);
     }
 
 }

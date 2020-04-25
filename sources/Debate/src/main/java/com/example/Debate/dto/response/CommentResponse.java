@@ -14,6 +14,8 @@ public class CommentResponse {
     String author;
     Long creationDate;
     Long lastEditTime;
+    int upvotes;
+    int downvotes;
     @With
     Vote userVote;
 

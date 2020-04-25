@@ -1,8 +1,10 @@
 package com.example.Debate.service;
 
 import com.example.Debate.dto.request.AddOrUpdateCommentDto;
+import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.CommentResponse;
+import com.example.Debate.dto.response.RatingResponse;
 
 import java.security.Principal;
 import java.util.List;
@@ -16,5 +18,5 @@ public interface CommentService {
     void deleteComment(String id, Principal principal);
     void updateComment(AddOrUpdateCommentDto commentDto, String commentId, Principal principal);
     ActivityHistoryResponse getCommentHistory(String id);
-
+    RatingResponse rateComment(String commentId, RatingRequest ratingRequest, Principal principal);
 }

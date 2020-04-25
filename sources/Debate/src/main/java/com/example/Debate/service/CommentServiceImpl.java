@@ -4,8 +4,10 @@ import com.example.Debate.common.exception.BadRequestException;
 import com.example.Debate.common.exception.ResourceNotFoundException;
 import com.example.Debate.common.exception.UnauthorizedAccessException;
 import com.example.Debate.dto.request.AddOrUpdateCommentDto;
+import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.CommentResponse;
+import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.model.Comment;
 import com.example.Debate.model.Vote;
 import com.example.Debate.repository.CommentRepository;
@@ -79,6 +81,16 @@ public class CommentServiceImpl implements CommentService{
         var comment = commentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Comment with id : " + id + " + not found"));
         return new ActivityHistoryResponse(comment.getEditHistory());
+    }
+
+    @Override
+    public RatingResponse rateComment(String commentId, RatingRequest ratingRequest, Principal principal) {
+        var argument = commentRepository.findById(commentId).orElseThrow(() ->
+                new org.springframework.data.rest.webmvc.ResourceNotFoundException("Comment with id: "  + commentId + " not found"));
+        String name = principal.getName();
+        argument.ratePost(name, ratingRequest.getVote());
+        var saved = commentRepository.save(argument);
+        return modelMapper.map(saved, RatingResponse.class);
     }
 
 
