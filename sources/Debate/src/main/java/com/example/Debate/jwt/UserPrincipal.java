@@ -6,8 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @Value
 public class UserPrincipal implements UserDetails {
@@ -54,5 +56,11 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static Optional<String> getUserId(Principal principal){
+        if (principal == null){
+            return Optional.empty();
+        }else return Optional.of(principal.getName());
     }
 }

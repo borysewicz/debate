@@ -3,6 +3,7 @@ package com.example.Debate.controller;
 import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
+import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.service.ArgumentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -28,13 +28,13 @@ public class ArgumentController {
                                                                         @RequestParam(defaultValue = "10") int limit,
                                                                         @RequestParam(defaultValue = "0") int page,
                                                                         Principal principal){
-        var args = argumentService.getArgumentsForDebate(debateId, limit, page, getUserId(principal));
+        var args = argumentService.getArgumentsForDebate(debateId, limit, page, UserPrincipal.getUserId(principal));
         return ResponseEntity.ok(args);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ArgumentResponse> getArgumentById(@PathVariable(name="id") String argId, Principal principal){
-        var arg = argumentService.getArgumentById(argId, getUserId(principal));
+        var arg = argumentService.getArgumentById(argId, UserPrincipal.getUserId(principal));
         return ResponseEntity.ok(arg);
     }
 
@@ -63,12 +63,6 @@ public class ArgumentController {
     public ResponseEntity<ActivityHistoryResponse> getDebateHistory(@PathVariable String id){
         var history = this.argumentService.getArgumentHistory(id);
         return ResponseEntity.ok(history);
-    }
-
-    private Optional<String> getUserId(Principal principal){
-        if (principal == null){
-            return Optional.empty();
-        }else return Optional.of(principal.getName());
     }
 
 }

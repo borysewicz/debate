@@ -24,16 +24,16 @@ public abstract class Post extends Activity{
         super(creationDate);
     }
 
-    public void ratePost(String userId, Vote vote){
-        if(voters.containsKey(userId)){
-            var oldVote = voters.get(userId);
+    public void ratePost(String userName, Vote vote){
+        if(voters.containsKey(userName)){
+            var oldVote = voters.get(userName);
             if (!oldVote.equals(vote)){
-                voters.remove(userId);
-                this.rating += vote.equals(Vote.POSITIVE) ? -1 : 1; // if the vote was POSITIVE, rating goes down, otherwise up
+                voters.remove(userName);
+                this.rating += vote.equals(Vote.POSITIVE) ? -1 : 1; // if the vote was POSITIVE, rating goes down, otherwise up.
             }
             return;
         }
-        this.voters.put(userId, vote);
+        this.voters.put(userName, vote);
         this.rating += vote.equals(Vote.POSITIVE) ? 1 : -1;
     }
 
@@ -45,8 +45,8 @@ public abstract class Post extends Activity{
         return (int) this.voters.values().stream().filter(vote -> vote.equals(Vote.NEGATIVE)).count();
     }
 
-    public Vote getUserVote(Optional<String> userId){
-        return userId.map(id -> voters.get(id)).orElse(Vote.NONE);
+    public Vote getUserVote(Optional<String> userLogin){
+        return userLogin.map(id -> voters.get(id)).orElse(Vote.NONE);
     }
 
 }

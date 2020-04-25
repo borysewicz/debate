@@ -81,9 +81,6 @@ public class DebateServiceImpl implements DebateService{
 
     @Override
     public void delete(String id, Principal principal) {
-        if(!debateRepository.existsById(id)){
-            throw new ResourceNotFoundException("Debate with id: " + id + " not found");
-        }
         var debate = debateRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Debate with id: " + id + " not found"));
         if (debate.isAuthorized(principal)){
             debateRepository.deleteById(id);

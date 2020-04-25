@@ -76,6 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET,"/argument/**")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/comment")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/comment/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated();
     }

@@ -30,14 +30,14 @@ public class ArgumentServiceImpl implements ArgumentService {
         this.modelMapper = modelMapper;
     }
 
-
     @Override
-    public List<ArgumentResponse> getArgumentsForDebate(String debateId, int limit, int page, Optional<String> userId) {
+    public List<ArgumentResponse> getArgumentsForDebate(String debateId, int limit, int page, Optional<String> userLogin) {
         var pageRequest = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "rating"));
         return Stream.concat(
                 argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.POSITIVE, debateId, pageRequest).get(),
                 argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.NEGATIVE, debateId, pageRequest).get()
-        ).map(argumentEntity -> mapToArgumentResponse(argumentEntity, userId))
+        ).map(argumentEntity -> modelMapper.map(argumentEntity, ArgumentResponse.class)
+                    .withUserVote(argumentEntity.getUserVote(userLogin)))
                 .collect(Collectors.toList());
     }
 
@@ -48,20 +48,19 @@ public class ArgumentServiceImpl implements ArgumentService {
                 argumentDto.getContent(), userId
         );
         argument.ratePost(userId, Vote.POSITIVE);
-        return mapToArgumentResponse(argumentRepository.save(argument), Optional.of(userId));
+        return modelMapper.map(argumentRepository.save(argument), ArgumentResponse.class)
+                .withUserVote(Vote.POSITIVE);
     }
 
     @Override
-    public ArgumentResponse getArgumentById(String id, Optional<String> userId) {
-        return argumentRepository.findById(id).map(arg -> mapToArgumentResponse(arg, userId))
+    public ArgumentResponse getArgumentById(String id, Optional<String> userLogin) {
+        return argumentRepository.findById(id).map(entity -> modelMapper.map(entity, ArgumentResponse.class)
+                .withUserVote(entity.getUserVote(userLogin)))
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
     public void deleteArgument(String id, Principal principal) {
-        if (!argumentRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Debate with id: " + id + " not found");
-        }
         var argument = argumentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Argument with id: " + id + " not found"));
         if (argument.isAuthorized(principal)) {
             argumentRepository.deleteById(id);
@@ -86,21 +85,6 @@ public class ArgumentServiceImpl implements ArgumentService {
         var debate = argumentRepository.findById(id).orElseThrow(() ->
                 new com.example.Debate.common.exception.ResourceNotFoundException("Debate with id : " + id + " + not found"));
         return new ActivityHistoryResponse(debate.getEditHistory());
-    }
-
-    private ArgumentResponse mapToArgumentResponse(Argument argument, Optional<String> userId) {
-        return new ArgumentResponse(
-                argument.get_id(),
-                argument.getTitle(),
-                argument.getContent(),
-                argument.getUserVote(userId).toString(),
-                argument.getAttitude().toString(),
-                argument.getAuthor(),
-                argument.getUpvotes(),
-                argument.getDownvotes(),
-                argument.getLastEditionTime(),
-                argument.getDebateId()
-        );
     }
 
 }

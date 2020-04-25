@@ -19,13 +19,13 @@ public abstract class Activity {
     protected final Long creationDate;
     protected String author;
     protected String content;
-    protected long lastEditionTime;
+    protected long lastEditTime;
     protected Map<Long, String> editHistory;
 
 
     protected Activity(){
         this.creationDate = System.currentTimeMillis();
-        this.lastEditionTime = this.creationDate;
+        this.lastEditTime = this.creationDate;
         this.editHistory = new HashMap<>();
     }
 
@@ -36,7 +36,7 @@ public abstract class Activity {
     public void saveEdit(){
         var currentTime = System.currentTimeMillis();
         this.putOldContent(currentTime);
-        this.lastEditionTime = currentTime;
+        this.lastEditTime = currentTime;
     }
 
     /**
