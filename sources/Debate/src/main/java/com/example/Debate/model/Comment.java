@@ -8,12 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Getter
 @Setter
-public class Comment extends Post{
-    public Comment() {
-        super();
-    }
+public class Comment extends Post {
 
-    private String parentActivityId; //TODO check if field can be final
+    private String parentActivityId; // TODO: Find a way to make this field final
 
     @Override
     protected void putOldContent(long editTime) {
@@ -21,7 +18,7 @@ public class Comment extends Post{
     }
 
     @PersistenceConstructor
-    public Comment(long creationDate){
+    public Comment(long creationDate, String parentActivityId) {
         super(creationDate);
     }
 }

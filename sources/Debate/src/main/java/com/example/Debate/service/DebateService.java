@@ -12,11 +12,17 @@ import java.util.List;
 
 public interface DebateService {
     FullDebateResponseDto getDebateById(String id);
+
     List<FullDebateResponseDto> getDebates(SortingType sortingType, int limit, int skip);
+
     FullDebateResponseDto addDebate(AddOrUpdateDebateDto debateDto, MultipartFile debateCover, Principal principal);
+
     Binary getDebateCover(String id);
+
     void delete(String id, Principal principal);
+
     void update(String id, AddOrUpdateDebateDto debateDto, MultipartFile debateCover, Principal principal);
+
     ActivityHistoryResponse getDebateHistory(String id);
 
 }

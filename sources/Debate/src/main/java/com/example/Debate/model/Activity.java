@@ -1,6 +1,6 @@
 package com.example.Debate.model;
 
-
+import com.example.Debate.model.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,17 +39,17 @@ public abstract class Activity {
         this.lastEditTime = currentTime;
     }
 
+    protected abstract void putOldContent(long editTime);
+
     /**
      * Method checks whether the principal passed to the method is the activity's creator or the administrator
      * @param principal Principal object containing data about user performing the action
-     * @return Boolean indicating whether the user can perform edition or deletion of activity
+     * @return Boolean indicating whether the user can perform edition or deletion of the activity
      */
     public boolean isAuthorized(Principal principal){
         var userDetails = (UsernamePasswordAuthenticationToken) principal;
         return author.equals(userDetails.getName())
                 || userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMINISTRATOR.toString()));
     }
-
-    protected abstract void putOldContent(long editTime);
 
 }

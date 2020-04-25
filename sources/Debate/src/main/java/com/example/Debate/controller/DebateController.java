@@ -73,8 +73,8 @@ public class DebateController {
     }
 
     @GetMapping("/edits/{id}")
-    public ResponseEntity<ActivityHistoryResponse> getDebateHistory(@PathVariable String id){
-        var history =  this.debateService.getDebateHistory(id);
+    public ResponseEntity<ActivityHistoryResponse> getDebateHistory(@PathVariable String id) {
+        var history = this.debateService.getDebateHistory(id);
         return ResponseEntity.ok(history);
     }
 

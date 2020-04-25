@@ -1,7 +1,7 @@
 package com.example.Debate.repository;
 
 import com.example.Debate.model.Argument;
-import com.example.Debate.model.Attitude;
+import com.example.Debate.model.enums.Attitude;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;

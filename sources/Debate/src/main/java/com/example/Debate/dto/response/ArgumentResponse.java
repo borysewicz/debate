@@ -1,6 +1,6 @@
 package com.example.Debate.dto.response;
 
-import com.example.Debate.model.Vote;
+import com.example.Debate.model.enums.Vote;
 import lombok.*;
 
 @Value
