@@ -46,7 +46,8 @@
   </mat-expansion-panel-header>
   <p>{{ argument.content }}</p>
   <p class="argument-footer">
-    {{ argument.authorName }} - Ostatnio edytowane: {{ argument.lastEditTime | date:'dd.MM.yyyy HH:mm:ss' }}
+    {{ argument.authorName }} - Ostatnio edytowane:
+    {{ argument.lastEditTime | date: 'dd.MM.yyyy HH:mm:ss' }}
   </p>
   <mat-divider></mat-divider>
   <h3 class="comment-section-header">Komentarze</h3>
@@ -75,7 +76,11 @@
   ></mat-progress-bar>
   <div class="d-flex column text-center" *ngIf="isCommentLoadingError">
     <h2 class="align-self-center">Nie można załadować komentarzy</h2>
-    <button mat-raised-button class="align-self-center" (click)="onReloadCommentsButtonClicked()">
+    <button
+      mat-raised-button
+      class="align-self-center"
+      (click)="onReloadCommentsButtonClicked()"
+    >
       <mat-icon [ngClass]="{ 'is-rotating': isRefreshing }">replay</mat-icon>
       Załaduj ponownie
     </button>
