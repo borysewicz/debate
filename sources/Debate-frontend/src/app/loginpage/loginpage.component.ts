@@ -11,11 +11,10 @@ import { UserService } from '../services/user.service';
 export class LoginpageComponent implements OnInit {
   model: UserDto;
 
-  constructor(private userService: UserService) { 
-    this.model = {login: "", password:"", email: "", role:""};  
-  }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.model = { login: '', password: '', email: '', role: '' };
   }
 
   onSubmit(){
