@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AddUpdateDebateDto } from 'src/app/dto/addUpdateDebate.dto';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { DebateService } from 'src/app/services/debate.service';
 import { Router } from '@angular/router';
 

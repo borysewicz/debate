@@ -1,5 +1,5 @@
 <div class="loginContent">
-    <form class="login-form" (ngSubmit)="onSubmit()">
+    <form class="login-form" #loginform="ngForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="example-full-width">
             <mat-label>Login</mat-label>
             <input matInput placeholder="Podaj swój login" [(ngModel)]="model.login" name="login">

@@ -1,7 +1,8 @@
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,10 @@ export class AppComponent implements OnInit {
     'Aborcja powinna być legalna'
   ];
   filteredDebates: Observable<string[]>;
+  loginLink: string;
+  private isSignedOnSubscription: Subscription;
 
-  constructor(){}
+  constructor(private authService: AuthService){}
 
   ngOnInit(): void {
     this.filteredDebates = this.debateControl.valueChanges.pipe(
@@ -26,6 +29,9 @@ export class AppComponent implements OnInit {
       map((debate: string | null) =>
         debate ? this._filter(debate) : this.debates.slice()
       )
+    );
+    this.isSignedOnSubscription = this.authService.isSignedIn.subscribe(
+      tmp => this.loginLink = tmp? '/home' : '/login' 
     );
   }
 
@@ -36,4 +42,7 @@ export class AppComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(){
+    this.isSignedOnSubscription.unsubscribe();
+  }
 }
