@@ -1,11 +1,11 @@
-import { Observable, BehaviorSubject } from 'rxjs';
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { Argument, ArgumentAttitude } from '../dto/argument.dto';
-import { UserVote } from './../dto/userVote.enum';
 import { Comment } from '../dto/comment.dto';
-import { delay } from 'rxjs/operators';
+import { UserVote } from './../dto/userVote.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,7 @@ export class ArgumentService {
       attitude: ArgumentAttitude.POSITIVE,
       upVotes: 3123,
       downVotes: 312,
+      lastEditTime: new Date()
     },
     {
       _id: '54523424',
@@ -34,6 +35,7 @@ export class ArgumentService {
       attitude: ArgumentAttitude.NEGATIVE,
       upVotes: 513,
       downVotes: 12,
+      lastEditTime: new Date()
     },
     {
       _id: '987979789',
@@ -45,6 +47,7 @@ export class ArgumentService {
       attitude: ArgumentAttitude.POSITIVE,
       upVotes: 31,
       downVotes: 2,
+      lastEditTime: new Date()
     },
     {
       _id: '253452435',
@@ -56,6 +59,7 @@ export class ArgumentService {
       attitude: ArgumentAttitude.NEGATIVE,
       upVotes: 321,
       downVotes: 43,
+      lastEditTime: new Date()
     },
     {
       _id: '6434124132',
@@ -67,6 +71,7 @@ export class ArgumentService {
       attitude: ArgumentAttitude.NEGATIVE,
       upVotes: 31131,
       downVotes: 3123,
+      lastEditTime: new Date()
     },
   ]);
   private readonly commentDummy = new BehaviorSubject<Comment[]>([

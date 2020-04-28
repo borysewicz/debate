@@ -44,8 +44,10 @@
       </button>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <p>{{ argument.authorName }}</p>
   <p>{{ argument.content }}</p>
+  <p class="argument-footer">
+    {{ argument.authorName }} - Ostatnio edytowane: {{ argument.lastEditTime | date:'dd.MM.yyyy HH:mm:ss' }}
+  </p>
   <mat-divider></mat-divider>
   <h3 class="comment-section-header">Komentarze</h3>
   <h3

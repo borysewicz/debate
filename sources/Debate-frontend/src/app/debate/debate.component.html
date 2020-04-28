@@ -1,9 +1,29 @@
 <div class="container">
   <div class="header">
+    <button
+      mat-raised-button
+      class="section-button text-center"
+      color="accent"
+      *ngIf="!isCommentSectionOn"
+      routerLink="../comments"
+    >
+      Komentarze
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <button
+      mat-raised-button
+      class="section-button text-center"
+      color="accent"
+      *ngIf="isCommentSectionOn"
+      routerLink="../arguments"
+    >
+      Argumenty
+      <mat-icon>chevron_right</mat-icon>
+    </button>
     <h1 class="text-center">{{ debate?.title }}</h1>
     <h3 class="text-center">{{ debate?.content }}</h3>
   </div>
-  <div class="grid">
+  <div class="grid" *ngIf="!isCommentSectionOn">
     <mat-accordion>
       <app-debate-argument
         *ngFor="let pro of pros"
@@ -16,5 +36,31 @@
         [argument]="con"
       ></app-debate-argument>
     </mat-accordion>
+  </div>
+  <div *ngIf="isCommentSectionOn">
+    <ul
+      class="comment-section"
+      *ngIf="!isCommentSectionLoading && !isCommentLoadingError"
+    >
+      <app-comment
+        *ngFor="let comment of comments"
+        [comment]="comment"
+      ></app-comment>
+    </ul>
+    <mat-progress-bar
+      mode="buffer"
+      *ngIf="isCommentSectionLoading"
+    ></mat-progress-bar>
+    <div class="d-flex column text-center" *ngIf="isCommentLoadingError">
+      <h2 class="align-self-center">Nie można załadować komentarzy</h2>
+      <button
+        mat-raised-button
+        class="align-self-center"
+        (click)="onReloadCommentsButtonClicked()"
+      >
+        <mat-icon [ngClass]="{ 'is-rotating': isRefreshing }">replay</mat-icon>
+        Załaduj ponownie
+      </button>
+    </div>
   </div>
 </div>

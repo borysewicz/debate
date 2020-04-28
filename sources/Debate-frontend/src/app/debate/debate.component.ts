@@ -1,10 +1,12 @@
-import { DebateService } from 'src/app/services/debate.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+import { Argument, ArgumentAttitude } from '../dto/argument.dto';
+import { Comment } from '../dto/comment.dto';
+import { DebateService } from '../services/debate.service';
 import { Debate } from './../dto/debate.dto';
 import { ArgumentService } from './../services/argument.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Argument, ArgumentAttitude } from '../dto/argument.dto';
-import { Subscription } from 'rxjs';
 
 @Component({
    selector: 'app-debate',
@@ -13,9 +15,16 @@ import { Subscription } from 'rxjs';
 })
 export class DebateComponent implements OnInit, OnDestroy {
    private routeParamSubscription: Subscription;
+   private dataParamSubscription: Subscription;
    debate: Debate;
    pros: Argument[];
    cons: Argument[];
+   isCommentSectionOn: boolean;
+   comments: Comment[];
+
+   isCommentSectionLoading: boolean;
+   isCommentLoadingError: boolean;
+   isRefreshing: boolean;
 
    constructor(
       private debateService: DebateService,
@@ -24,22 +33,61 @@ export class DebateComponent implements OnInit, OnDestroy {
    ) {}
 
    ngOnInit(): void {
+      this.isCommentLoadingError = false;
+      this.isCommentSectionLoading = false;
+      this.isRefreshing = false;
+      this.comments = [];
+      this.pros = [];
+      this.cons = [];
       this.routeParamSubscription = this.route.params.subscribe((params) => {
          this.updateModel(params.id);
+      });
+      this.dataParamSubscription = this.route.data.subscribe(data => {
+         if (data.section === 'comments') {
+            this.isCommentSectionOn = true;
+            this.getComments();
+         } else {
+            this.isCommentSectionOn = false;
+            this.getArguments();
+         }
       });
    }
 
    private updateModel(id: string) {
       this.debateService.getDebateById(id).subscribe(debate => {
         this.debate = debate;
-        this.argumentService.getArgumentsForDebate(debate._id).subscribe(debateArgs => {
-          this.pros = debateArgs.filter(x => x.attitude === ArgumentAttitude.POSITIVE).sort((a, b) => b.upVotes - a.upVotes);
-          this.cons = debateArgs.filter(x => x.attitude === ArgumentAttitude.NEGATIVE).sort((a, b) => b.upVotes - a.upVotes);
-        });
       });
    }
 
+   private getArguments(): void {
+      this.argumentService.getArgumentsForDebate(this.debate._id).subscribe(debateArgs => {
+         this.pros = debateArgs.filter(x => x.attitude === ArgumentAttitude.POSITIVE).sort((a, b) => b.upVotes - a.upVotes);
+         this.cons = debateArgs.filter(x => x.attitude === ArgumentAttitude.NEGATIVE).sort((a, b) => b.upVotes - a.upVotes);
+       });
+   }
+
+   private getComments(): void {
+      this.isCommentSectionLoading = true;
+      this.isCommentLoadingError = false;
+      this.debateService.getCommentsForDebate(this.debate._id).subscribe(comments => {
+        this.comments = comments;
+        this.isRefreshing = false;
+        this.isCommentSectionLoading = false;
+      },
+      err => {
+        this.isCommentLoadingError = true;
+        this.isRefreshing = false;
+        this.isCommentSectionLoading = false;
+      });
+    }
+
+    onReloadCommentsButtonClicked() {
+      this.isRefreshing = true;
+      this.getComments();
+    }
+
    ngOnDestroy(): void {
       this.routeParamSubscription.unsubscribe();
+      this.dataParamSubscription.unsubscribe();
    }
 }

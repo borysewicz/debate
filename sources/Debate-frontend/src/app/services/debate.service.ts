@@ -1,9 +1,12 @@
-import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
-import { Debate } from '../dto/debate.dto';
 import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
+import { Comment } from '../dto/comment.dto';
+import { Debate } from '../dto/debate.dto';
+import { UserVote } from './../dto/userVote.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +17,7 @@ export class DebateService {
   private readonly endpoint = 'http://localhost:8080/api/debate';
   private readonly coverImageBaseUrl = 'http://localhost:8080/api/debate/cover/';
 
-  private sub = new BehaviorSubject<Debate>({
+  private readonly sub = new BehaviorSubject<Debate>({
     _id: '12313131',
     title: 'Czy wybory powinny się odbyć w maju?',
     content: 'Wiele kontrowersji budzi pomysł przeprowadzenia wyborów prezydenckich w maju 2020. Koalicja rządząca chce wyborów mimo niechęci Polek i Polaków.',
@@ -26,6 +29,64 @@ export class DebateService {
     mainTags: ['Polityka', 'Wybory', 'COVID-19'],
     allTags: ['Polityka', 'Wybory', 'COVID-19', 'PiS', 'Prezydent']
   });
+  private readonly commentDummy = new BehaviorSubject<Comment[]>([
+    {
+      _id: '312311',
+      content: 'W punkt',
+      publishedAt: new Date(),
+      authorName: 'Jan',
+      activityId: '54523424',
+      userVote: UserVote.POSITIVE,
+    },
+    {
+      _id: '3123154',
+      content: 'Nie zgadzam się, ponieważ to kompletnie błędny punkt widzenia',
+      publishedAt: new Date(),
+      authorName: 'Jan',
+      activityId: '54523424',
+      userVote: UserVote.NEGATIVE,
+    },
+    {
+      _id: '5423113',
+      content: 'Nie zgadzam się, ponieważ to zdecydowanie bzdurny pomysł',
+      publishedAt: new Date(),
+      authorName: 'Jan',
+      activityId: '54523424',
+      userVote: UserVote.NONE,
+    },
+    {
+      _id: '456786',
+      content: 'Zawsze można to zrobić w bezpieczny sposób.',
+      publishedAt: new Date(),
+      authorName: 'Jan',
+      activityId: '54523424',
+      userVote: UserVote.POSITIVE,
+    },
+    {
+      _id: '876543',
+      content: 'Nie zgadzam się, ponieważ to kompletnie błędny punkt widzenia. Bezpieczeństwo jest rzeczą wtórną i może być zapewnione bez problemu w każdym momencie przez wspaniały rząd.',
+      publishedAt: new Date(),
+      authorName: 'Jan',
+      activityId: '54523424',
+      userVote: UserVote.POSITIVE,
+    },
+    {
+      _id: '123123',
+      content: 'Nie zgadzam się, ponieważ to kompletnie błędny punkt widzenia',
+      publishedAt: new Date(),
+      authorName: 'Marek',
+      activityId: '54523424',
+      userVote: UserVote.POSITIVE,
+    },
+    {
+      _id: '123123',
+      content: 'Nie zgadzam się, ponieważ to kompletnie błędny punkt widzenia',
+      publishedAt: new Date(),
+      authorName: 'Marek',
+      activityId: '54523424',
+      userVote: UserVote.POSITIVE,
+    }
+  ]);
 
   addDebate(debate: AddUpdateDebateDto, cover?: File): Observable<Debate> {
     const formData = new FormData();
@@ -35,6 +96,10 @@ export class DebateService {
       formData.append('img', cover);
     }
     return this.http.post<Debate>(this.endpoint + '/add', formData);
+  }
+
+  getCommentsForDebate(id: string): Observable<Comment[]> {
+    return this.commentDummy.asObservable().pipe(delay(1000));
   }
 
   getCoverImageUrl(id: string): string {

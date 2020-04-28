@@ -9,6 +9,7 @@ export interface Argument {
     attitude: ArgumentAttitude;
     upVotes: number;
     downVotes: number;
+    lastEditTime: Date;
 }
 
 export enum ArgumentAttitude {
