@@ -11,4 +11,18 @@
     </div>
   </a>
   <p>{{ comment.content }}</p>
+  <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+        (click)="$event.stopPropagation()"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>outlined_flag</mat-icon>
+          <span>Zgłoś komentarz</span>
+        </button>
+      </mat-menu>
 </li>
