@@ -1,0 +1,14 @@
+<div class="loginContent">
+    <form class="login-form" (ngSubmit)="onSubmit()">
+        <mat-form-field class="example-full-width">
+            <mat-label>Login</mat-label>
+            <input matInput placeholder="Podaj swój login" [(ngModel)]="model.login" name="login">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Hasło</mat-label>
+            <input matInput type="password" placeholder="Wprowadź swoje hasło" [(ngModel)]="model.password" name="password">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" style="margin-bottom: 7em; width: 30%; margin-left: 5px;" >Zaloguj</button>
+        <button mat-button class="go-register-button" routerLink="/register">Nie masz jeszcze konta? Zarejestruj się</button>
+    </form>
+</div>
