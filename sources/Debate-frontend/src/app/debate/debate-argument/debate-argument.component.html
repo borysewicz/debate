@@ -61,7 +61,7 @@
   <p>{{ argument.content }}</p>
   <p class="argument-footer">
     {{ argument.authorName }} - Ostatnio edytowane:
-    {{ argument.lastEditTime | date: 'dd.MM.yyyy HH:mm:ss' }}
+    {{ argument.lastEditTime | timeago }}
   </p>
   <mat-divider></mat-divider>
   <h3 class="comment-section-header">Komentarze</h3>

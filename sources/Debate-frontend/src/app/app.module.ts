@@ -20,6 +20,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,6 +31,8 @@ import { DebateComponent } from './debate/debate.component';
 import { DebateCardComponent } from './homepage/debate-card/debate-card.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { TagSearchComponent } from './tag-search/tag-search.component';
+
+export class CustomIntl extends TimeagoIntl {}
 
 @NgModule({
   declarations: [
@@ -66,6 +69,10 @@ import { TagSearchComponent } from './tag-search/tag-search.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     TextFieldModule,
+    TimeagoModule.forRoot({
+      intl: { provide: TimeagoIntl, useClass: CustomIntl },
+      formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],

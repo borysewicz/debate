@@ -1,6 +1,8 @@
-import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { TimeagoIntl } from 'ngx-timeago';
+import { strings as polishStrings } from 'ngx-timeago/language-strings/pl';
+import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -17,7 +19,10 @@ export class AppComponent implements OnInit {
   ];
   filteredDebates: Observable<string[]>;
 
-  constructor(){}
+  constructor(intl: TimeagoIntl) {
+    intl.strings = polishStrings;
+    intl.changes.next();
+  }
 
   ngOnInit(): void {
     this.filteredDebates = this.debateControl.valueChanges.pipe(

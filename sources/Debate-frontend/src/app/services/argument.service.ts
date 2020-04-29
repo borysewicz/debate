@@ -140,7 +140,7 @@ export class ArgumentService {
   }
 
   getCommentsForArgument(id: string): Observable<Comment[]> {
-    return this.commentDummy.asObservable().pipe(delay(1000));
+     return this.commentDummy.asObservable().pipe(delay(1000));
   }
 
   rateArgument(argumentId: string, userVote: UserVote): void {}
