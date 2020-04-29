@@ -31,12 +31,9 @@ import { DebateArgumentComponent } from './debate/debate-argument/debate-argumen
 import { DebateComponent } from './debate/debate.component';
 import { DebateCardComponent } from './homepage/debate-card/debate-card.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { TagSearchComponent } from './tag-search/tag-search.component';
-import { AppRoutingModule } from './app-routing.module';
-import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-debate.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegistrationComponent } from './loginpage/registration/registration.component';
-import { UserService } from './services/user.service';
+import { TagSearchComponent } from './tag-search/tag-search.component';
 
 @Injectable()
 export class CustomIntl extends TimeagoIntl {}
