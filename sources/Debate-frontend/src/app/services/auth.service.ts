@@ -13,7 +13,8 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   private endpoint = 'http://localhost:8080/api';
   userLogin: UserLogIn;
-  private isLoggedIn = new BehaviorSubject(false);
+  userDto: UserDto;
+  private isLoggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
@@ -26,6 +27,7 @@ export class AuthService {
           localStorage.setItem('role', usrLogin.role);
           this.userLogin = usrLogin;
           this.isLoggedIn.next(true);
+          this.userDto = user;
           return usrLogin;
         })
       );
@@ -33,5 +35,11 @@ export class AuthService {
 
   get isSignedIn(): Observable<boolean>{
     return this.isLoggedIn.asObservable();
+  }
+
+  logOut(): void {
+    this.cookieService.delete('token',this.userLogin.token);
+    localStorage.removeItem('role');
+    this.isLoggedIn.next(false);
   }
 }

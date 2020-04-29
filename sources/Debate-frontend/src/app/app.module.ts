@@ -16,6 +16,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
 import { TextFieldModule } from '@angular/cdk/text-field'; 
+import { MatMenuModule } from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -28,6 +30,7 @@ import { RegistrationComponent } from './loginpage/registration/registration.com
 import { UserService } from './services/user.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     DebateCardComponent,
     AddUpdateDebateComponent,
     LoginpageComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    AccountComponent,
     ],
   imports: [
     BrowserModule,
@@ -57,10 +61,17 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    TextFieldModule
+    TextFieldModule,
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
   providers: [
-
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
 })

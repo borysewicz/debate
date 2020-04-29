@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UserDto } from '../dto/user.dto';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -17,8 +16,7 @@ export class LoginpageComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private cookieService: CookieService
+    private router: Router
   ) {
     this.model = { login: '', password: '', email: '', role: '' };
   }

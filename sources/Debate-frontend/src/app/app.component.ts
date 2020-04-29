@@ -3,24 +3,26 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   debateControl = new FormControl('');
   debates: string[] = [
     'Wykłady to marnowanie czasu',
     'Dostęp do broni powinien być powszechny',
-    'Aborcja powinna być legalna'
+    'Aborcja powinna być legalna',
   ];
   filteredDebates: Observable<string[]>;
   loginLink: string;
-  private isSignedOnSubscription: Subscription;
+  isSignedOnSubscription: Subscription;
+  isLogged: boolean;
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.filteredDebates = this.debateControl.valueChanges.pipe(
@@ -31,18 +33,26 @@ export class AppComponent implements OnInit {
       )
     );
     this.isSignedOnSubscription = this.authService.isSignedIn.subscribe(
-      tmp => this.loginLink = tmp? '/home' : '/login' 
+      (tmp) => {
+        this.loginLink = tmp ? '/home' : '/login';
+        this.isLogged = tmp;
+      }
     );
   }
 
   private _filter(newTag: string) {
     const filterValue = newTag.toLowerCase();
-    return this.debates.filter(debate =>
+    return this.debates.filter((debate) =>
       debate.toLowerCase().includes(filterValue)
     );
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.isSignedOnSubscription.unsubscribe();
+  }
+
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/home']);
   }
 }
