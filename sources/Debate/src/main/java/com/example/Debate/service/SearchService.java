@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface SearchService {
     List<FullDebateResponseDto> getDebatesDebatesContainingName(String reqName);
-    List<FullDebateResponseDto> getDebatesDebatesWithName(List<String> reqTags);
+    List<FullDebateResponseDto> getDebatesDebatesWithTags(List<String> reqTags);
 }
