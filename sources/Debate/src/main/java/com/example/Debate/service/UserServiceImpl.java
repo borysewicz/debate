@@ -27,10 +27,24 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public UserDto getUserByLogin(String login) {
+        User user = userRepository.findUserByLogin(login).get();
+        return modelMapper.map(user,UserDto.class);
+    }
+
+    @Override
     public UserDto addUser(UserDto userDto) {
         User user = modelMapper.map(userDto,User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         var saved = userRepository.save(user);
         return modelMapper.map(saved,UserDto.class);
+    }
+
+    @Override
+    public UserDto changeUserPassword(UserDto userDto) {
+        User user = userRepository.findUserByLogin(userDto.getLogin()).get();
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        var saved = userRepository.save(user);
+        return modelMapper.map(user,UserDto.class);
     }
 }
