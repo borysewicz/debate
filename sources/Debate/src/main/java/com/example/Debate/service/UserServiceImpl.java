@@ -1,19 +1,23 @@
 package com.example.Debate.service;
 
-import com.example.Debate.dto.response.UserDto;
+import com.example.Debate.dto.request.UserDto;
 import com.example.Debate.model.User;
 import com.example.Debate.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     private ModelMapper modelMapper;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,9 +27,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean addUser(UserDto userDto) {
+    public UserDto addUser(UserDto userDto) {
         User user = modelMapper.map(userDto,User.class);
-        userRepository.save(user);
-        return true;
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        var saved = userRepository.save(user);
+        return modelMapper.map(saved,UserDto.class);
     }
 }
