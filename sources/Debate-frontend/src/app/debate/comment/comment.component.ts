@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { Comment } from '../../dto/comment.dto';
+import { UserVote } from './../../dto/userVote.enum';
+import { CommentService } from './../../services/comment.service';
 
 @Component({
   selector: 'app-comment',
@@ -17,8 +19,9 @@ export class CommentComponent implements OnInit {
   ];
   @Input() comment: Comment;
   initials: string;
+  UserVote = UserVote;
 
-  constructor() {}
+  constructor(private commentService: CommentService) {}
 
   ngOnInit(): void {
     this.initials = this.comment.authorName
@@ -28,5 +31,18 @@ export class CommentComponent implements OnInit {
 
   getCustomAvatarColor() {
     return this.colors[this.initials.charCodeAt(0) % this.colors.length];
+  }
+
+  rateComment(rate: UserVote): void {
+    if (this.comment.userVote !== rate) {
+      this.comment.userVote = rate;
+    } else {
+      this.comment.userVote = UserVote.NONE;
+    }
+
+    this.commentService.rateComment(this.comment._id, rate).subscribe(votes => {
+      this.comment.upVotes = votes.upvotes;
+      this.comment.downVotes = votes.downvotes;
+    });
   }
 }

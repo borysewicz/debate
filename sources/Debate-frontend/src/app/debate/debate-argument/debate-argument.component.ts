@@ -4,6 +4,7 @@ import { Comment } from '../../dto/comment.dto';
 import { Argument, ArgumentAttitude } from './../../dto/argument.dto';
 import { UserVote } from './../../dto/userVote.enum';
 import { ArgumentService } from './../../services/argument.service';
+import { CommentService } from './../../services/comment.service';
 
 @Component({
   selector: 'app-debate-argument',
@@ -23,7 +24,7 @@ export class DebateArgumentComponent implements OnInit {
   isCommentLoadingError: boolean;
   isRefreshing: boolean;
 
-  constructor(private argumentService: ArgumentService) {}
+  constructor(private argumentService: ArgumentService, private commentService: CommentService) {}
 
   ngOnInit(): void {
     this.isCommentSectionLoading = false;
@@ -41,14 +42,17 @@ export class DebateArgumentComponent implements OnInit {
       rateValue = UserVote.NONE;
     }
 
-    this.argumentService.rateArgument(this.argument._id, rateValue);
+    this.argumentService.rateArgument(this.argument._id, rateValue).subscribe(rates => {
+      this.argument.upVotes = rates.upvotes;
+      this.argument.downVotes = rates.downvotes;
+    });
     event.stopPropagation();
   }
 
   getComments(): void {
     this.isCommentSectionLoading = true;
     this.isCommentLoadingError = false;
-    this.argumentService.getCommentsForArgument(this.argument._id).subscribe(comments => {
+    this.commentService.getCommentsForArgument(this.argument._id).subscribe(comments => {
       this.comments = comments;
       this.isRefreshing = false;
       this.isCommentSectionLoading = false;

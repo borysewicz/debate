@@ -1,12 +1,13 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -32,6 +33,7 @@ import { DebateCardComponent } from './homepage/debate-card/debate-card.componen
 import { HomepageComponent } from './homepage/homepage.component';
 import { TagSearchComponent } from './tag-search/tag-search.component';
 
+@Injectable()
 export class CustomIntl extends TimeagoIntl {}
 
 @NgModule({
@@ -60,6 +62,7 @@ export class CustomIntl extends TimeagoIntl {}
     MatExpansionModule,
     MatButtonToggleModule,
     MatCardModule,
+    MatDividerModule,
     MatProgressBarModule,
     MatMenuModule,
     MatGridListModule,

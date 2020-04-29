@@ -39,23 +39,6 @@
   }
 }
 
-@media (max-width: 800px) {
-  /* Reverse the order of elements in the user comments,
-    so that the avatar and info appear after the text. */
-  .comment.user-comment {
-    .info {
-      order: 3;
-    }
-    .avatar {
-      order: 2;
-    }
-    p {
-      order: 1;
-      width: 100%;
-    }
-  }
-}
-
 @mixin avatar($size) {
   width: $size;
   height: $size;
@@ -95,9 +78,51 @@
 }
 
 .avatar-burlywood {
-    background-color: burlywood;
+  background-color: burlywood;
 }
 
 .avatar-pink {
-    background-color: deeppink;
+  background-color: deeppink;
+}
+
+.green {
+  color: #8bc34a;
+}
+
+.red {
+  color: #f44336;
+}
+
+.vote-section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: large;
+  padding: 0 0.5em;
+  width: 6ch;
+
+  .arrow-up {
+    cursor: pointer;
+    user-select: none;
+
+    :hover {
+      @extend .green;
+    }
+    .green {
+      font-weight: 500;
+    }
+  }
+
+  .arrow-down {
+    cursor: pointer;
+    user-select: none;
+
+    :hover {
+      @extend .red;
+    }
+  }
 }

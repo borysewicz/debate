@@ -1,4 +1,19 @@
 <li class="comment user-comment">
+  <div class="vote-section">
+    <mat-icon
+      class="arrow-up"
+      [ngClass]="{ green: comment.userVote === UserVote.POSITIVE }"
+      (click)="rateComment(UserVote.POSITIVE)"
+      >keyboard_arrow_up</mat-icon
+    >
+    {{ comment.upVotes - comment.downVotes }}
+    <mat-icon
+      class="arrow-down"
+      [ngClass]="{ red: comment.userVote === UserVote.NEGATIVE }"
+      (click)="rateComment(UserVote.NEGATIVE)"
+      >keyboard_arrow_down</mat-icon
+    >
+  </div>
   <div class="info">
     <span class="author">{{ comment.authorName }}</span>
     <span style="font-style: italic; font-size: smaller; font-weight: 350;">{{
@@ -12,17 +27,17 @@
   </a>
   <p>{{ comment.content }}</p>
   <button
-        mat-icon-button
-        [matMenuTriggerFor]="menu"
-        aria-label="Example icon-button with a menu"
-        (click)="$event.stopPropagation()"
-      >
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>outlined_flag</mat-icon>
-          <span>Zgłoś komentarz</span>
-        </button>
-      </mat-menu>
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    aria-label="Example icon-button with a menu"
+    (click)="$event.stopPropagation()"
+  >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>outlined_flag</mat-icon>
+      <span>Zgłoś komentarz</span>
+    </button>
+  </mat-menu>
 </li>

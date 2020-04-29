@@ -41,7 +41,7 @@
         </div>
           </mat-card-content>
     <mat-card-actions class="debate-actions">
-      <button mat-button>Przejdź do debaty</button>
+      <button mat-button [routerLink]="['debate', debate._id]">Przejdź do debaty</button>
       <button mat-button (click)="toggleExpand()">{{expandString}}</button>
     </mat-card-actions>
   </mat-card>

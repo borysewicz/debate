@@ -47,8 +47,17 @@
   animation-timing-function: linear;
 }
 
-.comment-section {
+.comment-list {
   list-style: none;
   width: 80%;
   margin: auto;
+}
+
+.no-content-info {
+  margin-top: 2em;
+  @extend .text-center;
+}
+
+.pt-2 {
+  padding-top: 2em;
 }

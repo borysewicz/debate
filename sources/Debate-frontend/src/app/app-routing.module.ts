@@ -6,12 +6,12 @@ import { DebateComponent } from './debate/debate.component';
 import { HomepageComponent } from './homepage/homepage.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', component: HomepageComponent },
   { path: 'addDebate', component: AddUpdateDebateComponent },
-  { path: 'home', component: HomepageComponent },
+  { path: 'home', redirectTo: '' },
   { path: 'debate/:id', redirectTo: 'debate/:id/arguments' },
   { path: 'debate/:id/arguments', component: DebateComponent, data: { section: 'arguments' } },
-  { path: 'debate/:id/comments', component: DebateComponent, data: { section: 'comments' } },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'debate/:id/comments', component: DebateComponent, data: { section: 'comments' } }
 ];
 
 @NgModule({
