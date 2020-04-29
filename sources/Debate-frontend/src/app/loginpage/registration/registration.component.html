@@ -1,5 +1,5 @@
 <div class="registrationContent">
-    <mat-card class="regCard">
+    <div class="regCard">
         <form class="reg-form" #regform="ngForm" (ngSubmit)="onSubmit()">
             <mat-form-field class="example-full-width">
                 <mat-label>Login</mat-label>
@@ -17,7 +17,7 @@
                 <mat-label>Email</mat-label>
                 <input matInput type="email" placeholder="Podaj swój email" required [(ngModel)]="model.email" name="email">
             </mat-form-field>
-            <button mat-raised-button color="primary" [disabled]="!regform.form.valid" type="submit" style="margin-bottom: 7em; width: 100%; margin-left: 5px;" >Zarejestruj</button>
+            <button mat-raised-button class="w100" color="primary" [disabled]="!regform.form.valid" type="submit">Zarejestruj</button>
         </form>
-    </mat-card>
+    </div>
 </div>
