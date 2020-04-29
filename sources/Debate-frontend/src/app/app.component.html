@@ -25,13 +25,13 @@
         </mat-icon>
         </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="logOut()">
-              <mat-icon>lock_open</mat-icon>
-              <span>Wyloguj się</span>
-            </button>
             <button mat-menu-item routerLink="/account">
               <mat-icon>account_circle</mat-icon>
               <span>Moje konto</span>
+            </button>
+            <button mat-menu-item (click)="logOut()">
+              <mat-icon>lock_open</mat-icon>
+              <span>Wyloguj się</span>
             </button>
           </mat-menu>
       </ng-template>
