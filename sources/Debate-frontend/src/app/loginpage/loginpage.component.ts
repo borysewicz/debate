@@ -29,9 +29,9 @@ export class LoginpageComponent implements OnInit {
     this.authService.logToAccount(this.model).subscribe(
       (tmp) => this.router.navigate(['/home']),
       (err) => {
-        alert('Wprowadzono błędne dane!'),
-          this.loginForm.controls.login.setValue(''),
-          this.loginForm.controls.password.setValue(''),
+        alert('Wprowadzono błędne dane!');
+          this.loginForm.controls.login.setValue('');
+          this.loginForm.controls.password.setValue('');
           console.log(err);
       }
     );
