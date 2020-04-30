@@ -1,19 +1,15 @@
 package com.example.Debate.service;
 
-import com.example.Debate.common.api.SortingType;
 import com.example.Debate.dto.response.FullDebateResponseDto;
 import com.example.Debate.model.Debate;
 import com.example.Debate.repository.DebateRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -22,17 +18,19 @@ public class SearchServiceImpl implements SearchService {
 
     private DebateRepository debateRepository;
     private ModelMapper modelMapper;
+    private MongoTemplate mongoTemplate;
 
-    public SearchServiceImpl(DebateRepository debateRepository, ModelMapper modelMapper) {
+    public SearchServiceImpl(DebateRepository debateRepository, ModelMapper modelMapper, MongoTemplate mongoTemplate) {
         this.debateRepository = debateRepository;
         this.modelMapper = modelMapper;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
     public List<FullDebateResponseDto> getDebatesDebatesContainingName(String reqName)
     {
-        StringBuilder mongoRegex = new StringBuilder("(?i)");//Mongo phrase for "Case insensitive on"
-        mongoRegex.append(reqName);
+        StringBuilder mongoRegex = new StringBuilder("(?i)");
+        mongoRegex.append(reqName.strip());
         return debateRepository.findByTitleRegex(mongoRegex.toString()).stream()
                 .map(mapEntity -> modelMapper.map(mapEntity, FullDebateResponseDto.class))
                 .collect(Collectors.toList());
@@ -41,7 +39,27 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<FullDebateResponseDto> getDebatesDebatesWithTags(List<String> reqTags)
     {
-        List<FullDebateResponseDto> result = new ArrayList<>();
-        return result;
+        Criteria criteria = Criteria.where("allTags").in(reqTags);
+        Query query = new Query(criteria);
+        List<FullDebateResponseDto> matchingDebateDtos = mongoTemplate.find(query,Debate.class).stream()
+                .map(mapEntity -> modelMapper.map(mapEntity, FullDebateResponseDto.class))
+                .collect(Collectors.toList());
+        Map<FullDebateResponseDto, Integer> matchingTagsCountMap = new HashMap<>();
+        Set<String> tagsSet = new HashSet<>();
+        for(var currDebateDto: matchingDebateDtos)
+        {
+            String[] currTags = currDebateDto.getAllTags();
+            int currMatchingTagsCount = 0;
+            for(int i=0;i<currTags.length;i++)
+            {
+                if(reqTags.contains(currTags[i]))
+                    currMatchingTagsCount++;
+            }
+            matchingTagsCountMap.put(currDebateDto,currMatchingTagsCount);
+            System.out.println(currDebateDto.getTitle()+": "+currMatchingTagsCount);
+        }
+        matchingDebateDtos.sort(Comparator.comparingInt(matchingTagsCountMap::get).reversed());
+        return matchingDebateDtos;
     }
+
 }
