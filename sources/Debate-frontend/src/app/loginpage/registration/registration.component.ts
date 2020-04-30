@@ -37,7 +37,7 @@ export class RegistrationComponent implements OnInit {
       this.account.password = this.model.password;
       this.userService.addUser(this.model).subscribe( 
         tmp => {
-                       this.authService.logToAccount(this.account);
+               this.authService.logToAccount(this.account);
                 this.router.navigate(['/home']);
                },
         err => console.log(err),
