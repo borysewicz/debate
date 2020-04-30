@@ -7,12 +7,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
 public class MongoTemplateConfig {
-    public @Bean MongoClient mongoClient() {
+    @Bean
+    public MongoClient mongoClient() {
         return new MongoClient("localhost");
     }
 
-    public @Bean
-    MongoTemplate mongoTemplate() {
+    @Bean
+    public MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongoClient(), "debate");
 }
 }

@@ -45,9 +45,8 @@ public class SearchServiceImpl implements SearchService {
                 .map(mapEntity -> modelMapper.map(mapEntity, FullDebateResponseDto.class))
                 .collect(Collectors.toList());
         Map<FullDebateResponseDto, Integer> matchingTagsCountMap = new HashMap<>();
-        for(int j=0;j<matchingDebateDtos.size();j++)
+        for(var currDebateDto: matchingDebateDtos)
         {
-            FullDebateResponseDto currDebateDto = matchingDebateDtos.get(j);
             String[] currTags = currDebateDto.getAllTags();
             int currMatchingTagsCount = 0;
             for(int i=0;i<currTags.length;i++)
@@ -56,7 +55,6 @@ public class SearchServiceImpl implements SearchService {
                     currMatchingTagsCount++;
             }
             matchingTagsCountMap.put(currDebateDto,currMatchingTagsCount);
-            System.out.println(currDebateDto.getTitle()+": "+currMatchingTagsCount);
         }
         matchingDebateDtos.sort(Comparator.comparingInt(matchingTagsCountMap::get).reversed());
         return matchingDebateDtos;
