@@ -1,0 +1,51 @@
+<mat-toolbar mode="side" color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a routerLink="/" class="app-title">
+      Debate
+    </a>
+    <span class="spacer"></span>
+    <button mat-button class="add-button" routerLink="/addDebate" >
+      <mat-icon class="toolbar-icon create-debate">
+          create
+      </mat-icon>
+    </button>
+   <button mat-button>
+      <mat-icon class="toolbar-icon ">
+        notifications
+      </mat-icon>
+    </button>
+    <button mat-button>
+    <mat-icon class="toolbar-icon">
+      account_circle
+    </mat-icon>
+  </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container class="h100">
+  <mat-sidenav #sidenav mode="side" style="overflow-y: hidden;">
+      <mat-form-field class="sidenav-content w100">
+        <input
+          type="text"
+          placeholder="Wyszukaj debatę.."
+          aria-label="Text"
+          matInput
+          [formControl]="debateControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredDebates | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    <div class="sidenav-content">
+      <app-tag-search></app-tag-search>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content >
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
