@@ -17,11 +17,11 @@ export class LoginpageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {
-    this.model = { login: '', password: '', email: '', role: '' };
-  }
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+      this.model = { login: '', password: '', email: '', role: '' };
+  }
 
   onSubmit() {
     this.model.login = this.loginForm.controls.login.value;
