@@ -131,8 +131,5 @@
       }
     }
   },
-  "defaultProject": "Debate-frontend",
-  "cli": {
-    "analytics": false
-  }
+  "defaultProject": "Debate-frontend"
 }
