@@ -16,7 +16,7 @@ export class RegistrationComponent implements OnInit {
   passwordCheck: string;
   account: UserDto;
 
-  @ViewChild("regform") regform: NgForm;
+  @ViewChild('regform') regform: NgForm;
 
   constructor(private userService: UserService, private router: Router, private authService: AuthService) { }
 
@@ -36,8 +36,9 @@ export class RegistrationComponent implements OnInit {
       this.account.login = this.model.login;
       this.account.password = this.model.password;
       this.userService.addUser(this.model).subscribe( 
-        tmp => {this.authService.logToAccount(this.account), 
-                this.router.navigate(['/home'])
+        tmp => {
+                       this.authService.logToAccount(this.account);
+                this.router.navigate(['/home']);
                },
         err => console.log(err),
     );

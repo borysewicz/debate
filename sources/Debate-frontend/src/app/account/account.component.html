@@ -1,6 +1,6 @@
 <div class="accountContent">
     <mat-card class="accountCard" >
-    <div *ngIf="userDto.login ===''; then thenBlock else elseBlock"></div>
+    <div *ngIf="userDto.login === ''; then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
             <div class="spinnerContainer">
                 <mat-spinner></mat-spinner>

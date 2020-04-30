@@ -15,7 +15,7 @@
             </mat-form-field>
             <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" placeholder="Podaj swój email" required [(ngModel)]="model.email" name="email">
+                <input matInput type="email" placeholder="Podaj swój email" required email [(ngModel)]="model.email" name="email">
             </mat-form-field>
             <button mat-raised-button class="w100" color="primary" [disabled]="!regform.form.valid" type="submit">Zarejestruj</button>
         </form>
