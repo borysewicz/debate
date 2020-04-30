@@ -1,6 +1,5 @@
 package com.example.Debate.model;
 
-import com.example.Debate.model.enums.PunishmentSeverity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;

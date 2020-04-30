@@ -1,29 +1,16 @@
 package com.example.Debate.service;
 
-import com.example.Debate.common.exception.ResourceNotFoundException;
-import com.example.Debate.common.exception.UnauthorizedAccessException;
-import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
-import com.example.Debate.dto.request.RatingRequest;
-import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
-import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.model.Argument;
-import com.example.Debate.model.enums.Attitude;
-import com.example.Debate.model.enums.Vote;
 import com.example.Debate.repository.ArgumentRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
-public class ArgumentServiceImpl implements ArgumentService {
+public class ArgumentServiceImpl implements ArgumentService{
     private ArgumentRepository argumentRepository;
     private ModelMapper modelMapper;
 
@@ -33,70 +20,28 @@ public class ArgumentServiceImpl implements ArgumentService {
     }
 
     @Override
-    public List<ArgumentResponse> getArgumentsForDebate(String debateId, int limit, int page, Optional<String> userLogin) {
-        var pageRequest = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "rating"));
-        return Stream.concat(
-                argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.POSITIVE, debateId, pageRequest).get(),
-                argumentRepository.getArgumentsByAttitudeAndDebateId(Attitude.NEGATIVE, debateId, pageRequest).get()
-        ).map(argumentEntity -> modelMapper.map(argumentEntity, ArgumentResponse.class)
-                .withUserVote(argumentEntity.getUserVote(userLogin)))
-                .collect(Collectors.toList());
+    public ArgumentResponse getArgumentById(String id) {
+        Argument argument = argumentRepository.findById(id).get();
+        ArgumentResponse argumentDto = modelMapper.map(argument, ArgumentResponse.class);
+        return argumentDto;
     }
 
     @Override
-    public ArgumentResponse addArgument(AddOrUpdateArgumentDto argumentDto, String userId) {
-        var argument = new Argument(
-                argumentDto.getTitle(), argumentDto.getAttitude(), argumentDto.getDebateId(),
-                argumentDto.getContent(), userId
-        );
-        argument.ratePost(userId, Vote.POSITIVE);
-        return modelMapper.map(argumentRepository.save(argument), ArgumentResponse.class)
-                .withUserVote(Vote.POSITIVE);
+    public List<ArgumentResponse> getAllArguments() {
+        List<Argument> argumentList = argumentRepository.findAll();
+        List<ArgumentResponse> argumentDtoList = new ArrayList<>();
+        if(argumentList.size() != 0){
+            for(Argument argument : argumentList){
+                argumentDtoList.add(modelMapper.map(argument, ArgumentResponse.class));
+            }
+        }
+        return argumentDtoList;
     }
 
     @Override
-    public ArgumentResponse getArgumentById(String id, Optional<String> userLogin) {
-        return argumentRepository.findById(id).map(entity -> modelMapper.map(entity, ArgumentResponse.class)
-                .withUserVote(entity.getUserVote(userLogin)))
-                .orElseThrow(() -> new ResourceNotFoundException("Argument", id));
+    public boolean addArgument(ArgumentResponse argumentDto) {
+        Argument argument = modelMapper.map(argumentDto,Argument.class);
+        argumentRepository.save(argument);
+        return true;
     }
-
-    @Override
-    public void deleteArgument(String id, Principal principal) {
-        var argument = argumentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Argument", id));
-        if (argument.isAuthorized(principal)) {
-            argumentRepository.deleteById(id);
-        } else throw new UnauthorizedAccessException();
-    }
-
-    @Override
-    public void updateArgument(String id, AddOrUpdateArgumentDto argumentDto, Principal principal) {
-        var argument = argumentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Argument", id));
-        if (argument.isAuthorized(principal)) {
-            argument.saveEdit();
-            argument.setTitle(argumentDto.getTitle());
-            argument.setContent(argumentDto.getContent());
-            argumentRepository.save(argument);
-        } else throw new UnauthorizedAccessException();
-    }
-
-    @Override
-    public ActivityHistoryResponse getArgumentHistory(String id) {
-        var debate = argumentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Argument", id));
-        return new ActivityHistoryResponse(debate.getEditHistory());
-    }
-
-    @Override
-    public RatingResponse rateArgument(RatingRequest rating, Principal principal, String argumentId) {
-        var argument = argumentRepository.findById(argumentId).orElseThrow(() ->
-                new ResourceNotFoundException("Argument", argumentId));
-        String name = principal.getName();
-        argument.ratePost(name, rating.getVote());
-        var saved = argumentRepository.save(argument);
-        return modelMapper.map(saved, RatingResponse.class);
-    }
-
 }

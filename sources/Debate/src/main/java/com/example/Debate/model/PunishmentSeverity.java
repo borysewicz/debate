@@ -1,4 +1,4 @@
-package com.example.Debate.model.enums;
+package com.example.Debate.model;
 
 public enum PunishmentSeverity {
     BAN,

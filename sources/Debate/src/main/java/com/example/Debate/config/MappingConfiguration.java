@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 @org.springframework.context.annotation.Configuration
 public class MappingConfiguration {
     @Bean
-    public ModelMapper modelMapper() {
+    public ModelMapper modelMapper(){
         var mapper = new ModelMapper();
         mapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
@@ -17,5 +17,6 @@ public class MappingConfiguration {
         mapper.createTypeMap(AddOrUpdateDebateDto.class, Debate.class).addMapping(AddOrUpdateDebateDto::getDescription, Debate::setContent);
         return mapper;
     }
+
 
 }
