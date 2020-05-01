@@ -18,13 +18,6 @@ export class UserService {
     return this.http.post<UserDto>(`${this.endpoint}/add`, user);
   }
 
-  logToAccount(user: UserDto): Observable<UserDto> {
-    //todo return http method to log-in user when endpoint ready
-    this.userDto = user;
-    user.role = this.userRole;
-    return;
-  }
-
   getAccountByLogin(login: string): Observable<UserDto> {
     return this.http.get<UserDto>(`${this.endpoint}/login/` + login);
   }

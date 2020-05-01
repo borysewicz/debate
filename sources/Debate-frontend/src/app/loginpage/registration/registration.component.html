@@ -1,19 +1,19 @@
 <div class="registrationContent">
     <div class="regCard">
         <form class="reg-form" #regform="ngForm" (ngSubmit)="onSubmit()">
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="w100">
                 <mat-label>Login</mat-label>
                 <input matInput placeholder="Podaj swój login" required [(ngModel)]="model.login" name="login">
             </mat-form-field>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="w100">
                 <mat-label>Hasło</mat-label>
                 <input matInput type="password" placeholder="Wprowadź swoje hasło" required [(ngModel)]="model.password" name="password">
             </mat-form-field>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="w100">
                 <mat-label>Powtórz hasło</mat-label>
                 <input matInput type="password" placeholder="Wprowadź swoje hasło ponownie" required [(ngModel)]="passwordCheck" name="passwordCheck">
             </mat-form-field>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="w100">
                 <mat-label>Email</mat-label>
                 <input matInput type="email" placeholder="Podaj swój email" required [(ngModel)]="model.email" name="email">
             </mat-form-field>
