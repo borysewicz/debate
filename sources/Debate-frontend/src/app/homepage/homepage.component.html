@@ -1,35 +1,38 @@
-<mat-tab-group mat-stretch-tabs style="height: 100%;">
+<mat-tab-group mat-stretch-tabs>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon aria-hidden="false" aria-label="Polecane">trending_up</mat-icon>
       Polecane
     </ng-template>
-    <mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
-      <mat-grid-tile *ngFor="let debate of popularDebates">
-        <app-debate-card [debate]="debate"></app-debate-card>
-      </mat-grid-tile>
-    </mat-grid-list>
+    
+    <div class="debate-card-container">
+      <app-debate-card class="debate-card" *ngFor="let debate of popularDebates" [debate]="debate"></app-debate-card>
+    </div>
+
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon aria-hidden="false" aria-label="Polecane">fiber_new</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="Nowe">fiber_new</mat-icon>
       Nowe
     </ng-template>
-    <mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
-      <mat-grid-tile *ngFor="let debate of newDebates">
-        <app-debate-card [debate]="debate"></app-debate-card>
-      </mat-grid-tile>
-    </mat-grid-list>
+    <div class="debate-card-container">      
+      <app-debate-card class="debate-card" *ngFor="let debate of newDebates" [debate]="debate"></app-debate-card>
+    </div>
   </mat-tab>
+
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon aria-hidden="false" aria-label="Polecane">whatshot</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="Gorące">whatshot</mat-icon>
       Gorące
     </ng-template>
-    <mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
-      <mat-grid-tile *ngFor="let debate of hotDebates">
-        <app-debate-card [debate]="debate"></app-debate-card>
-      </mat-grid-tile>
-    </mat-grid-list>
+    
+    <div class="debate-card-container">
+      <app-debate-card class="debate-card" *ngFor="let debate of hotDebates" [debate]="debate"></app-debate-card>
+    </div>
+      
   </mat-tab>
 </mat-tab-group>
+
+<div class = "w100">
+  Nie ma więcej debat!
+</div>

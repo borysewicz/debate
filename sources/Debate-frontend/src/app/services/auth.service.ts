@@ -7,11 +7,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { map, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private endpoint = 'http://localhost:8080/api';
+  private endpoint = environment.api;
   userLogin: UserLogIn;
   userDto: UserDto;
   private isLoggedIn = new BehaviorSubject<boolean>(false);

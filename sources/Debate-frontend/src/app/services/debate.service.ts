@@ -4,12 +4,13 @@ import { Injectable } from '@angular/core';
 
 import { Debate } from '../dto/debate.dto';
 import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DebateService {
-  private endpoint = 'http://localhost:8080/api/debate';
+  private endpoint = environment.api + '/debate';
 
   constructor(private http: HttpClient) {}
 
@@ -36,6 +37,7 @@ export class DebateService {
   }
 
   private getDebates(sort: string, limit: number, page: number): Observable<Debate[]> {
+    console.log(this.endpoint);
     let queryParams = new HttpParams();
     queryParams = queryParams.append('sort', sort);
     queryParams = queryParams.append('limit', limit.toString());

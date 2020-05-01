@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Debate } from '../../dto/debate.dto';
 import { DebateService } from 'src/app/services/debate.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-debate-card',
@@ -11,30 +12,30 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class DebateCardComponent implements OnInit {
   @Input() debate: Debate;
-  sliceEnd: number = 100;
-  isExpanded: boolean = false;
-  expandString: string = "Rozwiń";
+  sliceEnd = 100;
+  isExpanded = false;
+  expandString = 'Rozwiń';
+  imageEndpoint = environment.api + '/debate/cover/';
 
   constructor(private debateService: DebateService, private sanitizer: DomSanitizer) { }
-  
+
   ngOnInit(): void {
   }
 
-  toggleExpand(){
-    console.log("Exoand");
-    if (this.isExpanded){
+  toggleExpand() {
+    if (this.isExpanded) {
       this.sliceEnd = 100;
-      this.expandString = "Rozwiń";
+      this.expandString = 'Rozwiń';
       this.isExpanded = false;
     } else {
         this.sliceEnd = this.debate.content.length;
-        this.expandString = "Zwiń"
+        this.expandString = 'Zwiń';
         this.isExpanded = true;
     }
   }
 
- getCoverUrl(){
-   const urlPath = 'http://localhost:8080/api/debate/cover/' + this.debate._id;
+ getCoverUrl() {
+   const urlPath = this.imageEndpoint + this.debate._id;
    return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + ')');
  }
 
