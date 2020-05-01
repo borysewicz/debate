@@ -22,9 +22,19 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
+    @GetMapping(value = "/login/{login}")
+    public ResponseEntity<UserDto> getUserByLogin(@PathVariable(value = "login")String login){
+        return ResponseEntity.ok(userService.getUserByLogin(login));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto){
         var newUser = userService.addUser(userDto);
         return ResponseEntity.created(URI.create("/api/user/")).body(newUser);
+    }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<UserDto> changeUserPassword(@RequestBody UserDto userDto){
+        return ResponseEntity.ok(userService.changeUserPassword(userDto));
     }
 }

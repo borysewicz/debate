@@ -17,11 +17,31 @@
         notifications
       </mat-icon>
     </button>
-    <button mat-button class="login-button" routerLink="/login" >
-      <mat-icon class="toolbar-icon login-user">
-          account_circle
-      </mat-icon>
-    </button>
+    <div *ngIf="isLogged; then loggedUser else loginUser"></div>
+      <ng-template #loggedUser>
+        <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon class="toolbar-icon login-user">
+            account_circle
+          </mat-icon>
+        </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/account">
+              <mat-icon>account_circle</mat-icon>
+              <span>Moje konto</span>
+            </button>
+            <button mat-menu-item (click)="logOut()">
+              <mat-icon>lock_open</mat-icon>
+              <span>Wyloguj się</span>
+            </button>
+          </mat-menu>
+      </ng-template>
+      <ng-template #loginUser>
+        <button mat-button class="login-button" routerLink="/login" >
+          <mat-icon class="toolbar-icon login-user">
+              account_circle
+          </mat-icon>
+        </button>
+      </ng-template>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container class="h100">

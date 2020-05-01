@@ -1,0 +1,31 @@
+<div class="accountContent">
+    <mat-card class="accountCard" >
+    <div *ngIf="userDto.login === ''; then spinContainer else formContainer"></div>
+        <ng-template #spinContainer>
+            <div class="spinnerContainer">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-template>
+        <ng-template #formContainer>
+            <mat-icon class="loginIcon">account_circle</mat-icon>
+            <h1 class="login">{{userDto.login}}</h1>
+            <h3>{{userDto.email}}</h3>
+            <h3>{{userDto.role}}</h3>
+            <form class="reg-form" #regform="ngForm" (ngSubmit)="onSubmit()">
+                <mat-form-field class="w100">
+                    <mat-label>Wprowadź stare hasło</mat-label>
+                    <input matInput type="password" placeholder="Wprowadź stare hasło" required [(ngModel)]="oldPassword" name="oldPassword">
+                </mat-form-field>
+                <mat-form-field class="w100">
+                    <mat-label>Wprowadź nowe hasło</mat-label>
+                    <input matInput type="password" placeholder="Wprowadź nowe hasło" required [(ngModel)]="model.password" name="password">
+                </mat-form-field>
+                <mat-form-field class="w100">
+                    <mat-label>Wprowadź nowe hasło</mat-label>
+                    <input matInput type="password" placeholder="Wprowadź nowe hasło ponownie" required [(ngModel)]="passwordCheck" name="passwordCheck">
+                </mat-form-field>
+                <button mat-raised-button color="primary" [disabled]="!regform.form.valid" type="submit" style="width: 100%; margin-left: 5px;" >Zapisz</button>
+            </form>
+        </ng-template>
+    </mat-card>
+</div>

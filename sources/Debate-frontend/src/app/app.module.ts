@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
 import { TextFieldModule } from '@angular/cdk/text-field'; 
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -26,6 +28,9 @@ import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegistrationComponent } from './loginpage/registration/registration.component';
 import { UserService } from './services/user.service';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,8 @@ import { UserService } from './services/user.service';
     DebateCardComponent,
     AddUpdateDebateComponent,
     LoginpageComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    AccountComponent,
     ],
   imports: [
     BrowserModule,
@@ -55,9 +61,18 @@ import { UserService } from './services/user.service';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    TextFieldModule
+    TextFieldModule,
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

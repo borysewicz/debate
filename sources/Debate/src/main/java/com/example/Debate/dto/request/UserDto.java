@@ -25,4 +25,7 @@ public class UserDto {
         return role;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
