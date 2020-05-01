@@ -2,6 +2,8 @@ package com.example.Debate.dto.request;
 
 
 import com.example.Debate.model.enums.Role;
+import lombok.Value;
+import lombok.With;
 
 public class UserDto {
     private String login;
@@ -25,4 +27,7 @@ public class UserDto {
         return role;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

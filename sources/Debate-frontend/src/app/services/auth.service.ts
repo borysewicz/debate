@@ -4,7 +4,7 @@ import { UserDto } from '../dto/user.dto';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({

@@ -34,9 +34,6 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       }),
       catchError((err: HttpErrorResponse) => {
-        if (err && err.status === 401) {
-          console.log('DUPA');
-        }
         return throwError(err);
       })
     );

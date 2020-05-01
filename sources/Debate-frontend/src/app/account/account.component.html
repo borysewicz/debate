@@ -1,12 +1,12 @@
 <div class="accountContent">
     <mat-card class="accountCard" >
-    <div *ngIf="userDto.login === ''; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock>
+    <div *ngIf="userDto.login === ''; then spinContainer else formContainer"></div>
+        <ng-template #spinContainer>
             <div class="spinnerContainer">
                 <mat-spinner></mat-spinner>
             </div>
         </ng-template>
-        <ng-template #elseBlock>
+        <ng-template #formContainer>
             <mat-icon class="loginIcon">account_circle</mat-icon>
             <h1 class="login">{{userDto.login}}</h1>
             <h3>{{userDto.email}}</h3>

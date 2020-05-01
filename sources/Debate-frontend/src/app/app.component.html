@@ -17,8 +17,8 @@
         notifications
       </mat-icon>
     </button>
-    <div *ngIf="isLogged; then thenBlock else elseBlock"></div>
-      <ng-template #thenBlock>
+    <div *ngIf="isLogged; then loggedUser else loginUser"></div>
+      <ng-template #loggedUser>
         <button mat-button [matMenuTriggerFor]="menu">
           <mat-icon class="toolbar-icon login-user">
             account_circle
@@ -35,7 +35,7 @@
             </button>
           </mat-menu>
       </ng-template>
-      <ng-template #elseBlock>
+      <ng-template #loginUser>
         <button mat-button class="login-button" routerLink="/login" >
           <mat-icon class="toolbar-icon login-user">
               account_circle
