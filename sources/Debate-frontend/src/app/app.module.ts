@@ -1,7 +1,7 @@
-import { TextFieldModule } from '@angular/cdk/text-field';
-import { HttpClientModule } from '@angular/common/http';
 import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -18,6 +18,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,9 +33,13 @@ import { DebateArgumentComponent } from './debate/debate-argument/debate-argumen
 import { DebateComponent } from './debate/debate.component';
 import { DebateCardComponent } from './homepage/debate-card/debate-card.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { TagSearchComponent } from './tag-search/tag-search.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegistrationComponent } from './loginpage/registration/registration.component';
-import { TagSearchComponent } from './tag-search/tag-search.component';
+import { UserService } from './services/user.service';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AccountComponent } from './account/account.component';
 
 @Injectable()
 export class CustomIntl extends TimeagoIntl {}
@@ -47,6 +53,7 @@ export class CustomIntl extends TimeagoIntl {}
     AddUpdateDebateComponent,
     LoginpageComponent,
     RegistrationComponent,
+    AccountComponent,
     DebateComponent,
     DebateArgumentComponent,
     CommentComponent,
@@ -76,12 +83,21 @@ export class CustomIntl extends TimeagoIntl {}
     BrowserAnimationsModule,
     AppRoutingModule,
     TextFieldModule,
-    TimeagoModule.forRoot({
+    MatMenuModule,
+    MatProgressSpinnerModule,
+	TimeagoModule.forRoot({
       intl: { provide: TimeagoIntl, useClass: CustomIntl },
       formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
     })
   ],
-  providers: [],
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ import { DebateComponent } from './debate/debate.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegistrationComponent } from './loginpage/registration/registration.component';
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomepageComponent },
@@ -21,6 +22,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}
