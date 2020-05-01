@@ -22,17 +22,16 @@ export class AccountComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router
-  ) {
-    this.userDto = { login: '', password: '', email: '', role: '' };
-    this.model = { login: '', password: '', email: '', role: '' };
-  }
+  ) { }
 
   ngOnInit(): void {
+      this.userDto = { login: '', password: '', email: '', role: '' };
+      this.model = { login: '', password: '', email: '', role: '' };
     this.userService
       .getAccountByLogin(this.authService.userDto.login)
       .subscribe((user) => {
-        (this.userDto = user),
-          (this.userDto.password = this.authService.userDto.password);
+          this.userDto = user;
+          this.userDto.password = this.authService.userDto.password;
       });
   }
 

@@ -17,11 +17,11 @@ export class LoginpageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {
-    this.model = { login: '', password: '', email: '', role: '' };
-  }
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+      this.model = { login: '', password: '', email: '', role: '' };
+  }
 
   onSubmit() {
     this.model.login = this.loginForm.controls.login.value;
@@ -29,9 +29,9 @@ export class LoginpageComponent implements OnInit {
     this.authService.logToAccount(this.model).subscribe(
       (tmp) => this.router.navigate(['/home']),
       (err) => {
-        alert('Wprowadzono błędne dane!'),
-          this.loginForm.controls.login.setValue(''),
-          this.loginForm.controls.password.setValue(''),
+        alert('Wprowadzono błędne dane!');
+          this.loginForm.controls.login.setValue('');
+          this.loginForm.controls.password.setValue('');
           console.log(err);
       }
     );

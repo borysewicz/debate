@@ -16,34 +16,34 @@ export class RegistrationComponent implements OnInit {
   passwordCheck: string;
   account: UserDto;
 
-  @ViewChild("regform") regform: NgForm;
+  @ViewChild('regform') regform: NgForm;
 
-  constructor(private userService: UserService, private router: Router, private authService: AuthService) {
-    this.model = {login: "", password:"", email:"", role:"USER"};
-    this.account = {login: "", password:"", email: "", role: ""};
-  }
+  constructor(private userService: UserService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.model = { login: '', password: '', email: '', role: 'USER' };
+    this.account = { login: '', password: '', email: '', role: '' };
   }
 
   onSubmit(){
-    if (!this.regform.form.valid){
+    if (!this.regform.form.valid) {
       return;
     }
-    if(this.regform.controls.password.value === this.regform.controls.passwordCheck.value){
+    if (this.regform.controls.password.value === this.regform.controls.passwordCheck.value) {
       this.model.login = this.regform.controls.login.value;
       this.model.password = this.regform.controls.password.value;
       this.model.email = this.regform.controls.email.value;
       this.account.login = this.model.login;
       this.account.password = this.model.password;
       this.userService.addUser(this.model).subscribe( 
-        tmp => {this.authService.logToAccount(this.account), 
-                this.router.navigate(["/home"])
+        tmp => {
+               this.authService.logToAccount(this.account);
+                this.router.navigate(['/home']);
                },
         err => console.log(err),
     );
-    }else{
-      alert("Wprowadzono różne hasła!");
+    } else {
+      alert('Wprowadzono różne hasła!');
     }
   }
 }

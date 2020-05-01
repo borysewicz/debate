@@ -22,18 +22,17 @@ export class AuthService {
     return this.http
       .post<UserLogIn>(`${this.endpoint}/userLogin/logIn`, user)
       .pipe(
-        map((usrLogin) => {
+        tap((usrLogin) => {
           this.cookieService.set('token', usrLogin.token);
           localStorage.setItem('role', usrLogin.role);
           this.userLogin = usrLogin;
           this.isLoggedIn.next(true);
           this.userDto = user;
-          return usrLogin;
         })
       );
   }
 
-  get isSignedIn(): Observable<boolean>{
+  get isSignedIn(): Observable<boolean> {
     return this.isLoggedIn.asObservable();
   }
 
