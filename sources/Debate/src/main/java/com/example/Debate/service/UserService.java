@@ -3,8 +3,8 @@ package com.example.Debate.service;
 import com.example.Debate.dto.request.UserDto;
 
 public interface UserService {
-    public UserDto getUserById(String id);
-    public UserDto getUserByLogin(String login);
-    public UserDto addUser(UserDto userDto);
-    public UserDto changeUserPassword(UserDto userDto);
+    UserDto getUserById(String id);
+    UserDto getUserByLogin(String login);
+    UserDto addUser(UserDto userDto);
+    UserDto changeUserPassword(UserDto userDto);
 }
