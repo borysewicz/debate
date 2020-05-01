@@ -56,7 +56,6 @@ public class SearchServiceImpl implements SearchService {
                     currMatchingTagsCount++;
             }
             matchingTagsCountMap.put(currDebateDto,currMatchingTagsCount);
-            System.out.println(currDebateDto.getTitle()+": "+currMatchingTagsCount);
         }
         matchingDebateDtos.sort(Comparator.comparingInt(matchingTagsCountMap::get).reversed());
         return matchingDebateDtos;

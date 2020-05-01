@@ -21,16 +21,14 @@ public class SearchController {
     public ResponseEntity<List<FullDebateResponseDto>> getDebatesContainingName(@RequestParam String reqName)
     {
         List<FullDebateResponseDto> debateDtoList = searchService.getDebatesDebatesContainingName(reqName);
-        return debateDtoList.size() != 0 ? ResponseEntity.status(HttpStatus.OK).body(debateDtoList) :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).body(debateDtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(debateDtoList);
     }
 
     @GetMapping("/byTags")
     public ResponseEntity<List<FullDebateResponseDto>> getDebatesWithTags(@RequestParam List<String> reqTags)
     {
         List<FullDebateResponseDto> debateDtoList = searchService.getDebatesDebatesWithTags(reqTags);
-        return debateDtoList.size() != 0 ? ResponseEntity.status(HttpStatus.OK).body(debateDtoList) :
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(debateDtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(debateDtoList);
     }
 
 }
