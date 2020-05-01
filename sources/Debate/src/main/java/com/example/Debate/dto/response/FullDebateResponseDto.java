@@ -14,9 +14,11 @@ public class FullDebateResponseDto {
     String[] mainTags;
     String[] allTags;
     Long creationDate;
+    Long lastEditTime;
     int argumentCount;
     int commentCount;
     int voteCount;
     int participantCount;
     int viewCount;
+    String author;
 }

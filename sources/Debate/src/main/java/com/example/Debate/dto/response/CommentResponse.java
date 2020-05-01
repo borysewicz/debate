@@ -6,18 +6,17 @@ import lombok.*;
 @Value
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
-public class ArgumentResponse {
+public class CommentResponse {
 
     String _id;
-    String title;
     String content;
+    String parentActivityId;
+    String author;
+    Long creationDate;
+    Long lastEditTime;
+    int upvotes;
+    int downvotes;
     @With
     Vote userVote;
-    String attitude;
-    String author;
-    int upVotes;
-    int downVotes;
-    long lastEditTime;
-    String debateId;
 
 }
