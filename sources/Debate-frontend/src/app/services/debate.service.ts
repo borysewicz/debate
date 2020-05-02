@@ -58,9 +58,13 @@ export class DebateService {
     });
   }
 
-  getDebatesByTags(tags: string): Observable<Debate[]> {
+  getDebatesByTags(tags: string[]): Observable<Debate[]> {
     let queryParams = new HttpParams();
-    queryParams = queryParams.append('Tags', tags);
+    let text = '';
+    for (let tag of tags) {
+      text += tag + ';';
+    }
+    queryParams = queryParams.append('Tags', text);
     return this.http.get<Debate[]>(`${this.searchEndpoint}/byTags`, {
       params: queryParams,
     });

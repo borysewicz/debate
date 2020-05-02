@@ -21,14 +21,13 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(
       (queryParams) => {
-        if (queryParams.searchTags && queryParams.searchTags.length) {
-          let tags = '';
-          for (let tag of queryParams.searchTags) {
-            tags += tag + ';';
-          }
-          this.debateService.getDebatesByTags(tags).subscribe((debates) => {
-            this.filteredDebates = debates;
-          });
+        console.log(queryParams);
+        if (queryParams.searchTag && queryParams.searchTag.length) {
+          this.debateService
+            .getDebatesByTags(queryParams.searchTag)
+            .subscribe((debates) => {
+              this.filteredDebates = debates;
+            });
         } else {
           let name = queryParams.searchName;
           this.debateService.getDebatesByName(name).subscribe((debates) => {

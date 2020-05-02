@@ -83,7 +83,7 @@ export class TagSearchComponent implements OnInit {
   searchDebateByTags() {
     if (this.chosenTags !== []) {
       this.router.navigate(['/searchResults'], {
-        queryParams: { searchTags: this.chosenTags },
+        queryParams: { searchTag: this.chosenTags },
       });
     }
   }
