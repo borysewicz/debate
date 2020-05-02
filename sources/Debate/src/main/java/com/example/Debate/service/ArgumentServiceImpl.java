@@ -67,9 +67,9 @@ public class ArgumentServiceImpl implements ArgumentService {
         );
         argument.ratePost(userId, Vote.POSITIVE);
         var saved = argumentRepository.save(argument);
-        var debate = debateRepository.findById(saved.get_id()).orElseThrow(() ->
+        var debate = debateRepository.findById(argumentDto.getDebateId()).orElseThrow(() ->
                 new ResourceNotFoundException("Argument", saved.get_id()));
-        debate.getComments().add(saved.get_id());
+        debate.getArguments().add(saved.get_id());
         debateRepository.save(debate);
         return modelMapper.map(saved, ArgumentResponse.class)
                 .withUserVote(Vote.POSITIVE);
