@@ -4,11 +4,12 @@ import { FormControl } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tag-search',
   templateUrl: './tag-search.component.html',
-  styleUrls: ['./tag-search.component.scss']
+  styleUrls: ['./tag-search.component.scss'],
 })
 export class TagSearchComponent implements OnInit {
   tagControl = new FormControl('');
@@ -20,22 +21,20 @@ export class TagSearchComponent implements OnInit {
     'Nauka',
     'Chemia',
     'Informatyka',
-    'Sztuczna inteligencja'
+    'Sztuczna inteligencja',
   ];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   @Input() chosenTags: string[] = [];
   filteredTags: Observable<string[]>;
   popularTags: string[] = ['Polityka', 'Ekonomia', 'Religia', 'Nauka'];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.filteredTags = this.tagControl.valueChanges.pipe(
       // tslint:disable-next-line: deprecation
       startWith(null),
-      map((tag: string | null) =>
-        tag ? this._filter(tag) : this.tags.slice()
-      )
+      map((tag: string | null) => (tag ? this._filter(tag) : this.tags.slice()))
     );
   }
 
@@ -62,7 +61,7 @@ export class TagSearchComponent implements OnInit {
   private _filter(newTag: string) {
     const filterValue = newTag.toLowerCase();
     return this.tags.filter(
-      tag =>
+      (tag) =>
         tag.toLowerCase().includes(filterValue) &&
         !this.chosenTags.includes(tag)
     );
@@ -72,12 +71,20 @@ export class TagSearchComponent implements OnInit {
     const value = tag?.toLowerCase();
     const regex = new RegExp('^' + value + '$', 'i');
     if (
-      this.tags.find(x => regex.test(x)) &&
-      !this.chosenTags.find(y => regex.test(y))
+      this.tags.find((x) => regex.test(x)) &&
+      !this.chosenTags.find((y) => regex.test(y))
     ) {
       this.chosenTags.push(tag.trim());
       return true;
     }
     return false;
+  }
+
+  searchDebateByTags() {
+    if (this.chosenTags !== []) {
+      this.router.navigate(['/searchResults'], {
+        queryParams: { searchTags: this.chosenTags },
+      });
+    }
   }
 }

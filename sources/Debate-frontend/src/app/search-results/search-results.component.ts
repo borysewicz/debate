@@ -1,9 +1,8 @@
 import { Component, OnInit, Output, OnDestroy } from '@angular/core';
 import { Debate } from '../dto/debate.dto';
-import { Observable, Subscription } from 'rxjs';
 import { DebateService } from '../services/debate.service';
-import { EventEmitter } from 'protractor';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search-results',
@@ -16,18 +15,26 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 
   constructor(
     private debateService: DebateService,
-    private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(
       (queryParams) => {
-        let name = queryParams.searchName;
-        this.debateService
-          .getDebatesByName(name)
-          .subscribe((debates) => {(this.filteredDebates = debates);
-          console.log(debates)});
+        if (queryParams.searchTags && queryParams.searchTags.length) {
+          let tags = '';
+          for (let tag of queryParams.searchTags) {
+            tags += tag + ';';
+          }
+          this.debateService.getDebatesByTags(tags).subscribe((debates) => {
+            this.filteredDebates = debates;
+          });
+        } else {
+          let name = queryParams.searchName;
+          this.debateService.getDebatesByName(name).subscribe((debates) => {
+            this.filteredDebates = debates;
+          });
+        }
       }
     );
   }

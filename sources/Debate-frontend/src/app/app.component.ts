@@ -57,8 +57,10 @@ export class AppComponent implements OnInit {
   }
 
   searchDebateByName() {
-    this.router.navigate(['/searchResults'], {
-      queryParams: {searchName: this.debateControl.value},
-    });
+    if (this.debateControl.value !== '') {
+      this.router.navigate(['/searchResults'], {
+        queryParams: { searchName: this.debateControl.value },
+      });
+    }
   }
 }
