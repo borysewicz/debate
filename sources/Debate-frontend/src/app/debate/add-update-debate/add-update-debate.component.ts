@@ -16,31 +16,27 @@ export class AddUpdateDebateComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   imageUrl: string | ArrayBuffer;
   imageData: File;
-  imageInvalid: boolean = false;
+  imageInvalid = false;
 
-  @ViewChild("tagList") tagList: MatChipList;
-  @ViewChild("debateForm") debateForm: HTMLFormElement;
+  @ViewChild('tagList') tagList: MatChipList;
+  @ViewChild('debateForm') debateForm: HTMLFormElement;
 
   constructor(private debateService: DebateService, private router: Router) { 
-    this.model = {title: "", description: "", mainTags: [], allTags: ["polityka"]};
+    this.model = {title: '', description: '', mainTags: [], allTags: ['polityka']};
   }
 
   ngOnInit(): void {
   }
 
-  onSubmit(){
-    if (!this.debateForm.form.valid || !this.isTagListValid){
+  onSubmit() {
+    if (!this.debateForm.form.valid || !this.isTagListValid()) {
       return;
     }
     this.model.mainTags = this.model.allTags.slice(0,3);
     this.debateService.addDebate(this.model, this.imageData).subscribe(
-      res => this.router.navigate(["/home"]), 
+      res => this.router.navigate(['/home']),
       err => console.log(err)
     );
-  }
-
-  get diagnostics(){
-    return JSON.stringify(this.model);
   }
 
   addTag(event: MatChipInputEvent){
@@ -50,15 +46,15 @@ export class AddUpdateDebateComponent implements OnInit {
           return;
         }
         this.model.allTags.push(value);
-        if (this.model.allTags.length >= 3 && this.model.allTags.length < 7){
+        if (this.model.allTags.length >= 3 && this.model.allTags.length < 7) {
           this.tagList.errorState = false;
-        }else if (this.model.allTags.length > 7){
+        } else if (this.model.allTags.length > 7){
           this.tagList.errorState = true;
         }
       }
       if (event.input){
-        event.input.value = "";
-      }    
+        event.input.value = '';
+      }
   }
 
   removeTag(tag: string): void {
@@ -68,7 +64,7 @@ export class AddUpdateDebateComponent implements OnInit {
     }
 
     if (this.model.allTags.length < 3 || this.model.allTags.length > 7){
-        this.tagList.errorState = true;         
+        this.tagList.errorState = true;
     } else {
       this.tagList.errorState = false;
     }
@@ -76,7 +72,7 @@ export class AddUpdateDebateComponent implements OnInit {
 
   onFileChanged(fileEvent: Event){
     const fileEventTarget = fileEvent.target as HTMLInputElement;
-    if (fileEventTarget.files[0].size > 4000000){ // 4MB = 4 000 000 B
+    if (fileEventTarget.files[0].size > 4_000_000){ // 4MB = 4 000 000 B
       this.imageInvalid = true;
       return;
     }
@@ -86,10 +82,13 @@ export class AddUpdateDebateComponent implements OnInit {
     reader.readAsDataURL(this.imageData);
     reader.onload = () => {
       this.imageUrl = reader.result;
-    }    
+    }
   }
 
   isTagListValid(): boolean{
-    return this.model.allTags.length >= 3 && this.model.allTags.length <= 7; 
+    if (this.model.allTags.length >= 3 && this.model.allTags.length <= 7) { return true; } else {
+      this.tagList.errorState = true;
+      return false;
+    }
   }
 }
