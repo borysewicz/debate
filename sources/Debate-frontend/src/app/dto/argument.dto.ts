@@ -3,7 +3,7 @@ import { UserVote } from './userVote.enum';
 export interface Argument {
     _id: string;
     title: string;
-    authorName: string;
+    author: string;
     content: string;
     userVote: UserVote;
     attitude: ArgumentAttitude;

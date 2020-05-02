@@ -6,7 +6,7 @@
       (click)="rateComment(UserVote.POSITIVE)"
       >keyboard_arrow_up</mat-icon
     >
-    {{ comment.upVotes - comment.downVotes }}
+    {{ comment.upvotes - comment.downvotes }}
     <mat-icon
       class="arrow-down"
       [ngClass]="{ red: comment.userVote === UserVote.NEGATIVE }"
@@ -15,9 +15,9 @@
     >
   </div>
   <div class="info">
-    <span class="author">{{ comment.authorName }}</span>
+    <span class="author">{{ comment.author }}</span>
     <span style="font-style: italic; font-size: smaller; font-weight: 350;">{{
-      comment.publishedAt | timeago
+      (comment.lastEditTime ? comment.lastEditTime : comment.creationDate) | timeago
     }}</span>
   </div>
   <a class="avatar">

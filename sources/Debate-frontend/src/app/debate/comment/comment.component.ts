@@ -24,9 +24,9 @@ export class CommentComponent implements OnInit {
   constructor(private commentService: CommentService) {}
 
   ngOnInit(): void {
-    this.initials = this.comment.authorName
+    this.initials = this.comment.author
       .replace(/[a-z]/g, '')
-      .substring(0, 2) || 'A';
+      .substring(0, 2) || this.comment.author.substring(0, 1) || 'A';
   }
 
   getCustomAvatarColor() {
@@ -38,11 +38,12 @@ export class CommentComponent implements OnInit {
       this.comment.userVote = rate;
     } else {
       this.comment.userVote = UserVote.NONE;
+      rate = UserVote.NONE;
     }
 
     this.commentService.rateComment(this.comment._id, rate).subscribe(votes => {
-      this.comment.upVotes = votes.upvotes;
-      this.comment.downVotes = votes.downvotes;
+      this.comment.upvotes = votes.upvotes;
+      this.comment.downvotes = votes.downvotes;
     });
   }
 }

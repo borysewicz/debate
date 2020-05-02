@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Argument } from '../dto/argument.dto';
 import { Rating } from '../dto/rating.dto';
+import { ArgumentAttitude } from './../dto/argument.dto';
 import { UserVote } from './../dto/userVote.enum';
 
 @Injectable({
@@ -15,10 +17,22 @@ export class ArgumentService {
   constructor(private http: HttpClient) {}
 
   getArgumentsForDebate(id: string): Observable<Argument[]> {
-    return this.http.get<Argument[]>(this.endpoint);
+    const params = new HttpParams()
+      .set('debate', id)
+      .set('limit', '10')
+      .set('page', '0');
+    return this.http
+      .get<Argument[]>(this.endpoint, { params })
+      .pipe(map(args => {
+        args.forEach(element => {
+          element.attitude = ArgumentAttitude[element.attitude.toString()];
+          element.userVote = UserVote[element.userVote.toString()];
+        });
+        return args;
+      }));
   }
 
   rateArgument(id: string, rating: UserVote): Observable<Rating> {
-    return this.http.patch<Rating>(`${this.endpoint}/rate/${id}`, rating);
+    return this.http.patch<Rating>(`${this.endpoint}/rate/${id}`, { vote: UserVote[rating] });
   }
 }
