@@ -15,7 +15,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
-import { TextFieldModule } from '@angular/cdk/text-field'; 
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -31,6 +31,7 @@ import { UserService } from './services/user.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AccountComponent } from './account/account.component';
+import { LoadMoreComponent } from './common/load-more/load-more.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AccountComponent } from './account/account.component';
     LoginpageComponent,
     RegistrationComponent,
     AccountComponent,
+    LoadMoreComponent
     ],
   imports: [
     BrowserModule,
@@ -64,7 +66,7 @@ import { AccountComponent } from './account/account.component';
     TextFieldModule,
     MatMenuModule,
     MatProgressSpinnerModule
-  ],
+    ],
   providers: [
     CookieService,
     {

@@ -37,7 +37,6 @@ export class DebateService {
   }
 
   private getDebates(sort: string, limit: number, page: number): Observable<Debate[]> {
-    console.log(this.endpoint);
     let queryParams = new HttpParams();
     queryParams = queryParams.append('sort', sort);
     queryParams = queryParams.append('limit', limit.toString());
