@@ -36,7 +36,7 @@ export class DebateCardComponent implements OnInit {
 
  getCoverUrl() {
    const urlPath = this.imageEndpoint + this.debate._id;
-   return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + ')');
+   return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + '), url(assets/no_cover.png)');
  }
 
 }
