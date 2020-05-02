@@ -25,7 +25,6 @@ export class DebateCardComponent implements OnInit {
   ngOnInit(): void {}
 
   toggleExpand() {
-    console.log('Exoand');
     if (this.isExpanded) {
       this.sliceEnd = 100;
       this.expandString = 'Rozwiń';
