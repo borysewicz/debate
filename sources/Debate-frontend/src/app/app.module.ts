@@ -31,6 +31,7 @@ import { UserService } from './services/user.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AccountComponent } from './account/account.component';
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AccountComponent } from './account/account.component';
     LoginpageComponent,
     RegistrationComponent,
     AccountComponent,
+    SearchResultsComponent,
     ],
   imports: [
     BrowserModule,

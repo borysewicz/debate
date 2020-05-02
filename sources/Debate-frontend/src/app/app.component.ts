@@ -55,4 +55,10 @@ export class AppComponent implements OnInit {
     this.authService.logOut();
     this.router.navigate(['/home']);
   }
+
+  searchDebateByName() {
+    this.router.navigate(['/searchResults'], {
+      queryParams: {searchName: this.debateControl.value},
+    });
+  }
 }

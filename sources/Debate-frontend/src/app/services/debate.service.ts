@@ -10,6 +10,7 @@ import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
 })
 export class DebateService {
   private endpoint = 'http://localhost:8080/api/debate';
+  private searchEndpoint = 'http://localhost:8080/api/search';
 
   constructor(private http: HttpClient) {}
 
@@ -41,6 +42,12 @@ export class DebateService {
     queryParams = queryParams.append('limit', limit.toString());
     queryParams = queryParams.append('page', page.toString());
     return this.http.get<Debate[]>(this.endpoint, { params: queryParams});
+  }
+
+  getDebatesByName(name: string): Observable<Debate[]> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append('reqName', name);
+    return this.http.get<Debate[]>(`${this.searchEndpoint}/byName`,{ params: queryParams});
   }
 
 }
