@@ -10,7 +10,10 @@
                 <input matInput type="password" placeholder="Wprowadź swoje hasło" [(ngModel)]="model.password" name="password">
             </mat-form-field>
             <button mat-raised-button class="w100 submit-button" color="primary" type="submit" >Zaloguj</button>
-            <a mat-button class="go-register-button" routerLink="/register">Nie masz jeszcze konta? Zarejestruj się</a>
+            <div style="text-align: center; margin-top: 10px;">
+                Nie masz jeszcze konta? 
+                <a mat-stroked-button routerLink="/register">Zarejestruj się</a>
+            </div>
         </form>
     </div>
 </div>
