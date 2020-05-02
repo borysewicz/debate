@@ -10,10 +10,12 @@ import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.model.Argument;
 import com.example.Debate.model.Comment;
+import com.example.Debate.model.Debate;
 import com.example.Debate.model.enums.Attitude;
 import com.example.Debate.model.enums.Vote;
 import com.example.Debate.repository.ArgumentRepository;
 import com.example.Debate.repository.CommentRepository;
+import com.example.Debate.repository.DebateRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,11 +34,16 @@ import java.util.stream.Stream;
 @Service
 public class ArgumentServiceImpl implements ArgumentService {
     private ArgumentRepository argumentRepository;
+    private DebateRepository debateRepository;
     private MongoTemplate mongoTemplate;
     private ModelMapper modelMapper;
 
-    public ArgumentServiceImpl(ArgumentRepository argumentRepository, MongoTemplate mongoTemplate, ModelMapper modelMapper) {
+    public ArgumentServiceImpl(ArgumentRepository argumentRepository,
+                               DebateRepository debateRepository,
+                               MongoTemplate mongoTemplate,
+                               ModelMapper modelMapper) {
         this.argumentRepository = argumentRepository;
+        this.debateRepository = debateRepository;
         this.mongoTemplate = mongoTemplate;
         this.modelMapper = modelMapper;
     }
@@ -59,7 +66,12 @@ public class ArgumentServiceImpl implements ArgumentService {
                 argumentDto.getContent(), userId
         );
         argument.ratePost(userId, Vote.POSITIVE);
-        return modelMapper.map(argumentRepository.save(argument), ArgumentResponse.class)
+        var saved = argumentRepository.save(argument);
+        var debate = debateRepository.findById(saved.get_id()).orElseThrow(() ->
+                new ResourceNotFoundException("Argument", saved.get_id()));
+        debate.getComments().add(saved.get_id());
+        debateRepository.save(debate);
+        return modelMapper.map(saved, ArgumentResponse.class)
                 .withUserVote(Vote.POSITIVE);
     }
 
