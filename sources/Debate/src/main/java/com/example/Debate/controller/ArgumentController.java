@@ -15,7 +15,6 @@ import java.net.URI;
 import java.security.Principal;
 import java.util.List;
 
-
 @RestController
 @CrossOrigin
 @RequestMapping("/argument")

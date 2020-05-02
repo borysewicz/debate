@@ -61,14 +61,15 @@ public class ArgumentServiceImpl implements ArgumentService {
 
     @Override
     public ArgumentResponse addArgument(AddOrUpdateArgumentDto argumentDto, String userId) {
+
         var argument = new Argument(
                 argumentDto.getTitle(), argumentDto.getAttitude(), argumentDto.getDebateId(),
                 argumentDto.getContent(), userId
         );
         argument.ratePost(userId, Vote.POSITIVE);
-        var saved = argumentRepository.save(argument);
         var debate = debateRepository.findById(argumentDto.getDebateId()).orElseThrow(() ->
-                new ResourceNotFoundException("Argument", saved.get_id()));
+                new ResourceNotFoundException("Argument",argumentDto.getDebateId()));
+        var saved = argumentRepository.save(argument);
         debate.getArguments().add(saved.get_id());
         debateRepository.save(debate);
         return modelMapper.map(saved, ArgumentResponse.class)

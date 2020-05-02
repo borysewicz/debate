@@ -51,10 +51,10 @@ public class CommentServiceImpl implements CommentService {
         var comment = modelMapper.map(commentDto, Comment.class);
         comment.setAuthor(principal.getName());
         comment.ratePost(principal.getName(), Vote.POSITIVE);
-        var saved = commentRepository.save(comment);
         String parentId = comment.getParentActivityId();
         var argument = argumentRepository.findById(parentId).orElseThrow(() ->
                 new ResourceNotFoundException("Argument", parentId));
+        var saved = commentRepository.save(comment);
         argument.getComments().add(saved.get_id());
         argumentRepository.save(argument);
         return modelMapper.map(saved, CommentResponse.class).withUserVote(Vote.POSITIVE);
@@ -65,10 +65,10 @@ public class CommentServiceImpl implements CommentService {
         var comment = modelMapper.map(commentDto, Comment.class);
         comment.setAuthor(principal.getName());
         comment.ratePost(principal.getName(), Vote.POSITIVE);
-        var saved = commentRepository.save(comment);
         String parentId = comment.getParentActivityId();
         var debate = debateRepository.findById(parentId).orElseThrow(() ->
                 new ResourceNotFoundException("Argument", parentId));
+        var saved = commentRepository.save(comment);
         debate.getComments().add(saved.get_id());
         debateRepository.save(debate);
         return modelMapper.map(saved, CommentResponse.class).withUserVote(Vote.POSITIVE);
