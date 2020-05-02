@@ -127,8 +127,5 @@
       }
     }
   },
-  "defaultProject": "Debate-frontend",
-  "cli": {
-    "analytics": "541ddfe5-adf8-4fac-b24a-d8cc71168690"
-  }
+  "defaultProject": "Debate-frontend"
 }
