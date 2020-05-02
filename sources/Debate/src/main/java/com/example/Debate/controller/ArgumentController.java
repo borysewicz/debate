@@ -4,6 +4,7 @@ import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
 import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
+import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.service.ArgumentService;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
-
 
 @RestController
 @CrossOrigin
@@ -73,5 +73,12 @@ public class ArgumentController {
                                                        Principal principal) {
         var response = this.argumentService.rateArgument(rating, principal, argumentId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/comments/{id}")
+    public ResponseEntity<List<CommentResponse>> getCommentsForArgument(@PathVariable(name="id") String argumentId,
+                                                                        Principal principal){
+        var comments = argumentService.getCommentsForArgument(argumentId, UserPrincipal.getUserId(principal));
+        return ResponseEntity.ok(comments);
     }
 }

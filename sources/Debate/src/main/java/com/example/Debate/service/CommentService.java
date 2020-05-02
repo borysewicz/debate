@@ -15,7 +15,9 @@ public interface CommentService {
 
     CommentResponse getCommentById(String id, Optional<String> userLogin);
 
-    CommentResponse addComment(AddOrUpdateCommentDto commentDto, Principal principal);
+    CommentResponse addCommentOnArgument(AddOrUpdateCommentDto commentDto, Principal principal);
+
+    CommentResponse addCommentOnDebate(AddOrUpdateCommentDto commentDto, Principal principal);
 
     List<CommentResponse> getCommentsForActivity(String activityId, Optional<String> userLogin);
 
