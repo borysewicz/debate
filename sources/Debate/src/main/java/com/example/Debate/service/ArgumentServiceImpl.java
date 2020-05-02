@@ -107,7 +107,7 @@ public class ArgumentServiceImpl implements ArgumentService {
         var saved = argumentRepository.save(argument);
         return modelMapper.map(saved, RatingResponse.class);
     }
-    
+
     @Override
     public List<CommentResponse> getCommentsForArgument(String argumentId, Optional<String> userLogin) {
         Argument currArgument = argumentRepository.findById(argumentId).orElseThrow(() ->
