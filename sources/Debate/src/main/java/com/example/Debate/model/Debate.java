@@ -7,6 +7,7 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
+import java.util.Set;
 
 
 @Document
@@ -18,6 +19,7 @@ public class Debate extends Activity{
     String[] allTags;
     String title;
     Binary image;
+    Set<Argument> arguments;
 
     public Debate(){
         super();
@@ -36,6 +38,4 @@ public class Debate extends Activity{
                     " allTags: " + Arrays.toString(this.allTags)
         );
     }
-
-
 }

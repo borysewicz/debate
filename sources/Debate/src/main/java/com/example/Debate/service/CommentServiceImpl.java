@@ -89,6 +89,4 @@ public class CommentServiceImpl implements CommentService {
         var saved = commentRepository.save(argument);
         return modelMapper.map(saved, RatingResponse.class);
     }
-
-
 }

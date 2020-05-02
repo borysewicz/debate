@@ -167,7 +167,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-bom</artifactId>
+            <version>5.2.2.RELEASE</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
