@@ -3,6 +3,7 @@ package com.example.Debate.service;
 import com.example.Debate.common.api.SortingType;
 import com.example.Debate.dto.request.AddOrUpdateDebateDto;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
+import com.example.Debate.dto.response.ArgumentResponse;
 import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.FullDebateResponseDto;
 import org.bson.types.Binary;
@@ -29,5 +30,7 @@ public interface DebateService {
     ActivityHistoryResponse getDebateHistory(String id);
 
     List<CommentResponse> getCommentsForDebate(String debateId,  Optional<String> userLogin);
+
+    List<ArgumentResponse> getArgumentsForDebate(String debateId, Optional<String> userLogin);
 
 }

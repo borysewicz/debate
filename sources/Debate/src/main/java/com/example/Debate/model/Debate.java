@@ -19,7 +19,7 @@ public class Debate extends Activity{
     String[] allTags;
     String title;
     Binary image;
-    Set<Argument> arguments;
+    Set<String> arguments;
 
     public Debate(){
         super();

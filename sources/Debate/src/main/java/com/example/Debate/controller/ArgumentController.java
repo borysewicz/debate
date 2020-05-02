@@ -77,7 +77,7 @@ public class ArgumentController {
     }
 
     @GetMapping("/comments/{id}")
-    public ResponseEntity<List<CommentResponse>> getCommentsForActivity(@PathVariable(name="id") String argumentId,
+    public ResponseEntity<List<CommentResponse>> getCommentsForArgument(@PathVariable(name="id") String argumentId,
                                                                         Principal principal){
         var comments = argumentService.getCommentsForArgument(argumentId, UserPrincipal.getUserId(principal));
         return ResponseEntity.ok(comments);

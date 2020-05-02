@@ -7,9 +7,11 @@ import com.example.Debate.common.exception.UnauthorizedAccessException;
 import com.example.Debate.dto.request.AddOrUpdateDebateDto;
 
 import com.example.Debate.dto.response.ActivityHistoryResponse;
+import com.example.Debate.dto.response.ArgumentResponse;
 import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.FullDebateResponseDto;
 import com.example.Debate.jwt.UserPrincipal;
+import com.example.Debate.model.Argument;
 import com.example.Debate.model.Comment;
 import com.example.Debate.model.Debate;
 import com.example.Debate.repository.ArgumentRepository;
@@ -144,6 +146,19 @@ public class DebateServiceImpl implements DebateService {
         return mongoTemplate.find(query,Comment.class).stream()
                 .map(comment -> modelMapper.map(comment, CommentResponse.class)
                         .withUserVote(comment.getUserVote(userLogin)))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ArgumentResponse> getArgumentsForDebate(String debateId, Optional<String> userLogin) {
+        Debate currDebate = debateRepository.findById(debateId).orElseThrow(() ->
+                new ResourceNotFoundException("Debate", debateId));
+        Set<String> childArgumentsSet = currDebate.getArguments();
+        Criteria criteria = Criteria.where("_id").in(childArgumentsSet);
+        Query query = new Query(criteria);
+        return mongoTemplate.find(query, Argument.class).stream()
+                .map(argument -> modelMapper.map(argument, ArgumentResponse.class)
+                        .withUserVote(argument.getUserVote(userLogin)))
                 .collect(Collectors.toList());
     }
 }
