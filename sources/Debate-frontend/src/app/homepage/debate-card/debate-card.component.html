@@ -1,7 +1,7 @@
 <mat-card class="debate-card">
     <div id="debate-img" [style.background-image]="getCoverUrl()">
       <mat-chip-list class="debate-main-tags">
-          <mat-chip color="primary" selected *ngFor="let tag of debate.mainTags"  >{{tag}}</mat-chip>
+          <mat-chip color="primary" selected *ngFor="let tag of debate.mainTags" (click)="getDebatesWithTag(tag)" >{{tag}}</mat-chip>
         </mat-chip-list>        
     </div>
     <mat-card-header>

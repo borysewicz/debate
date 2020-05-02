@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -25,9 +27,13 @@ public class SearchController {
     }
 
     @GetMapping("/byTags")
-    public ResponseEntity<List<FullDebateResponseDto>> getDebatesWithTags(@RequestParam List<String> reqTags)
+    public ResponseEntity<List<FullDebateResponseDto>> getDebatesWithTags(@RequestParam String Tags)
     {
-        List<FullDebateResponseDto> debateDtoList = searchService.getDebatesDebatesWithTags(reqTags);
+        String[] tmp = Tags.split(";");
+        List<FullDebateResponseDto> debateDtoList = searchService.getDebatesDebatesWithTags(
+                Arrays.stream(tmp)
+                        .map(tag -> tag.toLowerCase())
+                        .collect(Collectors.toList()));
         return ResponseEntity.status(HttpStatus.OK).body(debateDtoList);
     }
 

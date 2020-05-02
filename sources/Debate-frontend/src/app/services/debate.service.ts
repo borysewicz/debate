@@ -9,14 +9,17 @@ import { Debate } from '../dto/debate.dto';
   providedIn: 'root',
 })
 export class DebateService {
-
-  constructor(private http: HttpClient) {}
   private readonly endpoint = 'http://localhost:8080/api/debate';
+  private readonly searchEndpoint = 'http://localhost:8080/api/search';
   private readonly coverImageBaseUrl = 'http://localhost:8080/api/debate/cover/';
+  
+  constructor(private http: HttpClient) {}
 
   addDebate(debate: AddUpdateDebateDto, cover?: File): Observable<Debate> {
     const formData = new FormData();
-    const debateBlob = new Blob([JSON.stringify(debate) as BlobPart], { type: 'application/json'});
+    const debateBlob = new Blob([JSON.stringify(debate) as BlobPart], {
+      type: 'application/json',
+    });
     formData.append('debate', debateBlob);
     if (cover) {
       formData.append('img', cover);
@@ -44,12 +47,35 @@ export class DebateService {
     return this.getDebates('hot', limit, page);
   }
 
-  private getDebates(sort: string, limit: number, page: number): Observable<Debate[]> {
+  private getDebates(
+    sort: string,
+    limit: number,
+    page: number
+  ): Observable<Debate[]> {
     let queryParams = new HttpParams();
     queryParams = queryParams.append('sort', sort);
     queryParams = queryParams.append('limit', limit.toString());
     queryParams = queryParams.append('page', page.toString());
-    return this.http.get<Debate[]>(this.endpoint, { params: queryParams});
+    return this.http.get<Debate[]>(this.endpoint, { params: queryParams });
   }
 
+  getDebatesByName(name: string): Observable<Debate[]> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append('reqName', name);
+    return this.http.get<Debate[]>(`${this.searchEndpoint}/byName`, {
+      params: queryParams,
+    });
+  }
+
+  getDebatesByTags(tags: string[]): Observable<Debate[]> {
+    let queryParams = new HttpParams();
+    let text = '';
+    for (let tag of tags) {
+      text += tag + ';';
+    }
+    queryParams = queryParams.append('Tags', text);
+    return this.http.get<Debate[]>(`${this.searchEndpoint}/byTags`, {
+      params: queryParams,
+    });
+  }
 }

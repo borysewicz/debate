@@ -3,7 +3,10 @@ package com.example.Debate.controller;
 import com.example.Debate.common.api.SortingType;
 import com.example.Debate.dto.request.AddOrUpdateDebateDto;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
+import com.example.Debate.dto.response.ArgumentResponse;
+import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.FullDebateResponseDto;
+import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.service.DebateService;
 import org.bson.types.Binary;
 import org.springframework.core.io.ByteArrayResource;
@@ -78,4 +81,17 @@ public class DebateController {
         return ResponseEntity.ok(history);
     }
 
+    @GetMapping("/comments/{id}")
+    public ResponseEntity<List<CommentResponse>> getCommentsForDebate(@PathVariable(name="id") String debateId,
+                                                                        Principal principal){
+        var comments = debateService.getCommentsForDebate(debateId, UserPrincipal.getUserId(principal));
+        return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/arguments/{id}")
+    public ResponseEntity<List<ArgumentResponse>> getArgumentsForDebate(@PathVariable(name="id") String debateId,
+                                                                         Principal principal){
+        var comments = debateService.getArgumentsForDebate(debateId, UserPrincipal.getUserId(principal));
+        return ResponseEntity.ok(comments);
+    }
 }

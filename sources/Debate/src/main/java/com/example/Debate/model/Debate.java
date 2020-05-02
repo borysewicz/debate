@@ -7,6 +7,8 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Document
@@ -18,14 +20,17 @@ public class Debate extends Activity{
     String[] allTags;
     String title;
     Binary image;
+    Set<String> arguments;
 
     public Debate(){
         super();
+        this.arguments = new HashSet<>();
     }
 
     @PersistenceConstructor
     public Debate(long creationDate){
         super(creationDate);
+
     }
 
     @Override
@@ -36,6 +41,4 @@ public class Debate extends Activity{
                     " allTags: " + Arrays.toString(this.allTags)
         );
     }
-
-
 }

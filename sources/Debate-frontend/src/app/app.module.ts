@@ -40,6 +40,7 @@ import { UserService } from './services/user.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AccountComponent } from './account/account.component';
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 @Injectable()
 export class CustomIntl extends TimeagoIntl {}
@@ -57,7 +58,8 @@ export class CustomIntl extends TimeagoIntl {}
     DebateComponent,
     DebateArgumentComponent,
     CommentComponent,
-  ],
+    SearchResultsComponent,
+    ],
   imports: [
     BrowserModule,
     MatToolbarModule,
@@ -85,7 +87,7 @@ export class CustomIntl extends TimeagoIntl {}
     TextFieldModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-	TimeagoModule.forRoot({
+	  TimeagoModule.forRoot({
       intl: { provide: TimeagoIntl, useClass: CustomIntl },
       formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
     })

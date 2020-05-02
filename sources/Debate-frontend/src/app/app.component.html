@@ -53,14 +53,9 @@
           aria-label="Text"
           matInput
           [formControl]="debateControl"
-          [matAutocomplete]="auto"
         />
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredDebates | async" [value]="option">
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
       </mat-form-field>
+      <button mat-raised-button color="primary" (click)="searchDebateByName()">Szukaj debat</button>
     <div class="sidenav-content">
       <app-tag-search></app-tag-search>
     </div>
