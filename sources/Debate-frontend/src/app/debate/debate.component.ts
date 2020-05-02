@@ -15,8 +15,7 @@ import { CommentService } from './../services/comment.service';
   styleUrls: ['./debate.component.scss'],
 })
 export class DebateComponent implements OnInit, OnDestroy {
-  private routeParamSubscription: Subscription;
-  private dataParamSubscription: Subscription;
+  private routeSubscription: Subscription;
   debate: Debate;
   pros: Argument[];
   cons: Argument[];
@@ -42,26 +41,23 @@ export class DebateComponent implements OnInit, OnDestroy {
     this.isCommentSectionLoadingError = false;
     this.isCommentSectionLoading = false;
     this.isCommentSectionRefreshing = false;
+    this.isCommentSectionOn = false;
     this.comments = [];
     this.pros = [];
     this.cons = [];
-    this.routeParamSubscription = this.route.params.subscribe((params) => {
+    this.routeSubscription = this.route.params.subscribe((params) => {
       this.updateModel(params.id);
-    });
-    this.dataParamSubscription = this.route.data.subscribe((data) => {
-      if (data.section === 'comments') {
-        this.isCommentSectionOn = true;
-        this.getComments();
-      } else {
-        this.isCommentSectionOn = false;
-        this.getArguments();
-      }
     });
   }
 
   private updateModel(id: string) {
     this.debateService.getDebateById(id).subscribe((debate) => {
       this.debate = debate;
+      if (this.isCommentSectionOn) {
+        this.getComments();
+      } else {
+        this.getArguments();
+      }
     });
   }
 
@@ -114,8 +110,17 @@ export class DebateComponent implements OnInit, OnDestroy {
     this.getArguments();
   }
 
+  onSectionButtonClicked() {
+    this.isCommentSectionOn = !this.isCommentSectionOn;
+
+    if (this.isCommentSectionOn) {
+      this.getComments();
+    } else {
+      this.getArguments();
+    }
+  }
+
   ngOnDestroy(): void {
-    this.routeParamSubscription.unsubscribe();
-    this.dataParamSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 }

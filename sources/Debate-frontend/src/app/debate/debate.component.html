@@ -2,22 +2,11 @@
   <div class="header">
     <button
       mat-raised-button
-      class="section-button text-center"
+      class="section-button"
       color="accent"
-      *ngIf="!isCommentSectionOn"
-      routerLink="../comments"
+      (click)="onSectionButtonClicked()"
     >
-      Komentarze
-      <mat-icon>chevron_right</mat-icon>
-    </button>
-    <button
-      mat-raised-button
-      class="section-button text-center"
-      color="accent"
-      *ngIf="isCommentSectionOn"
-      routerLink="../arguments"
-    >
-      Argumenty
+      {{ isCommentSectionOn ? 'Argumenty' : 'Komentarze' }}
       <mat-icon>chevron_right</mat-icon>
     </button>
     <h1 class="text-center">{{ debate?.title }}</h1>
@@ -26,8 +15,14 @@
 
   <mat-divider></mat-divider>
 
-  <div class="grid pt-2" *ngIf="!isCommentSectionOn">
+  <ng-container
+    *ngIf="isCommentSectionOn; then commentSection; else argumentSection"
+  >
+  </ng-container>
+
+  <ng-template #argumentSection>
     <div
+      class="grid pt-2"
       *ngIf="
         !isArgumentSectionLoading &&
         !isArgumentSectionLoadingError &&
@@ -48,39 +43,42 @@
         ></app-debate-argument>
       </mat-accordion>
     </div>
-  </div>
-  <h3
-    class="no-content-info"
-    *ngIf="
-      !isArgumentSectionLoading &&
-      !isArgumentSectionLoadingError &&
-      pros.length === 0 &&
-      cons.length === 0
-    "
-  >
-    Brak argumentów
-  </h3>
-  <mat-progress-bar
-    mode="buffer"
-    *ngIf="isArgumentSectionLoading"
-  ></mat-progress-bar>
-  <div class="d-flex column text-center" *ngIf="isArgumentSectionLoadingError">
-    <h2 class="align-self-center">Nie można załadować argumentów</h2>
-    <button
-      mat-raised-button
-      class="align-self-center"
-      (click)="onReloadArgumentsButtonClicked()"
+    <h3
+      class="no-content-info"
+      *ngIf="
+        !isArgumentSectionLoading &&
+        !isArgumentSectionLoadingError &&
+        pros.length === 0 &&
+        cons.length === 0
+      "
     >
-      <mat-icon [ngClass]="{ 'is-rotating': isArgumentSectionRefreshing }"
-        >replay</mat-icon
+      Brak argumentów
+    </h3>
+    <mat-progress-bar
+      mode="buffer"
+      *ngIf="isArgumentSectionLoading"
+    ></mat-progress-bar>
+    <div
+      class="d-flex column text-center"
+      *ngIf="isArgumentSectionLoadingError"
+    >
+      <h2 class="align-self-center">Nie można załadować argumentów</h2>
+      <button
+        mat-raised-button
+        class="align-self-center"
+        (click)="onReloadArgumentsButtonClicked()"
       >
-      Załaduj ponownie
-    </button>
-  </div>
+        <mat-icon [ngClass]="{ 'is-rotating': isArgumentSectionRefreshing }"
+          >replay</mat-icon
+        >
+        Załaduj ponownie
+      </button>
+    </div>
+  </ng-template>
 
   <!-- Komentarze -->
 
-  <div *ngIf="isCommentSectionOn">
+  <ng-template #commentSection>
     <ul
       class="comment-list"
       *ngIf="
@@ -121,5 +119,5 @@
         Załaduj ponownie
       </button>
     </div>
-  </div>
+  </ng-template>
 </div>
