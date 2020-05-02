@@ -42,16 +42,19 @@ import java.util.stream.Collectors;
 public class DebateServiceImpl implements DebateService {
     private DebateRepository debateRepository;
     private ArgumentRepository argumentRepository;
+    private CommentRepository commentRepository;
     private MongoTemplate mongoTemplate;
     private ModelMapper modelMapper;
 
     @Autowired
     public DebateServiceImpl(DebateRepository debateRepository,
                              ArgumentRepository argumentRepository,
+                             CommentRepository commentRepository,
                              MongoTemplate mongoTemplate,
                              ModelMapper modelMapper) {
         this.debateRepository = debateRepository;
         this.argumentRepository =  argumentRepository;
+        this.commentRepository = commentRepository;
         this.mongoTemplate = mongoTemplate;
         this.modelMapper = modelMapper;
     }
@@ -103,7 +106,19 @@ public class DebateServiceImpl implements DebateService {
     public void delete(String id, Principal principal) {
         var debate = debateRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Debate", id));
+        Set<String> argumentIds = debate.getArguments();
+        Set<String> commentIds = debate.getComments();
+        Criteria whereIdInArgumentIds = Criteria.where("_id").in(argumentIds);
+        Query selectArguments = new Query(whereIdInArgumentIds);
+        List<Argument> childArguments = mongoTemplate.find(selectArguments,Argument.class);
+        for(var argument: childArguments)
+            commentIds.addAll(argument.getComments());
+
         if (debate.isAuthorized(principal)) {
+            Query deleteComments = new Query(Criteria.where("_id").in(commentIds));
+            mongoTemplate.remove(deleteComments,Comment.class);
+            Query deleteArguments = new Query(Criteria.where("_id").in(argumentIds));
+            mongoTemplate.remove(deleteArguments,Argument.class);
             debateRepository.deleteById(id);
         } else throw new UnauthorizedAccessException();
     }

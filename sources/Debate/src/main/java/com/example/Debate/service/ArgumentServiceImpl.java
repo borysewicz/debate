@@ -87,7 +87,10 @@ public class ArgumentServiceImpl implements ArgumentService {
     public void deleteArgument(String id, Principal principal) {
         var argument = argumentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Argument", id));
+        Set<String> commentIds = argument.getComments();
         if (argument.isAuthorized(principal)) {
+            Query deleteComments = new Query(Criteria.where("_id").in(commentIds));
+            mongoTemplate.remove(deleteComments,Comment.class);
             argumentRepository.deleteById(id);
         } else throw new UnauthorizedAccessException();
     }
