@@ -55,4 +55,12 @@ export class AppComponent implements OnInit {
     this.authService.logOut();
     this.router.navigate(['/home']);
   }
+
+  searchDebateByName() {
+    if (this.debateControl.value !== '') {
+      this.router.navigate(['/searchResults'], {
+        queryParams: { searchName: this.debateControl.value },
+      });
+    }
+  }
 }
