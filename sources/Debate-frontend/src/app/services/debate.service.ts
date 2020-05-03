@@ -1,17 +1,18 @@
-import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { Debate } from '../dto/debate.dto';
 import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
+import { Debate } from '../dto/debate.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DebateService {
-  private endpoint = 'http://localhost:8080/api/debate';
-  private searchEndpoint = 'http://localhost:8080/api/search';
-
+  private readonly endpoint = 'http://localhost:8080/api/debate';
+  private readonly searchEndpoint = 'http://localhost:8080/api/search';
+  private readonly coverImageBaseUrl = 'http://localhost:8080/api/debate/cover/';
+  
   constructor(private http: HttpClient) {}
 
   addDebate(debate: AddUpdateDebateDto, cover?: File): Observable<Debate> {
@@ -26,8 +27,16 @@ export class DebateService {
     return this.http.post<Debate>(this.endpoint + '/add', formData);
   }
 
+  getCoverImageUrl(id: string): string {
+    return this.coverImageBaseUrl + id;
+  }
+
+  getDebateById(id: string): Observable<Debate> {
+    return this.http.get<Debate>(`${this.endpoint}/${id}`);
+  }
+
   getPopularDebates(limit: number, page: number): Observable<Debate[]> {
-    return this.getDebates('popular', limit, page);
+    return this.getDebates('popular', limit , page);
   }
 
   getNewDebates(limit: number, page: number): Observable<Debate[]> {

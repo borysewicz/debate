@@ -37,8 +37,8 @@ export class DebateCardComponent implements OnInit {
   }
 
   getCoverUrl() {
-    const urlPath = 'http://localhost:8080/api/debate/cover/' + this.debate._id;
-    return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + ')');
+      const urlPath = this.debateService.getCoverImageUrl(this.debate._id);
+      return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + ')');
   }
 
   getDebatesWithTag(tag: string) {

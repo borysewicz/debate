@@ -1,0 +1,106 @@
+.green {
+  color: rgb(100, 221, 23);
+}
+
+.red {
+  color: rgb(255, 82, 82);
+}
+
+.pull-right {
+  justify-content: end;
+}
+
+.mat-expansion-panel-header-description > .mat-icon {
+  padding: 0 0.5em;
+}
+
+.px-1 {
+  padding: 0 0.5em;
+}
+
+.rate-button {
+  width: 10ch;
+  max-width: 10ch;
+  text-align: start;
+  padding: 0;
+  letter-spacing: 0.1em;
+  margin-right: 0.3em;
+}
+
+.rate-button-text {
+  display: inline-block;
+  width: 10ch;
+  max-width: 10ch;
+}
+
+.rate-pressed {
+  color: black;
+  .rate-button-text {
+    font-weight: 1000;
+    ::before {
+      font-weight: 900;
+      display: block;
+      content: attr(title);
+      font-weight: bold;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+  }
+}
+
+.mat-expansion-panel-header-title {
+  align-items: center;
+}
+
+.mat-list-base .mat-list-item .mat-list-item-content,
+.mat-list-base .mat-list-option .mat-list-item-content {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.comment-section {
+  list-style: none;
+  padding-left: 2em;
+}
+
+.comment-section-header {
+  font-weight: bold;
+  padding: 1em 1em 0;
+}
+
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(360deg); }
+  to { -ms-transform: rotate(0deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(360deg); }
+  to { -moz-transform: rotate(0deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(360deg); }
+  to { -webkit-transform: rotate(0deg); }
+}
+@keyframes spin {
+  from {
+      transform: rotate(360deg);
+  }
+  to {
+      transform: rotate(0deg);
+  }
+}
+
+.is-rotating {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.argument-footer {
+  font-style: italic;
+  text-align: right;
+}
