@@ -29,7 +29,7 @@ export class AddUpdateDebateComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.debateForm.form.valid || !this.isTagListValid) {
+    if (!this.debateForm.form.valid || !this.isTagListValid()) {
       return;
     }
     this.model.mainTags = this.model.allTags.slice(0, 3);
@@ -89,7 +89,10 @@ export class AddUpdateDebateComponent implements OnInit {
     }
   }
 
-  isTagListValid(): boolean {
-    return this.model.allTags.length >= 3 && this.model.allTags.length <= 7;
+  isTagListValid(): boolean{
+    if (this.model.allTags.length >= 3 && this.model.allTags.length <= 7) { return true; } else {
+      this.tagList.errorState = true;
+      return false;
+    }
   }
 }

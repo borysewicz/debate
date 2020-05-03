@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as polishStrings } from 'ngx-timeago/language-strings/pl';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   debateControl = new FormControl('');
   debates: string[] = [
     'Wykłady to marnowanie czasu',

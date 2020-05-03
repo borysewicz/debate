@@ -3,16 +3,17 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
+import { environment } from 'src/environments/environment';
 import { Debate } from '../dto/debate.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DebateService {
-  private readonly endpoint = 'http://localhost:8080/api/debate';
-  private readonly searchEndpoint = 'http://localhost:8080/api/search';
-  private readonly coverImageBaseUrl = 'http://localhost:8080/api/debate/cover/';
-  
+  private readonly endpoint = environment.api + '/debate';
+  private readonly searchEndpoint = environment.api + '/search';
+  private readonly coverImageBaseUrl = environment.api + '/debate/cover/';
+
   constructor(private http: HttpClient) {}
 
   addDebate(debate: AddUpdateDebateDto, cover?: File): Observable<Debate> {

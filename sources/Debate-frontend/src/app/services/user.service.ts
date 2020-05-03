@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { UserDto } from './../dto/user.dto';
 import { from, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   userRole = 'USER';
-  private endpoint = 'http://localhost:8080/api/user';
+  private readonly endpoint = environment.api + '/user';
   userDto: UserDto;
 
   constructor(private http: HttpClient) {}

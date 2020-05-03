@@ -1,7 +1,7 @@
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Injectable, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -16,31 +16,30 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TextFieldModule } from '@angular/cdk/text-field';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CookieService } from 'ngx-cookie-service';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 
+import { AccountComponent } from './account/account.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoadMoreComponent } from './common/load-more/load-more.component';
 import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-debate.component';
 import { CommentComponent } from './debate/comment/comment.component';
 import { DebateArgumentComponent } from './debate/debate-argument/debate-argument.component';
 import { DebateComponent } from './debate/debate.component';
 import { DebateCardComponent } from './homepage/debate-card/debate-card.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { TagSearchComponent } from './tag-search/tag-search.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegistrationComponent } from './loginpage/registration/registration.component';
-import { UserService } from './services/user.service';
-import { CookieService } from 'ngx-cookie-service';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { AccountComponent } from './account/account.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { TagSearchComponent } from './tag-search/tag-search.component';
 
 @Injectable()
 export class CustomIntl extends TimeagoIntl {}
@@ -55,11 +54,12 @@ export class CustomIntl extends TimeagoIntl {}
     LoginpageComponent,
     RegistrationComponent,
     AccountComponent,
+    LoadMoreComponent,
     DebateComponent,
     DebateArgumentComponent,
     CommentComponent,
     SearchResultsComponent,
-    ],
+  ],
   imports: [
     BrowserModule,
     MatToolbarModule,
@@ -87,11 +87,15 @@ export class CustomIntl extends TimeagoIntl {}
     TextFieldModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-	  TimeagoModule.forRoot({
+    TimeagoModule.forRoot({
       intl: { provide: TimeagoIntl, useClass: CustomIntl },
-      formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
-    })
+      formatter: {
+        provide: TimeagoFormatter,
+        useClass: TimeagoCustomFormatter,
+      },
+    }),
   ],
+
   providers: [
     CookieService,
     {

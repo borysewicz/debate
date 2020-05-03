@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Debate } from '../../dto/debate.dto';
 import { DebateService } from 'src/app/services/debate.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
 @Component({
@@ -30,16 +31,16 @@ export class DebateCardComponent implements OnInit {
       this.expandString = 'Rozwiń';
       this.isExpanded = false;
     } else {
-      this.sliceEnd = this.debate.content.length;
-      this.expandString = 'Zwiń';
-      this.isExpanded = true;
+        this.sliceEnd = this.debate.content.length;
+        this.expandString = 'Zwiń';
+        this.isExpanded = true;
     }
   }
 
-  getCoverUrl() {
-      const urlPath = this.debateService.getCoverImageUrl(this.debate._id);
-      return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + ')');
-  }
+ getCoverUrl() {
+    const urlPath = this.debateService.getCoverImageUrl(this.debate._id);
+   return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + '), url(assets/no_cover.png)');
+ }
 
   getDebatesWithTag(tag: string) {
     this.router.navigate(['/searchResults'], {

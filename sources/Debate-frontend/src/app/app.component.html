@@ -7,12 +7,12 @@
       Debate
     </a>
     <span class="spacer"></span>
-    <button mat-button class="add-button" routerLink="/addDebate" >
+    <button *ngIf="isLogged" mat-button class="add-button" routerLink="/addDebate" >
       <mat-icon class="toolbar-icon create-debate">
           create
       </mat-icon>
     </button>
-   <button mat-button>
+   <button *ngIf="isLogged" mat-button>
       <mat-icon class="toolbar-icon ">
         notifications
       </mat-icon>
