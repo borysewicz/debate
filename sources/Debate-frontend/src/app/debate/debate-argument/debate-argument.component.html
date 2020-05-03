@@ -1,0 +1,102 @@
+<mat-expansion-panel [expanded]="isPanelExpanded" (opened)="getComments()">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon
+        class="px-1"
+        [ngClass]="{
+          green: argument.attitude === ArgumentAttitude.POSITIVE,
+          red: argument.attitude === ArgumentAttitude.NEGATIVE
+        }"
+        >{{ iconName }}</mat-icon
+      >
+      {{ argument.title }}
+    </mat-panel-title>
+    <mat-panel-description class="pull-right">
+      <button
+        mat-button
+        class="rate-button"
+        [ngClass]="{
+          'rate-pressed': argument.userVote === UserVote.POSITIVE
+        }"
+        (click)="onRateButtonPressed($event, UserVote.POSITIVE)"
+      >
+        <mat-icon>thumb_up</mat-icon>
+        <span
+          class="px-1 rate-button-text"
+          [attr.data-text]="argument.upVotes"
+          >{{ argument.upVotes }}</span
+        >
+      </button>
+      <button
+        mat-button
+        class="rate-button"
+        [ngClass]="{
+          'rate-pressed': argument.userVote === UserVote.NEGATIVE
+        }"
+        (click)="onRateButtonPressed($event, UserVote.NEGATIVE)"
+      >
+        <mat-icon>thumb_down</mat-icon>
+        <span
+          class="px-1 rate-button-text"
+          [attr.data-text]="argument.downVotes"
+          >{{ argument.downVotes }}</span
+        >
+      </button>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+        (click)="$event.stopPropagation()"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>outlined_flag</mat-icon>
+          <span>Zgłoś argument</span>
+        </button>
+      </mat-menu>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <p>{{ argument.content }}</p>
+  <p class="argument-footer">
+    {{ argument.author }} - Ostatnio edytowane:
+    {{ argument.lastEditTime | timeago }}
+  </p>
+  <mat-divider></mat-divider>
+  <h3 class="comment-section-header">Komentarze</h3>
+  <h3
+    class="text-center"
+    *ngIf="
+      !isCommentSectionLoading &&
+      !isCommentLoadingError &&
+      comments.length === 0
+    "
+  >
+    Brak komentarzy
+  </h3>
+  <ul
+    class="comment-section"
+    *ngIf="!isCommentSectionLoading && !isCommentLoadingError"
+  >
+    <app-comment
+      *ngFor="let comment of comments"
+      [comment]="comment"
+    ></app-comment>
+  </ul>
+  <mat-progress-bar
+    mode="buffer"
+    *ngIf="isCommentSectionLoading"
+  ></mat-progress-bar>
+  <div class="d-flex column text-center" *ngIf="isCommentLoadingError">
+    <h2 class="align-self-center">Nie można załadować komentarzy</h2>
+    <button
+      mat-raised-button
+      class="align-self-center"
+      (click)="onReloadCommentsButtonClicked()"
+    >
+      <mat-icon [ngClass]="{ 'is-rotating': isRefreshing }">replay</mat-icon>
+      Załaduj ponownie
+    </button>
+  </div>
+</mat-expansion-panel>

@@ -4,7 +4,9 @@ import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
 import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
+import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.RatingResponse;
+import com.example.Debate.jwt.UserPrincipal;
 
 import java.security.Principal;
 import java.util.List;
@@ -25,4 +27,6 @@ public interface ArgumentService {
     ActivityHistoryResponse getArgumentHistory(String id);
 
     RatingResponse rateArgument(RatingRequest rating, Principal principal, String argumentId);
+
+    List<CommentResponse> getCommentsForArgument(String argumentId, Optional<String> userLogin);
 }

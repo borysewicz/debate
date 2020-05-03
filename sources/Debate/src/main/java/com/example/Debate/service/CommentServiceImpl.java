@@ -8,8 +8,11 @@ import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.model.Comment;
+import com.example.Debate.model.Debate;
 import com.example.Debate.model.enums.Vote;
+import com.example.Debate.repository.ArgumentRepository;
 import com.example.Debate.repository.CommentRepository;
+import com.example.Debate.repository.DebateRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +24,17 @@ import java.util.stream.Collectors;
 @Service
 public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
+    private ArgumentRepository argumentRepository;
+    private DebateRepository debateRepository;
     private ModelMapper modelMapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper) {
+    public CommentServiceImpl(CommentRepository commentRepository,
+                              ArgumentRepository argumentRepository,
+                              DebateRepository debateRepository,
+                              ModelMapper modelMapper) {
         this.commentRepository = commentRepository;
+        this.argumentRepository = argumentRepository;
+        this.debateRepository = debateRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -37,11 +47,30 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponse addComment(AddOrUpdateCommentDto commentDto, Principal principal) {
+    public CommentResponse addCommentOnArgument(AddOrUpdateCommentDto commentDto, Principal principal) {
         var comment = modelMapper.map(commentDto, Comment.class);
         comment.setAuthor(principal.getName());
         comment.ratePost(principal.getName(), Vote.POSITIVE);
+        String parentId = comment.getParentActivityId();
+        var argument = argumentRepository.findById(parentId).orElseThrow(() ->
+                new ResourceNotFoundException("Argument", parentId));
         var saved = commentRepository.save(comment);
+        argument.getComments().add(saved.get_id());
+        argumentRepository.save(argument);
+        return modelMapper.map(saved, CommentResponse.class).withUserVote(Vote.POSITIVE);
+    }
+
+    @Override
+    public CommentResponse addCommentOnDebate(AddOrUpdateCommentDto commentDto, Principal principal) {
+        var comment = modelMapper.map(commentDto, Comment.class);
+        comment.setAuthor(principal.getName());
+        comment.ratePost(principal.getName(), Vote.POSITIVE);
+        String parentId = comment.getParentActivityId();
+        var debate = debateRepository.findById(parentId).orElseThrow(() ->
+                new ResourceNotFoundException("Argument", parentId));
+        var saved = commentRepository.save(comment);
+        debate.getComments().add(saved.get_id());
+        debateRepository.save(debate);
         return modelMapper.map(saved, CommentResponse.class).withUserVote(Vote.POSITIVE);
     }
 
@@ -89,6 +118,4 @@ public class CommentServiceImpl implements CommentService {
         var saved = commentRepository.save(argument);
         return modelMapper.map(saved, RatingResponse.class);
     }
-
-
 }

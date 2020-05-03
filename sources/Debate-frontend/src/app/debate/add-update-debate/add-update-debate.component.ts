@@ -21,7 +21,7 @@ export class AddUpdateDebateComponent implements OnInit {
   @ViewChild('tagList') tagList: MatChipList;
   @ViewChild('debateForm') debateForm: HTMLFormElement;
 
-  constructor(private debateService: DebateService, private router: Router) { 
+  constructor(private debateService: DebateService, private router: Router) {
     this.model = {title: '', description: '', mainTags: [], allTags: ['polityka']};
   }
 
@@ -32,27 +32,31 @@ export class AddUpdateDebateComponent implements OnInit {
     if (!this.debateForm.form.valid || !this.isTagListValid()) {
       return;
     }
-    this.model.mainTags = this.model.allTags.slice(0,3);
+    this.model.mainTags = this.model.allTags.slice(0, 3);
     this.debateService.addDebate(this.model, this.imageData).subscribe(
       res => this.router.navigate(['/home']),
       err => console.log(err)
     );
   }
 
-  addTag(event: MatChipInputEvent){
-      if ((event.value || '').trim()){
+  get diagnostics() {
+    return JSON.stringify(this.model);
+  }
+
+  addTag(event: MatChipInputEvent) {
+      if ((event.value || '').trim()) {
         const value = event.value.trim().toLowerCase();
-        if (this.model.allTags.indexOf(value) >= 0){
+        if (this.model.allTags.indexOf(value) >= 0) {
           return;
         }
         this.model.allTags.push(value);
         if (this.model.allTags.length >= 3 && this.model.allTags.length < 7) {
           this.tagList.errorState = false;
-        } else if (this.model.allTags.length > 7){
+        } else if (this.model.allTags.length > 7) {
           this.tagList.errorState = true;
         }
       }
-      if (event.input){
+      if (event.input) {
         event.input.value = '';
       }
   }
@@ -63,16 +67,16 @@ export class AddUpdateDebateComponent implements OnInit {
       this.model.allTags.splice(index, 1);
     }
 
-    if (this.model.allTags.length < 3 || this.model.allTags.length > 7){
+    if (this.model.allTags.length < 3 || this.model.allTags.length > 7) {
         this.tagList.errorState = true;
     } else {
       this.tagList.errorState = false;
     }
   }
 
-  onFileChanged(fileEvent: Event){
+  onFileChanged(fileEvent: Event) {
     const fileEventTarget = fileEvent.target as HTMLInputElement;
-    if (fileEventTarget.files[0].size > 4_000_000){ // 4MB = 4 000 000 B
+    if (fileEventTarget.files[0].size > 4000000) { // 4MB = 4 000 000 B
       this.imageInvalid = true;
       return;
     }

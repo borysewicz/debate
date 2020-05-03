@@ -9,7 +9,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.Id;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,11 +23,13 @@ public abstract class Activity {
     protected String content;
     protected long lastEditTime;
     protected Map<Long, String> editHistory;
+    protected Set<String> comments;
 
 
     protected Activity(){
         this.creationDate = System.currentTimeMillis();
         this.lastEditTime = this.creationDate;
+        this.comments = new HashSet<>();
         this.editHistory = new HashMap<>();
     }
 

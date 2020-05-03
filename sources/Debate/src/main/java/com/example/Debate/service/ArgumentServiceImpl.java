@@ -6,29 +6,45 @@ import com.example.Debate.dto.request.AddOrUpdateArgumentDto;
 import com.example.Debate.dto.request.RatingRequest;
 import com.example.Debate.dto.response.ActivityHistoryResponse;
 import com.example.Debate.dto.response.ArgumentResponse;
+import com.example.Debate.dto.response.CommentResponse;
 import com.example.Debate.dto.response.RatingResponse;
 import com.example.Debate.model.Argument;
+import com.example.Debate.model.Comment;
+import com.example.Debate.model.Debate;
 import com.example.Debate.model.enums.Attitude;
 import com.example.Debate.model.enums.Vote;
 import com.example.Debate.repository.ArgumentRepository;
+import com.example.Debate.repository.CommentRepository;
+import com.example.Debate.repository.DebateRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class ArgumentServiceImpl implements ArgumentService {
     private ArgumentRepository argumentRepository;
+    private DebateRepository debateRepository;
+    private MongoTemplate mongoTemplate;
     private ModelMapper modelMapper;
 
-    public ArgumentServiceImpl(ArgumentRepository argumentRepository, ModelMapper modelMapper) {
+    public ArgumentServiceImpl(ArgumentRepository argumentRepository,
+                               DebateRepository debateRepository,
+                               MongoTemplate mongoTemplate,
+                               ModelMapper modelMapper) {
         this.argumentRepository = argumentRepository;
+        this.debateRepository = debateRepository;
+        this.mongoTemplate = mongoTemplate;
         this.modelMapper = modelMapper;
     }
 
@@ -45,12 +61,18 @@ public class ArgumentServiceImpl implements ArgumentService {
 
     @Override
     public ArgumentResponse addArgument(AddOrUpdateArgumentDto argumentDto, String userId) {
+
         var argument = new Argument(
                 argumentDto.getTitle(), argumentDto.getAttitude(), argumentDto.getDebateId(),
                 argumentDto.getContent(), userId
         );
         argument.ratePost(userId, Vote.POSITIVE);
-        return modelMapper.map(argumentRepository.save(argument), ArgumentResponse.class)
+        var debate = debateRepository.findById(argumentDto.getDebateId()).orElseThrow(() ->
+                new ResourceNotFoundException("Argument",argumentDto.getDebateId()));
+        var saved = argumentRepository.save(argument);
+        debate.getArguments().add(saved.get_id());
+        debateRepository.save(debate);
+        return modelMapper.map(saved, ArgumentResponse.class)
                 .withUserVote(Vote.POSITIVE);
     }
 
@@ -65,7 +87,10 @@ public class ArgumentServiceImpl implements ArgumentService {
     public void deleteArgument(String id, Principal principal) {
         var argument = argumentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Argument", id));
+        Set<String> commentIds = argument.getComments();
         if (argument.isAuthorized(principal)) {
+            Query deleteComments = new Query(Criteria.where("_id").in(commentIds));
+            mongoTemplate.remove(deleteComments,Comment.class);
             argumentRepository.deleteById(id);
         } else throw new UnauthorizedAccessException();
     }
@@ -99,4 +124,16 @@ public class ArgumentServiceImpl implements ArgumentService {
         return modelMapper.map(saved, RatingResponse.class);
     }
 
+    @Override
+    public List<CommentResponse> getCommentsForArgument(String argumentId, Optional<String> userLogin) {
+        Argument currArgument = argumentRepository.findById(argumentId).orElseThrow(() ->
+                new ResourceNotFoundException("Debate", argumentId));
+        Set<String> childCommentsSet = currArgument.getComments();
+        Criteria criteria = Criteria.where("_id").in(childCommentsSet);
+        Query query = new Query(criteria);
+        return mongoTemplate.find(query, Comment.class).stream()
+                .map(comment -> modelMapper.map(comment, CommentResponse.class)
+                        .withUserVote(comment.getUserVote(userLogin)))
+                .collect(Collectors.toList());
+    }
 }

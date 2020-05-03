@@ -1,6 +1,8 @@
 import { Observable, Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { TimeagoIntl } from 'ngx-timeago';
+import { strings as polishStrings } from 'ngx-timeago/language-strings/pl';
 import { map, startWith } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
@@ -22,7 +24,10 @@ export class AppComponent implements OnInit, OnDestroy {
   isSignedOnSubscription: Subscription;
   isLogged: boolean;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, intl: TimeagoIntl) {
+    intl.strings = polishStrings;
+    intl.changes.next();
+  }
 
   ngOnInit(): void {
     this.filteredDebates = this.debateControl.valueChanges.pipe(
@@ -54,5 +59,13 @@ export class AppComponent implements OnInit, OnDestroy {
   logOut() {
     this.authService.logOut();
     this.router.navigate(['/home']);
+  }
+
+  searchDebateByName() {
+    if (this.debateControl.value !== '') {
+      this.router.navigate(['/searchResults'], {
+        queryParams: { searchName: this.debateControl.value },
+      });
+    }
   }
 }

@@ -28,14 +28,16 @@ public abstract class Post extends Activity {
     public void ratePost(String userName, Vote vote) {
         if (voters.containsKey(userName)) {
             var oldVote = voters.get(userName);
-            if (!oldVote.equals(vote)) {
+            if (!oldVote.equals(vote) && oldVote != Vote.NONE) {
                 voters.remove(userName);
-                this.rating += vote.equals(Vote.POSITIVE) ? -1 : 1; // if the vote was POSITIVE, rating goes down, otherwise up.
+                this.rating += oldVote.equals(Vote.POSITIVE) ? -1 : 1; // if the vote was POSITIVE, rating goes down, otherwise up.
             }
-            return;
         }
-        this.voters.put(userName, vote);
-        this.rating += vote.equals(Vote.POSITIVE) ? 1 : -1;
+
+        if (vote != Vote.NONE) {
+            this.voters.put(userName, vote);
+            this.rating += vote.equals(Vote.POSITIVE) ? 1 : -1;
+        }
     }
 
     public int getUpvotes() {

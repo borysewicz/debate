@@ -42,9 +42,15 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getCommentHistory(commentId));
     }
 
-    @PostMapping()
-    public ResponseEntity<CommentResponse> addComment(@RequestBody AddOrUpdateCommentDto commentDto, Principal principal) {
-        var addedComment = this.commentService.addComment(commentDto, principal);
+    @PostMapping("/addOnArgument")
+    public ResponseEntity<CommentResponse> addCommentOnArgument(@RequestBody AddOrUpdateCommentDto commentDto, Principal principal) {
+        var addedComment = this.commentService.addCommentOnArgument(commentDto, principal);
+        return ResponseEntity.created(URI.create("api/comment/" + addedComment.get_id())).body(addedComment);
+    }
+
+    @PostMapping("/addOnDebate")
+    public ResponseEntity<CommentResponse> addCommentOnDebate(@RequestBody AddOrUpdateCommentDto commentDto, Principal principal) {
+        var addedComment = this.commentService.addCommentOnDebate(commentDto, principal);
         return ResponseEntity.created(URI.create("api/comment/" + addedComment.get_id())).body(addedComment);
     }
 

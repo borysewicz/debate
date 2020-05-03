@@ -1,0 +1,123 @@
+<div class="container">
+  <div class="header">
+    <button
+      mat-raised-button
+      class="section-button"
+      color="accent"
+      (click)="onSectionButtonClicked()"
+    >
+      {{ isCommentSectionOn ? 'Argumenty' : 'Komentarze' }}
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <h1 class="text-center">{{ debate?.title }}</h1>
+    <h3 class="text-center">{{ debate?.content }}</h3>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <ng-container
+    *ngIf="isCommentSectionOn; then commentSection; else argumentSection"
+  >
+  </ng-container>
+
+  <ng-template #argumentSection>
+    <div
+      class="grid pt-2"
+      *ngIf="
+        !isArgumentSectionLoading &&
+        !isArgumentSectionLoadingError &&
+        pros.length !== 0 &&
+        cons.length !== 0
+      "
+    >
+      <mat-accordion>
+        <app-debate-argument
+          *ngFor="let pro of pros"
+          [argument]="pro"
+        ></app-debate-argument>
+      </mat-accordion>
+      <mat-accordion>
+        <app-debate-argument
+          *ngFor="let con of cons"
+          [argument]="con"
+        ></app-debate-argument>
+      </mat-accordion>
+    </div>
+    <h3
+      class="no-content-info"
+      *ngIf="
+        !isArgumentSectionLoading &&
+        !isArgumentSectionLoadingError &&
+        pros.length === 0 &&
+        cons.length === 0
+      "
+    >
+      Brak argumentów
+    </h3>
+    <mat-progress-bar
+      mode="buffer"
+      *ngIf="isArgumentSectionLoading"
+    ></mat-progress-bar>
+    <div
+      class="d-flex column text-center"
+      *ngIf="isArgumentSectionLoadingError"
+    >
+      <h2 class="align-self-center">Nie można załadować argumentów</h2>
+      <button
+        mat-raised-button
+        class="align-self-center"
+        (click)="onReloadArgumentsButtonClicked()"
+      >
+        <mat-icon [ngClass]="{ 'is-rotating': isArgumentSectionRefreshing }"
+          >replay</mat-icon
+        >
+        Załaduj ponownie
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- Komentarze -->
+
+  <ng-template #commentSection>
+    <ul
+      class="comment-list"
+      *ngIf="
+        !isCommentSectionLoading &&
+        !isCommentSectionLoadingError &&
+        comments.length !== 0
+      "
+    >
+      <app-comment
+        *ngFor="let comment of comments"
+        [comment]="comment"
+      ></app-comment>
+    </ul>
+    <h3
+      class="no-content-info"
+      *ngIf="
+        !isCommentSectionLoading &&
+        !isCommentSectionLoadingError &&
+        comments.length === 0
+      "
+    >
+      Brak komentarzy
+    </h3>
+    <mat-progress-bar
+      mode="buffer"
+      *ngIf="isCommentSectionLoading"
+    ></mat-progress-bar>
+    <div class="d-flex column text-center" *ngIf="isCommentSectionLoadingError">
+      <h2 class="align-self-center">Nie można załadować komentarzy</h2>
+      <button
+        mat-raised-button
+        class="align-self-center"
+        (click)="onReloadCommentsButtonClicked()"
+      >
+        <mat-icon [ngClass]="{ 'is-rotating': isCommentSectionRefreshing }"
+          >replay</mat-icon
+        >
+        Załaduj ponownie
+      </button>
+    </div>
+  </ng-template>
+</div>
