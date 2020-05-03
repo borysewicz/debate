@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Debate } from '../dto/debate.dto';
 import { DebateService } from '../services/debate.service';
-import { LoadMoreComponent } from '../common/load-more/load-more.component';
 
 @Component({
   selector: 'app-homepage',
@@ -16,27 +15,41 @@ export class HomepageComponent implements OnInit {
   newPage = 0;
   hotDebates: Debate[] = [];
   hotPage = 0;
-  
-  @ViewChild('loadPopularDebate') popularDebatesLoader: LoadMoreComponent;
-  @ViewChild('loadNewDebate') newDebatesLoader: LoadMoreComponent;
-  @ViewChild('loadHotDebate') hotDebatesLoader: LoadMoreComponent;
 
-  
+  hasMorePopular: boolean;
+  hasMoreHot: boolean;
+  hasMoreNew: boolean;
+  isPopularLoading: boolean;
+  isHotLoading: boolean;
+  isNewLoading: boolean;
+
   constructor(private debateService: DebateService) {}
-  
+
   ngOnInit(): void {
-    this.debateService.getPopularDebates(10, 0).subscribe(data => this.popularDebates = data);
-    this.debateService.getHotDebates(10, 0).subscribe(data => this.hotDebates = data);
-    this.debateService.getNewDebates(10, 0).subscribe(data => this.newDebates = data);
+    this.isHotLoading = false;
+    this.isNewLoading = false;
+    this.isPopularLoading = false;
+    this.debateService.getPopularDebates(10, 0).subscribe(data => {
+      this.popularDebates = data;
+      this.hasMorePopular = data.length >= 10;
+    });
+    this.debateService.getHotDebates(10, 0).subscribe(data => {
+      this.hotDebates = data;
+      this.hasMoreHot = data.length >= 10;
+    });
+    this.debateService.getNewDebates(10, 0).subscribe(data => {
+      this.newDebates = data;
+      this.hasMoreNew = data.length >= 10;
+    });
   }
 
   loadPopularDebates() {
     this.popularPage += 1;
     this.debateService.getPopularDebates(10, this.popularPage).subscribe(data => {
       this.popularDebates = this.popularDebates.concat(data);
-      this.popularDebatesLoader.isLoading = false;
-      if (data.length < 10){
-        this.popularDebatesLoader.hasMore = false;
+      this.isPopularLoading = false;
+      if (data.length < 10) {
+        this.hasMorePopular = false;
       }
     });
   }
@@ -45,9 +58,9 @@ export class HomepageComponent implements OnInit {
     this.newPage += 1;
     this.debateService.getNewDebates(10, this.newPage).subscribe(data => {
       this.newDebates = this.newDebates.concat(data);
-      this.popularDebatesLoader.isLoading = false;
-      if (data.length < 10){
-        this.newDebatesLoader.hasMore = false;
+      this.isNewLoading = false;
+      if (data.length < 10) {
+        this.hasMoreNew = false;
       }
     });
   }
@@ -56,9 +69,9 @@ export class HomepageComponent implements OnInit {
     this.hotPage += 1;
     this.debateService.getHotDebates(10, this.hotPage).subscribe(data => {
       this.hotDebates = this.hotDebates.concat(data);
-      this.hotDebatesLoader.isLoading = false;
-      if (data.length < 10){
-        this.hotDebatesLoader.hasMore = false;
+      this.isHotLoading = false;
+      if (data.length < 10) {
+        this.hasMoreHot = false;
       }
     });
   }

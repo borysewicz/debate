@@ -1,26 +1,41 @@
-
-
 <mat-tab-group mat-stretch-tabs>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon aria-hidden="false" aria-label="Polecane">trending_up</mat-icon>
       Polecane
     </ng-template>
-      <div class="debate-card-container">
-        <app-debate-card class="debate-card" *ngFor="let debate of popularDebates" [debate]="debate"></app-debate-card>
-      </div>
-      <app-load-more (loadRequested)="loadPopularDebates()" #loadPopularDebate>
-      </app-load-more>
-    </mat-tab>
+    <div class="debate-card-container">
+      <app-debate-card
+        class="debate-card"
+        *ngFor="let debate of popularDebates"
+        [debate]="debate"
+      ></app-debate-card>
+    </div>
+    <app-load-more
+      (loadRequested)="loadPopularDebates()"
+      [isLoading]="isPopularLoading"
+      *ngIf="hasMorePopular"
+    >
+    </app-load-more>
+  </mat-tab>
+
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon aria-hidden="false" aria-label="Nowe">fiber_new</mat-icon>
       Nowe
     </ng-template>
-    <div class="debate-card-container">      
-      <app-debate-card class="debate-card" *ngFor="let debate of newDebates" [debate]="debate"></app-debate-card>
+    <div class="debate-card-container">
+      <app-debate-card
+        class="debate-card"
+        *ngFor="let debate of newDebates"
+        [debate]="debate"
+      ></app-debate-card>
     </div>
-    <app-load-more (loadRequested)="loadNewDebates()" #loadNewDebate>
+    <app-load-more
+      (loadRequested)="loadNewDebates()"
+      [isLoading]="isNewLoading"
+      *ngIf="hasMoreNew"
+    >
     </app-load-more>
   </mat-tab>
 
@@ -30,9 +45,17 @@
       Gorące
     </ng-template>
     <div class="debate-card-container">
-      <app-debate-card class="debate-card" *ngFor="let debate of hotDebates" [debate]="debate"></app-debate-card>
+      <app-debate-card
+        class="debate-card"
+        *ngFor="let debate of hotDebates"
+        [debate]="debate"
+      ></app-debate-card>
     </div>
-    <app-load-more (loadRequested)="loadHotDebates()" #loadHotDebate>
+    <app-load-more
+      (loadRequested)="loadHotDebates()"
+      [isLoading]="isHotLoading"
+      *ngIf="hasMoreHot"
+    >
     </app-load-more>
   </mat-tab>
 </mat-tab-group>
