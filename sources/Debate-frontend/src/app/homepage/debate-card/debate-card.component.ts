@@ -16,7 +16,6 @@ export class DebateCardComponent implements OnInit {
   sliceEnd: number = 100;
   isExpanded: boolean = false;
   expandString: string = 'Rozwiń';
-  imageEndpoint = environment.api + '/debate/cover/';
 
   constructor(
     private debateService: DebateService,
@@ -39,7 +38,7 @@ export class DebateCardComponent implements OnInit {
   }
 
  getCoverUrl() {
-   const urlPath = this.imageEndpoint + this.debate._id;
+    const urlPath = this.debateService.getCoverImageUrl(this.debate._id);
    return this.sanitizer.bypassSecurityTrustStyle('url(' + urlPath + '), url(assets/no_cover.png)');
  }
 

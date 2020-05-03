@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UserService {
   userRole = 'USER';
-  private endpoint = environment.api + '/user';
+  private readonly endpoint = environment.api + '/user';
   userDto: UserDto;
 
   constructor(private http: HttpClient) {}

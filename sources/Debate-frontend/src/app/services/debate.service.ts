@@ -12,7 +12,7 @@ import { Debate } from '../dto/debate.dto';
 export class DebateService {
   private readonly endpoint = environment.api + '/debate';
   private readonly searchEndpoint = environment.api + '/search';
-  private readonly coverImageBaseUrl = environment.api + '/debate.cover/';
+  private readonly coverImageBaseUrl = environment.api + '/debate/cover/';
 
   constructor(private http: HttpClient) {}
 
