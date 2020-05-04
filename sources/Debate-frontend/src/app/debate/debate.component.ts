@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -9,6 +10,7 @@ import { DebateService } from '../services/debate.service';
 import { Debate } from './../dto/debate.dto';
 import { ArgumentService } from './../services/argument.service';
 import { CommentService } from './../services/comment.service';
+import { AddArgumentDialogComponent } from './debate-argument/add-argument-dialog/add-argument-dialog.component';
 
 @Component({
   selector: 'app-debate',
@@ -16,6 +18,16 @@ import { CommentService } from './../services/comment.service';
   styleUrls: ['./debate.component.scss'],
 })
 export class DebateComponent implements OnInit, OnDestroy {
+  constructor(
+    private debateService: DebateService,
+    private argumentService: ArgumentService,
+    private commentService: CommentService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private dialog: MatDialog
+  ) {}
+
+  ArgumentAttitude = ArgumentAttitude;
   private routeSubscription: Subscription;
   private signedInSubscription: Subscription;
   debate: Debate;
@@ -32,14 +44,6 @@ export class DebateComponent implements OnInit, OnDestroy {
   isCommentSectionLoading: boolean;
   isCommentSectionLoadingError: boolean;
   isCommentSectionRefreshing: boolean;
-
-  constructor(
-    private debateService: DebateService,
-    private argumentService: ArgumentService,
-    private commentService: CommentService,
-    private authService: AuthService,
-    private route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     this.isCommentSectionLoadingError = false;
@@ -135,7 +139,31 @@ export class DebateComponent implements OnInit, OnDestroy {
       });
   }
 
+  onAddArgumentButton(argumentType: ArgumentAttitude) {
+    const dialogRef = this.dialog.open(AddArgumentDialogComponent, {
+      minWidth: '300px',
+      minHeight: '300px',
+      data: { type: argumentType === ArgumentAttitude.POSITIVE ? 'za' : 'przeciw' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.argumentService.addArgument({
+        debateId: this.debate._id,
+        attitude: argumentType,
+        title: result.title,
+        content: result.content
+      }).subscribe(newArgument => {
+        if (newArgument.attitude === ArgumentAttitude.POSITIVE) {
+          this.pros.push(newArgument);
+        } else {
+          this.cons.push(newArgument);
+        }
+      });
+    });
+  }
+
   ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
+    this.signedInSubscription.unsubscribe();
   }
 }

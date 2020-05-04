@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { AddUpdateDebateDto } from 'src/app/dto/addUpdateDebate.dto';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
-import { DebateService } from 'src/app/services/debate.service';
 import { Router } from '@angular/router';
+import { AddUpdateDebate } from 'src/app/dto/addUpdateDebate.dto';
+import { DebateService } from 'src/app/services/debate.service';
 
 @Component({
   selector: 'app-add-update-debate',
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class AddUpdateDebateComponent implements OnInit {
 
-  model: AddUpdateDebateDto;
+  model: AddUpdateDebate;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   imageUrl: string | ArrayBuffer;
   imageData: File;
@@ -86,10 +86,10 @@ export class AddUpdateDebateComponent implements OnInit {
     reader.readAsDataURL(this.imageData);
     reader.onload = () => {
       this.imageUrl = reader.result;
-    }
+    };
   }
 
-  isTagListValid(): boolean{
+  isTagListValid(): boolean {
     if (this.model.allTags.length >= 3 && this.model.allTags.length <= 7) { return true; } else {
       this.tagList.errorState = true;
       return false;

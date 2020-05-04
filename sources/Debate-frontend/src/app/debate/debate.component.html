@@ -23,45 +23,70 @@
   <ng-template #argumentSection>
     <div
       class="grid pt-2"
-      *ngIf="
-        !isArgumentSectionLoading &&
-        !isArgumentSectionLoadingError &&
-        pros.length !== 0 &&
-        cons.length !== 0
-      "
+      *ngIf="!isArgumentSectionLoading && !isArgumentSectionLoadingError"
     >
-      <mat-accordion>
-        <app-debate-argument
-          *ngFor="let pro of pros"
-          [argument]="pro"
-        ></app-debate-argument>
-      </mat-accordion>
-      <h3
-        class="no-content-info"
-        *ngIf="
-          !isArgumentSectionLoading &&
-          !isArgumentSectionLoadingError &&
-          pros.length === 0
-        "
-      >
-        Brak argumentów za
-      </h3>
-      <mat-accordion>
-        <app-debate-argument
-          *ngFor="let con of cons"
-          [argument]="con"
-        ></app-debate-argument>
-      </mat-accordion>
-      <h3
-        class="no-content-info"
-        *ngIf="
-          !isArgumentSectionLoading &&
-          !isArgumentSectionLoadingError &&
-          cons.length === 0
-        "
-      >
-        Brak argumentów przeciw
-      </h3>
+      <div>
+        <mat-accordion>
+          <app-debate-argument
+            *ngFor="let pro of pros"
+            [argument]="pro"
+          ></app-debate-argument>
+        </mat-accordion>
+        <h3
+          class="no-content-info"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            pros.length === 0
+          "
+        >
+          Brak argumentów za
+        </h3>
+        <button
+          mat-button
+          class="new-argument-button w100"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            isSignedIn
+          "
+          (click)="onAddArgumentButton(ArgumentAttitude.POSITIVE)"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+          Dodaj argument za
+        </button>
+      </div>
+      <div>
+        <mat-accordion>
+          <app-debate-argument
+            *ngFor="let con of cons"
+            [argument]="con"
+          ></app-debate-argument>
+        </mat-accordion>
+        <h3
+          class="no-content-info"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            cons.length === 0
+          "
+        >
+          Brak argumentów przeciw
+        </h3>
+        <button
+          mat-button
+          class="new-argument-button w100"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            isSignedIn
+          "
+          (click)="onAddArgumentButton(ArgumentAttitude.NEGATIVE)"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+          Dodaj argument przeciw
+        </button>
+      </div>
     </div>
     <mat-progress-bar
       mode="buffer"

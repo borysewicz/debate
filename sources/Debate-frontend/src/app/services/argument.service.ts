@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 
 import { Argument } from '../dto/argument.dto';
 import { Rating } from '../dto/rating.dto';
+import { environment } from './../../environments/environment';
+import { AddUpdateArgument } from './../dto/addUpdateArgument.dto';
 import { ArgumentAttitude } from './../dto/argument.dto';
 import { UserVote } from './../dto/userVote.enum';
 
@@ -12,27 +14,40 @@ import { UserVote } from './../dto/userVote.enum';
   providedIn: 'root',
 })
 export class ArgumentService {
-  private endpoint = 'http://localhost:8080/api/argument';
+  private readonly endpoint = environment.api + '/argument';
 
   constructor(private http: HttpClient) {}
 
-  getArgumentsForDebate(id: string): Observable<Argument[]> {
+  getArgumentsForDebate(debateId: string): Observable<Argument[]> {
     const params = new HttpParams()
-      .set('debate', id)
+      .set('debate', debateId)
       .set('limit', '10')
       .set('page', '0');
     return this.http
       .get<Argument[]>(this.endpoint, { params })
-      .pipe(map(args => {
-        args.forEach(element => {
-          element.attitude = ArgumentAttitude[element.attitude.toString()];
-          element.userVote = UserVote[element.userVote.toString()];
-        });
-        return args;
-      }));
+      .pipe(
+        map((args) => {
+          args.forEach((element) => this.mapArgumentResponse(element));
+          return args;
+        })
+      );
+  }
+
+  addArgument(argument: AddUpdateArgument): Observable<Argument> {
+    return this.http
+      .post<Argument>(`${this.endpoint}/add`, argument)
+      .pipe(map(this.mapArgumentResponse));
   }
 
   rateArgument(id: string, rating: UserVote): Observable<Rating> {
-    return this.http.patch<Rating>(`${this.endpoint}/rate/${id}`, { vote: UserVote[rating] });
+    return this.http.patch<Rating>(`${this.endpoint}/rate/${id}`, {
+      vote: UserVote[rating],
+    });
+  }
+
+  private mapArgumentResponse(argument: Argument): Argument {
+    argument.attitude = ArgumentAttitude[argument.attitude.toString()];
+    argument.userVote = UserVote[argument.userVote.toString()];
+    return argument;
   }
 }
