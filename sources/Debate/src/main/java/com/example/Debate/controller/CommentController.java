@@ -30,13 +30,6 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/activity/{id}")
-    public ResponseEntity<List<CommentResponse>> getCommentsForActivity(@PathVariable(name="id") String activityId,
-                                                                        Principal principal){
-        var comments = commentService.getCommentsForActivity(activityId, UserPrincipal.getUserId(principal));
-        return ResponseEntity.ok(comments);
-    }
-
     @GetMapping("/edits/{id}")
     public ResponseEntity<ActivityHistoryResponse> getCommentHistory(@PathVariable(name="id") String commentId){
         return ResponseEntity.ok(commentService.getCommentHistory(commentId));
