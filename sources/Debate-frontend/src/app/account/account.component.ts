@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { UserDto } from '../dto/user.dto';
-import { UserService } from '../services/user.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import { User } from '../dto/user.dto';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-account',
@@ -11,10 +12,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
-  userDto: UserDto;
+  userDto: User;
   passwordCheck: string;
   oldPassword: string;
-  model: UserDto;
+  model: User;
 
   @ViewChild('regform') regform: NgForm;
 
@@ -27,7 +28,7 @@ export class AccountComponent implements OnInit {
   ngOnInit(): void {
       this.userDto = { login: '', password: '', email: '', role: '' };
       this.model = { login: '', password: '', email: '', role: '' };
-    this.userService
+      this.userService
       .getAccountByLogin(this.authService.userDto.login)
       .subscribe((user) => {
           this.userDto = user;

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
+import { AddUpdateDebate } from '../dto/addUpdateDebate.dto';
 import { Debate } from '../dto/debate.dto';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class DebateService {
 
   constructor(private http: HttpClient) {}
 
-  addDebate(debate: AddUpdateDebateDto, cover?: File): Observable<Debate> {
+  addDebate(debate: AddUpdateDebate, cover?: File): Observable<Debate> {
     const formData = new FormData();
     const debateBlob = new Blob([JSON.stringify(debate) as BlobPart], {
       type: 'application/json',
