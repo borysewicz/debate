@@ -40,6 +40,7 @@ import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegistrationComponent } from './loginpage/registration/registration.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { TagSearchComponent } from './tag-search/tag-search.component';
+import { AddCommentComponent } from './debate/comment/add-comment/add-comment.component';
 
 @Injectable()
 export class CustomIntl extends TimeagoIntl {}
@@ -59,6 +60,7 @@ export class CustomIntl extends TimeagoIntl {}
     DebateArgumentComponent,
     CommentComponent,
     SearchResultsComponent,
+    AddCommentComponent,
   ],
   imports: [
     BrowserModule,

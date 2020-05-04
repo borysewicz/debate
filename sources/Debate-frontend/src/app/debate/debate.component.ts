@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { Argument, ArgumentAttitude } from '../dto/argument.dto';
 import { Comment } from '../dto/comment.dto';
@@ -16,10 +17,12 @@ import { CommentService } from './../services/comment.service';
 })
 export class DebateComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
+  private signedInSubscription: Subscription;
   debate: Debate;
   pros: Argument[];
   cons: Argument[];
   isCommentSectionOn: boolean;
+  isSignedIn: boolean;
   comments: Comment[];
 
   isArgumentSectionLoading: boolean;
@@ -34,6 +37,7 @@ export class DebateComponent implements OnInit, OnDestroy {
     private debateService: DebateService,
     private argumentService: ArgumentService,
     private commentService: CommentService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {}
 
@@ -45,6 +49,9 @@ export class DebateComponent implements OnInit, OnDestroy {
     this.comments = [];
     this.pros = [];
     this.cons = [];
+    this.signedInSubscription = this.authService.isSignedIn.subscribe(
+      (isSignedIn) => (this.isSignedIn = isSignedIn) // isSignedIn)
+    );
     this.routeSubscription = this.route.params.subscribe((params) => {
       this.updateModel(params.id);
     });
@@ -118,6 +125,14 @@ export class DebateComponent implements OnInit, OnDestroy {
     } else {
       this.getArguments();
     }
+  }
+
+  onCommentAdded(comment: string) {
+    this.commentService
+      .addDebateComment(this.debate._id, comment)
+      .subscribe((newComment) => {
+        this.comments.push(newComment);
+      });
   }
 
   ngOnDestroy(): void {

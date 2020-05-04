@@ -83,6 +83,7 @@
       *ngFor="let comment of comments"
       [comment]="comment"
     ></app-comment>
+    <app-add-comment *ngIf="isSignedIn" (commentAdded)="onCommentAdded($event)"></app-add-comment>
   </ul>
   <mat-progress-bar
     mode="buffer"

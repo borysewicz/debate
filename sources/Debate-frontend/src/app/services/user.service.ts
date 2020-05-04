@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { UserDto } from './../dto/user.dto';
-import { from, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+
+import { UserDto } from './../dto/user.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,6 @@ export class UserService {
   }
 
   updateUserAccount(user: UserDto): Observable<UserDto> {
-    return this.http.put<UserDto>(`${this.endpoint}/changePassword`,user);
+    return this.http.put<UserDto>(`${this.endpoint}/changePassword`, user);
   }
 }

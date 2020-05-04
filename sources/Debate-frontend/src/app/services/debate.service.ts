@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { AddUpdateDebateDto } from '../dto/addUpdateDebate.dto';
-import { environment } from 'src/environments/environment';
 import { Debate } from '../dto/debate.dto';
 
 @Injectable({
@@ -71,7 +71,7 @@ export class DebateService {
   getDebatesByTags(tags: string[]): Observable<Debate[]> {
     let queryParams = new HttpParams();
     let text = '';
-    for (let tag of tags) {
+    for (const tag of tags) {
       text += tag + ';';
     }
     queryParams = queryParams.append('Tags', text);
