@@ -37,6 +37,10 @@ export class DebateComponent implements OnInit, OnDestroy {
   isSignedIn: boolean;
   comments: Comment[];
 
+  hasMoreArguments: boolean;
+  private readonly pageLimit: number = 2;
+  private argumentPage: number;
+
   isArgumentSectionLoading: boolean;
   isArgumentSectionRefreshing: boolean;
   isArgumentSectionLoadingError: boolean;
@@ -50,6 +54,8 @@ export class DebateComponent implements OnInit, OnDestroy {
     this.isCommentSectionLoading = false;
     this.isCommentSectionRefreshing = false;
     this.isCommentSectionOn = false;
+    this.hasMoreArguments = false;
+    this.argumentPage = 0;
     this.comments = [];
     this.pros = [];
     this.cons = [];
@@ -75,23 +81,30 @@ export class DebateComponent implements OnInit, OnDestroy {
   private getArguments(): void {
     this.isArgumentSectionLoading = true;
     this.isArgumentSectionLoadingError = false;
-    this.argumentService.getArgumentsForDebate(this.debate._id).subscribe(
-      (debateArgs) => {
-        this.pros = debateArgs
-          .filter((x) => x.attitude === ArgumentAttitude.POSITIVE)
-          .sort((a, b) => b.upVotes - a.upVotes);
-        this.cons = debateArgs
-          .filter((x) => x.attitude === ArgumentAttitude.NEGATIVE)
-          .sort((a, b) => b.upVotes - a.upVotes);
-        this.isArgumentSectionRefreshing = false;
-        this.isArgumentSectionLoading = false;
-      },
-      (err) => {
-        this.isArgumentSectionLoadingError = true;
-        this.isArgumentSectionRefreshing = false;
-        this.isArgumentSectionLoading = false;
-      }
-    );
+    this.argumentService
+      .getArgumentsForDebate(this.debate._id, this.pageLimit, this.argumentPage)
+      .subscribe(
+        (debateArgs) => {
+          const tempPros = debateArgs.filter(
+            (x) => x.attitude === ArgumentAttitude.POSITIVE
+          );
+          this.pros = this.pros.concat(tempPros.sort((a, b) => b.upVotes - a.upVotes));
+          const tempCons = debateArgs.filter(
+            (x) => x.attitude === ArgumentAttitude.NEGATIVE
+          );
+          this.cons = this.cons.concat(tempCons.sort((a, b) => b.upVotes - a.upVotes));
+          this.isArgumentSectionRefreshing = false;
+          this.isArgumentSectionLoading = false;
+          this.hasMoreArguments =
+            tempPros.length === this.pageLimit || tempCons.length === this.pageLimit;
+        },
+        (err) => {
+          this.isArgumentSectionLoadingError = true;
+          this.isArgumentSectionRefreshing = false;
+          this.isArgumentSectionLoading = false;
+          this.hasMoreArguments = false;
+        }
+      );
   }
 
   private getComments(): void {
@@ -139,26 +152,35 @@ export class DebateComponent implements OnInit, OnDestroy {
       });
   }
 
+  onLoadMoreArguments() {
+    this.argumentPage++;
+    this.getArguments();
+  }
+
   onAddArgumentButton(argumentType: ArgumentAttitude) {
     const dialogRef = this.dialog.open(AddArgumentDialogComponent, {
       minWidth: '300px',
       minHeight: '300px',
-      data: { type: argumentType === ArgumentAttitude.POSITIVE ? 'za' : 'przeciw' },
+      data: {
+        type: argumentType === ArgumentAttitude.POSITIVE ? 'za' : 'przeciw',
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.argumentService.addArgument({
-        debateId: this.debate._id,
-        attitude: argumentType,
-        title: result.title,
-        content: result.content
-      }).subscribe(newArgument => {
-        if (newArgument.attitude === ArgumentAttitude.POSITIVE) {
-          this.pros.push(newArgument);
-        } else {
-          this.cons.push(newArgument);
-        }
-      });
+      this.argumentService
+        .addArgument({
+          debateId: this.debate._id,
+          attitude: argumentType,
+          title: result.title,
+          content: result.content,
+        })
+        .subscribe((newArgument) => {
+          if (newArgument.attitude === ArgumentAttitude.POSITIVE) {
+            this.pros.push(newArgument);
+          } else {
+            this.cons.push(newArgument);
+          }
+        });
     });
   }
 

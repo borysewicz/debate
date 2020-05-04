@@ -18,11 +18,11 @@ export class ArgumentService {
 
   constructor(private http: HttpClient) {}
 
-  getArgumentsForDebate(debateId: string): Observable<Argument[]> {
+  getArgumentsForDebate(debateId: string, limit: number, page: number): Observable<Argument[]> {
     const params = new HttpParams()
       .set('debate', debateId)
-      .set('limit', '10')
-      .set('page', '0');
+      .set('limit', limit.toString())
+      .set('page', page.toString());
     return this.http
       .get<Argument[]>(this.endpoint, { params })
       .pipe(

@@ -108,6 +108,12 @@
         Załaduj ponownie
       </button>
     </div>
+
+    <app-load-more
+      *ngIf="!isArgumentSectionLoading && !isArgumentSectionLoadingError && hasMoreArguments"
+      (loadRequested)="onLoadMoreArguments()"
+    >
+    </app-load-more>
   </ng-template>
 
   <!-- Komentarze -->
