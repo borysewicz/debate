@@ -75,14 +75,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponse> getCommentsForActivity(String activityId, Optional<String> userLogin) {
-        return commentRepository.findByParentActivityId(activityId).stream()
-                .map(comment -> modelMapper.map(comment, CommentResponse.class)
-                        .withUserVote(comment.getUserVote(userLogin)))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void deleteComment(String id, Principal principal) {
         var comment = commentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Comment", id));

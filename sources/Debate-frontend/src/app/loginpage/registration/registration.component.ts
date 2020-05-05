@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserDto } from 'src/app/dto/user.dto';
-import { UserService } from 'src/app/services/user.service';
-import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { UserLogIn } from 'src/app/dto/user-log-in';
+import { Router } from '@angular/router';
+import { User } from 'src/app/dto/user.dto';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-registration',
@@ -12,9 +11,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
-  model: UserDto;
+  model: User;
   passwordCheck: string;
-  account: UserDto;
+  account: User;
 
   @ViewChild('regform') regform: NgForm;
 
@@ -25,7 +24,7 @@ export class RegistrationComponent implements OnInit {
     this.account = { login: '', password: '', email: '', role: '' };
   }
 
-  onSubmit(){
+  onSubmit() {
     if (!this.regform.form.valid) {
       return;
     }
@@ -35,10 +34,10 @@ export class RegistrationComponent implements OnInit {
       this.model.email = this.regform.controls.email.value;
       this.account.login = this.model.login;
       this.account.password = this.model.password;
-      this.userService.addUser(this.model).subscribe( 
+      this.userService.addUser(this.model).subscribe(
         tmp => {
                this.authService.logToAccount(this.account);
-                this.router.navigate(['/home']);
+               this.router.navigate(['/home']);
                },
         err => console.log(err),
     );

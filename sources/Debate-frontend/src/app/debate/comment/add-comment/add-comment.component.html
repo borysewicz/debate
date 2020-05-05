@@ -1,0 +1,33 @@
+<form class="comment-editor" (ngSubmit)="onSubmit()" #commentForm="ngForm">
+  <mat-form-field class="w100">
+    <textarea
+      matInput
+      matAutosizeMinRows="1"
+      name="comment"
+      [(ngModel)]="comment"
+      required
+      minlength="2"
+      maxlength="300"
+      placeholder="Wpisz komentarz..."
+      #commentControl="ngModel"
+    ></textarea>
+    <mat-hint>Tekst może zawierać 2-300 znaków.</mat-hint>
+    <mat-error
+      *ngIf="
+        commentControl.errors?.required || commentControl.errors?.minlength
+      "
+      >Komentarz musi mieć minimum dwa znaki!</mat-error
+    >
+    <mat-error *ngIf="commentControl.errors?.maxlength"
+      >Komentarz nie może być dłuższy niż 300 znaków!</mat-error
+    >
+  </mat-form-field>
+  <button
+    mat-flat-button
+    color="primary"
+    class="submit-button"
+    [disabled]="!commentForm.valid"
+  >
+    Dodaj komentarz
+  </button>
+</form>

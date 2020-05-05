@@ -23,37 +23,71 @@
   <ng-template #argumentSection>
     <div
       class="grid pt-2"
-      *ngIf="
-        !isArgumentSectionLoading &&
-        !isArgumentSectionLoadingError &&
-        pros.length !== 0 &&
-        cons.length !== 0
-      "
+      *ngIf="!isArgumentSectionLoading && !isArgumentSectionLoadingError"
     >
-      <mat-accordion>
-        <app-debate-argument
-          *ngFor="let pro of pros"
-          [argument]="pro"
-        ></app-debate-argument>
-      </mat-accordion>
-      <mat-accordion>
-        <app-debate-argument
-          *ngFor="let con of cons"
-          [argument]="con"
-        ></app-debate-argument>
-      </mat-accordion>
+      <div>
+        <mat-accordion>
+          <app-debate-argument
+            *ngFor="let pro of pros"
+            [argument]="pro"
+          ></app-debate-argument>
+        </mat-accordion>
+        <h3
+          class="no-content-info"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            pros.length === 0
+          "
+        >
+          Brak argumentów za
+        </h3>
+        <button
+          mat-button
+          class="new-argument-button w100"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            isSignedIn
+          "
+          (click)="onAddArgumentButton(ArgumentAttitude.POSITIVE)"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+          Dodaj argument za
+        </button>
+      </div>
+      <div>
+        <mat-accordion>
+          <app-debate-argument
+            *ngFor="let con of cons"
+            [argument]="con"
+          ></app-debate-argument>
+        </mat-accordion>
+        <h3
+          class="no-content-info"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            cons.length === 0
+          "
+        >
+          Brak argumentów przeciw
+        </h3>
+        <button
+          mat-button
+          class="new-argument-button w100"
+          *ngIf="
+            !isArgumentSectionLoading &&
+            !isArgumentSectionLoadingError &&
+            isSignedIn
+          "
+          (click)="onAddArgumentButton(ArgumentAttitude.NEGATIVE)"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+          Dodaj argument przeciw
+        </button>
+      </div>
     </div>
-    <h3
-      class="no-content-info"
-      *ngIf="
-        !isArgumentSectionLoading &&
-        !isArgumentSectionLoadingError &&
-        pros.length === 0 &&
-        cons.length === 0
-      "
-    >
-      Brak argumentów
-    </h3>
     <mat-progress-bar
       mode="buffer"
       *ngIf="isArgumentSectionLoading"
@@ -74,24 +108,17 @@
         Załaduj ponownie
       </button>
     </div>
+
+    <app-load-more
+      *ngIf="!isArgumentSectionLoading && !isArgumentSectionLoadingError && hasMoreArguments"
+      (loadRequested)="onLoadMoreArguments()"
+    >
+    </app-load-more>
   </ng-template>
 
   <!-- Komentarze -->
 
   <ng-template #commentSection>
-    <ul
-      class="comment-list"
-      *ngIf="
-        !isCommentSectionLoading &&
-        !isCommentSectionLoadingError &&
-        comments.length !== 0
-      "
-    >
-      <app-comment
-        *ngFor="let comment of comments"
-        [comment]="comment"
-      ></app-comment>
-    </ul>
     <h3
       class="no-content-info"
       *ngIf="
@@ -102,6 +129,19 @@
     >
       Brak komentarzy
     </h3>
+    <ul
+      class="comment-list"
+      *ngIf="!isCommentSectionLoading && !isCommentSectionLoadingError"
+    >
+      <app-comment
+        *ngFor="let comment of comments"
+        [comment]="comment"
+      ></app-comment>
+      <app-add-comment
+        *ngIf="isSignedIn"
+        (commentAdded)="onCommentAdded($event)"
+      ></app-add-comment>
+    </ul>
     <mat-progress-bar
       mode="buffer"
       *ngIf="isCommentSectionLoading"

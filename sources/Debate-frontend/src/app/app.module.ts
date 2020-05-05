@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,7 +31,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoadMoreComponent } from './common/load-more/load-more.component';
 import { AddUpdateDebateComponent } from './debate/add-update-debate/add-update-debate.component';
+import { AddCommentComponent } from './debate/comment/add-comment/add-comment.component';
 import { CommentComponent } from './debate/comment/comment.component';
+import { AddArgumentDialogComponent } from './debate/debate-argument/add-argument-dialog/add-argument-dialog.component';
 import { DebateArgumentComponent } from './debate/debate-argument/debate-argument.component';
 import { DebateComponent } from './debate/debate.component';
 import { DebateCardComponent } from './homepage/debate-card/debate-card.component';
@@ -59,6 +62,8 @@ export class CustomIntl extends TimeagoIntl {}
     DebateArgumentComponent,
     CommentComponent,
     SearchResultsComponent,
+    AddCommentComponent,
+    AddArgumentDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +92,7 @@ export class CustomIntl extends TimeagoIntl {}
     TextFieldModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
     TimeagoModule.forRoot({
       intl: { provide: TimeagoIntl, useClass: CustomIntl },
       formatter: {
