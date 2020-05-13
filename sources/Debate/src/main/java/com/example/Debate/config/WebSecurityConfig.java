@@ -55,11 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**").anyRequest();
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
@@ -73,21 +68,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/userLogin/logIn")
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .antMatchers("/", "/static/**", "/*.css", "/*.js", "/assets/*", "/*ico").permitAll()
+                .antMatchers("/api/userLogin/logIn")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/debate/**")
+                .antMatchers(HttpMethod.GET, "/api/debate/**")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/debate")
+                .antMatchers(HttpMethod.GET, "/api/debate")
                 .permitAll()
-                .antMatchers("/user/add")
+                .antMatchers("/api/user/add")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/argument")
+                .antMatchers(HttpMethod.GET, "/api/argument")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/argument/**")
+                .antMatchers(HttpMethod.GET, "/api/argument/**")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/comment")
+                .antMatchers(HttpMethod.GET, "/api/comment")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/comment/**")
+                .antMatchers(HttpMethod.GET, "/api/comment/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
