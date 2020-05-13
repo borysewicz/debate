@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/notification")
+@RequestMapping("/api/notification")
 public class NotificationController {
     private NotificationService notificationService;
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/argument")
+@RequestMapping("/api/argument")
 public class ArgumentController {
     private ArgumentService argumentService;
 

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/search")
+@RequestMapping("/api/search")
 public class SearchController {
 
     private SearchService searchService;
