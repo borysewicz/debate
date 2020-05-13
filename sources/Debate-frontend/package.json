@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~9.0.3",
     "@angular/platform-browser-dynamic": "~9.0.3",
     "@angular/router": "~9.0.3",
+    "@angular/service-worker": "~9.0.3",
     "cors": "^2.8.5",
     "ngx-cookie-service": "^3.0.4",
     "ngx-timeago": "^1.0.4",
