@@ -1,11 +1,14 @@
 {
-  "name": "Debate-frontend",
-  "short_name": "Debate-frontend",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "Debater",
+  "short_name": "Debater",
+  "theme_color": "#3f51b5",
+  "background_color": "#fafafa", 
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "orientation": "portrait",
+  "description" : "Application for debating and discussing various topics",
+  "categories": ["entertainment", "education", "social"],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
