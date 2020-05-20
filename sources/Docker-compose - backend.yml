@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+    mongo:
+        image: mongo
+        restart: always
+        volumes:
+            - mongo_data:/data/db
+        networks:
+            - db-net
+    backend:
+        restart: always
+        image: mdrabek/debate-backend
+        ports: 
+            - 443:8080
+        environment: 
+            SPRING_PROFILES_ACTIVE: prod
+        networks:
+            - db-net
+        depends_on: 
+            - mongo
+networks: 
+    db-net:
+
+volumes:
+    mongo_data:
