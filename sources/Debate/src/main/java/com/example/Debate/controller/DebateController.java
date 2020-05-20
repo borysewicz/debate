@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/debate")
+@RequestMapping("/api/debate")
 public class DebateController {
     private DebateService debateService;
 

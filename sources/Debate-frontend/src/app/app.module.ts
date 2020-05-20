@@ -43,6 +43,8 @@ import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegistrationComponent } from './loginpage/registration/registration.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { TagSearchComponent } from './tag-search/tag-search.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class CustomIntl extends TimeagoIntl {}
@@ -100,6 +102,7 @@ export class CustomIntl extends TimeagoIntl {}
         useClass: TimeagoCustomFormatter,
       },
     }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
 
   providers: [

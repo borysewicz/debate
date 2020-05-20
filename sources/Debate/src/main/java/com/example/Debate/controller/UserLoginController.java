@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/userLogin")
+@RequestMapping("/api/userLogin")
 public class UserLoginController {
 
     private AuthenticationManager authenticationManager;

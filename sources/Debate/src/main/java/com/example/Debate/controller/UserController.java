@@ -9,7 +9,7 @@ import java.net.URI;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     private UserService userService;
 

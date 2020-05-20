@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/punishment")
+@RequestMapping("/api/punishment")
 public class PunishmentController {
 
     private PunishmentService punishmentService;
