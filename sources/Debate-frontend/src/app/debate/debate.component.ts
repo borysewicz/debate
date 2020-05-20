@@ -88,15 +88,22 @@ export class DebateComponent implements OnInit, OnDestroy {
           const tempPros = debateArgs.filter(
             (x) => x.attitude === ArgumentAttitude.POSITIVE
           );
-          this.pros = this.pros.concat(tempPros.sort((a, b) => b.upVotes - a.upVotes));
-          const tempCons = debateArgs.filter(
-            (x) => x.attitude === ArgumentAttitude.NEGATIVE
+          this.pros = this.pros.concat(
+            tempPros
+              .sort((a, b) => b.upVotes - a.upVotes)
           );
-          this.cons = this.cons.concat(tempCons.sort((a, b) => b.upVotes - a.upVotes));
+          const tempCons = debateArgs.filter(
+            (x) =>
+              x.attitude === ArgumentAttitude.NEGATIVE
+          );
+          this.cons = this.cons.concat(
+            tempCons.sort((a, b) => b.upVotes - a.upVotes)
+          );
           this.isArgumentSectionRefreshing = false;
           this.isArgumentSectionLoading = false;
           this.hasMoreArguments =
-            tempPros.length === this.pageLimit || tempCons.length === this.pageLimit;
+            tempPros.length === this.pageLimit ||
+            tempCons.length === this.pageLimit;
         },
         (err) => {
           this.isArgumentSectionLoadingError = true;
@@ -138,6 +145,9 @@ export class DebateComponent implements OnInit, OnDestroy {
     this.isCommentSectionOn = !this.isCommentSectionOn;
 
     if (this.isCommentSectionOn) {
+      this.argumentPage = 0;
+      this.pros = [];
+      this.cons = [];
       this.getComments();
     } else {
       this.getArguments();
