@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+    frontend:
+        restart: always
+        image: mdrabek/debate-front
+        ports: 
+            - 443:9000
