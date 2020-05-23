@@ -190,7 +190,7 @@ public class DebateServiceImpl implements DebateService {
         int argCount = argumentIds.size();
         int commCount = commentIds.size();
         int voteCount = 0;
-        Set<String> participants = new HashSet<String>();
+        Set<String> participants = new HashSet<>();
         for(var post: childArguments)
         {
             Map<String, Vote> votes = post.getVoters();
@@ -214,7 +214,6 @@ public class DebateServiceImpl implements DebateService {
                 commCount,
                 voteCount,
                 participants.size(),
-                0,
                 debate.getAuthor());
     }
 

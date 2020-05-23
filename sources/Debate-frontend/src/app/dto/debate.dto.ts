@@ -6,7 +6,6 @@ export interface Debate {
   commentCount: number;
   voteCount: number;
   participantCount: number;
-  viewCount: number;
   mainTags: string[];
   allTags: string[];
 }

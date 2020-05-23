@@ -20,10 +20,9 @@ public class FullDebateResponseDto {
     int commentCount;
     int voteCount;
     int participantCount;
-    int viewCount;
     String author;
 
-    public FullDebateResponseDto(String _id, String content, String title, String[] mainTags, String[] allTags, Long creationDate, Long lastEditTime, int argumentCount, int commentCount, int voteCount, int participantCount, int viewCount, String author) {
+    public FullDebateResponseDto(String _id, String content, String title, String[] mainTags, String[] allTags, Long creationDate, Long lastEditTime, int argumentCount, int commentCount, int voteCount, int participantCount, String author) {
         this._id = _id;
         this.content = content;
         this.title = title;
@@ -35,7 +34,6 @@ public class FullDebateResponseDto {
         this.commentCount = commentCount;
         this.voteCount = voteCount;
         this.participantCount = participantCount;
-        this.viewCount = viewCount;
         this.author = author;
     }
 }
