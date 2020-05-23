@@ -14,6 +14,7 @@ import com.example.Debate.jwt.UserPrincipal;
 import com.example.Debate.model.Argument;
 import com.example.Debate.model.Comment;
 import com.example.Debate.model.Debate;
+import com.example.Debate.model.enums.Vote;
 import com.example.Debate.repository.ArgumentRepository;
 import com.example.Debate.repository.CommentRepository;
 import com.example.Debate.repository.DebateRepository;
@@ -32,10 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,9 +69,11 @@ public class DebateServiceImpl implements DebateService {
     @Override
     public List<FullDebateResponseDto> getDebates(SortingType sortingType, int limit, int page) {
         PageRequest request = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "creationDate"));
-        return debateRepository.findAll(request).get()
-                .map(mapEntity -> modelMapper.map(mapEntity, FullDebateResponseDto.class))
-                .collect(Collectors.toList());
+        List<Debate> debateList =  debateRepository.findAll(request).get().collect(Collectors.toList());
+        List<FullDebateResponseDto> resultingDtos = new ArrayList<>();
+        for(var debate: debateList)
+            resultingDtos.add(castDebateToDtoAndFillOutStats(debate));
+        return resultingDtos;
     }
 
     @Override
@@ -176,4 +176,46 @@ public class DebateServiceImpl implements DebateService {
                         .withUserVote(argument.getUserVote(userLogin)))
                 .collect(Collectors.toList());
     }
+
+    private FullDebateResponseDto castDebateToDtoAndFillOutStats(Debate debate)
+    {
+        Set<String> argumentIds = debate.getArguments();
+        Set<String> commentIds = debate.getComments();
+        Criteria whereIdInArgumentIds = Criteria.where("_id").in(argumentIds);
+        Query selectArguments = new Query(whereIdInArgumentIds);
+        List<Argument> childArguments = mongoTemplate.find(selectArguments,Argument.class);
+        Criteria whereIdInCommentIds = Criteria.where("_id").in(commentIds);
+        Query selectComments= new Query(whereIdInCommentIds);
+        List<Comment> connectedComments = mongoTemplate.find(selectComments,Comment.class);
+        int argCount = argumentIds.size();
+        int commCount = commentIds.size();
+        int voteCount = 0;
+        Set<String> participants = new HashSet<String>();
+        for(var post: childArguments)
+        {
+            Map<String, Vote> votes = post.getVoters();
+            voteCount += votes.size();
+            participants.addAll(votes.keySet());
+        }
+        for(var post: connectedComments)
+        {
+            Map<String, Vote> votes = post.getVoters();
+            voteCount += votes.size();
+            participants.addAll(votes.keySet());
+        }
+        return new FullDebateResponseDto(debate.get_id(),
+                debate.getContent(),
+                debate.getTitle(),
+                debate.getMainTags(),
+                debate.getAllTags(),
+                debate.getCreationDate(),
+                debate.getLastEditTime(),
+                argCount,
+                commCount,
+                voteCount,
+                participants.size(),
+                0,
+                debate.getAuthor());
+    }
+
 }
