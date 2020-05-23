@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Dodaj nowy argument {{ data.type }}</h1>
+<div mat-dialog-content>
+    <mat-form-field class="w100">
+        <mat-label>Tytuł argumentu:</mat-label>
+        <input matInput [(ngModel)]="data.title" required minlength="5" maxlength="50" #title="ngModel">
+        <mat-hint>Tytuł musi składać się z 5-50 znaków</mat-hint>
+        <mat-error *ngIf="title.errors?.required || title.errors?.minlength">Tytuł musi składać się z minimum 5 znaków!</mat-error>
+        <mat-error *ngIf="title.errors?.maxlength">Tytuł nie może być dłuższy niż 50 znaków!</mat-error>
+    </mat-form-field>
+    <mat-form-field class="w100" style="margin-top: 1em;">
+        <mat-label>Treść argumentu</mat-label>
+        <textarea matInput [(ngModel)]="data.content" required minlength="5" maxlength="300" #content="ngModel"></textarea>
+        <mat-hint>Treść musi się składać z 5-300 znaków</mat-hint>
+        <mat-error *ngIf="content.errors?.required || content.errors?.minlength">Treść musi składać się z minimum 5 znaków!</mat-error>
+        <mat-error *ngIf="content.errors?.maxlength">Treść nie może być dłuższa niż 300 znaków</mat-error>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancelClicked()">Anuluj</button>
+    <button mat-button [disabled]="!title.valid || !content.valid" [mat-dialog-close]="data">Ok</button>
+</div>

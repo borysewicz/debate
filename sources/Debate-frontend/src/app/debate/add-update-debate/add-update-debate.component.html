@@ -1,0 +1,56 @@
+<div class="formCard">
+    <h1>Dodaj debatę</h1>
+
+    <form class="debate-form" #debateForm="ngForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field hintLabel="5-50 znaków">
+            <mat-label>Tytuł debaty</mat-label>
+            <input matInput maxlength="50" minlength="5" required type="text" name="title" placeholder="Tytuł..." [(ngModel)]="model.title" #title="ngModel">
+            <mat-error *ngIf="title.errors?.minlength">Tytuł musi mieć co najmniej 5 znaków</mat-error>
+        </mat-form-field>
+
+        <mat-form-field hintLabel="5-600 znaków" class="form-field">
+                <mat-label>Opis debaty</mat-label>
+                <textarea matInput minlength="5" maxlength="600"
+                 required name="description" placeholder="Opis"
+                  [(ngModel)]="model.description"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="3"
+                  #description = "ngModel"
+                  ></textarea>
+                <mat-error *ngIf="description.errors?.minlength">Opis musi mieć co najmniej 5 znaków</mat-error>
+        </mat-form-field>
+
+        <mat-form-field hintLabel="Dodaj od 3 do 7 tagów opisujących Twoją debatę. Wyrazy oddzielaj enterem. 3 pierwsze tagi będą głównymi">
+            <mat-label>Tagi *</mat-label>
+            <mat-chip-list #tagList>
+                <mat-chip *ngFor="let tag of model.allTags" (removed)="removeTag(tag)">{{tag}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Dodaj tag..." [matChipInputFor]="tagList" 
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addTag($event)" >
+                    <mat-error *ngIf="tagList.errorState">Dodaj od 3 do 7 tagów </mat-error>
+            </mat-chip-list>
+        </mat-form-field>
+
+        <div class="image-input">
+            <img *ngIf="imageUrl" [src]="imageUrl">
+            <label for="cover">Wybierz tło debaty (maksymalny rozmiar 4MB)</label>
+            <button type="button" mat-raised-button color="accent"
+             (click)="cover.click()">Wybierz plik</button>
+            <input hidden type="file" (change)="onFileChanged($event)"
+            id="cover" name="cover" #cover accept="image/png, image/jpeg">
+            <span *ngIf="imageInvalid">
+                Zdjęcie ma ponad 4MB
+            </span>
+        </div>
+
+        <div style="text-align: center;">
+            <button mat-raised-button color="primary" style="width: 80%;"
+            type="submit" >
+                Dodaj debatę
+            </button>
+    </div>
+    </form>
+
+</div>

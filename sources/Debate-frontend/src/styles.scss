@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+html,
+body {
+   height: 100%;
+}
+body {
+   margin: 0;
+   font-family: Roboto, 'Helvetica Neue', sans-serif;
+   overflow-y: hidden;
+}
+
+.w100 {
+   width: 100%;
+}
+
+.h100 {
+  height: 100%;
+}
+
+.container {
+   flex-grow: 1;
+   margin: 0 7em 7em;
+   position: relative;
+   width: auto;
+}
+
+.d-flex {
+   display: flex;
+}
+
+.column {
+   flex-direction: column;
+}
+
+.text-center {
+   text-align: center;
+}
+
+.justify-center {
+   justify-content: center;
+}
+
+.align-items-center {
+   align-items: center;
+}
+
+.align-self-center {
+   align-self: center;
+}

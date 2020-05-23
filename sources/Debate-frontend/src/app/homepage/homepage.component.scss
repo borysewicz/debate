@@ -1,0 +1,42 @@
+.mat-tab-body-wrapper {
+  margin-top: 12px;
+  margin-bottom: 5em;
+}
+
+.mat-grid-list {
+  padding-bottom: 5rem;
+}
+
+mat-tab-group{
+  padding-bottom: 10em;
+}
+
+.debate-card-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-content: space-around;
+}
+
+.debate-card{
+  flex: 1;
+  flex-basis: 45%; // limiting the number of columns to two
+}
+
+app-debate-card{
+  margin: 2em 1em 0 ;
+  padding-bottom: 1px;
+}
+
+
+@media only screen and (max-width: 500px){ // Limit to one column only on small screens
+  .debate-card{
+    flex-basis: 100%;
+  }
+}
+
+@media only screen and (min-width: 1500px){ // Limit to 3 columns only on wide screens
+  .debate-card{
+    flex-basis: 28%;
+  }
+}

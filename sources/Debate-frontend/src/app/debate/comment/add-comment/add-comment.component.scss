@@ -1,0 +1,16 @@
+.comment-editor {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  margin-bottom: 0.5em;
+  padding: 1em;
+  justify-content: center;
+
+  .submit-button {
+    margin-top: 0.2em;
+    align-self: flex-end;
+    width: fit-content;
+  }
+}

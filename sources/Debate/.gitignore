@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## Web client dist ##
+/src/main/resources/static/
