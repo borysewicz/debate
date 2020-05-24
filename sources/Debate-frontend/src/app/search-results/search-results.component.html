@@ -1,5 +1,7 @@
-<mat-grid-list cols="2" rowHeight="600px" gutterSize="5px">
-    <mat-grid-tile *ngFor="let debate of filteredDebates">
-      <app-debate-card [debate]="debate"></app-debate-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+<div class="debate-card-container">
+  <app-debate-card
+    class="debate-card"
+    *ngFor="let debate of filteredDebates"
+    [debate]="debate">
+  </app-debate-card>
+</div>
