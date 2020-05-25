@@ -34,7 +34,7 @@ export class RegistrationComponent implements OnInit {
       this.model.email = this.regform.controls.email.value;
       this.account.login = this.model.login;
       this.account.password = this.model.password;
-      if(this.model.password.length < 8 || !this.containsNumber(this.model.password))
+      if(this.model.password.length < 8 && !this.containsNumber(this.model.password))
       {
         alert("Hasło musi mieć minimum 8 znaków i zawierać cyfrę!")
         return;
