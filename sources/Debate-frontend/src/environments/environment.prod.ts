@@ -1,5 +1,4 @@
 export const environment = {
   production: true,
-  // api: 'https://debater-api.azurewebsites.net/api'
-  api: 'http://localhost:8080/api'
+  api: 'https://debater-api.azurewebsites.net/api'
 };

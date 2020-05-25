@@ -25,19 +25,10 @@
       placeholder="Wyszukaj debatę..."
       #tagInput
       [formControl]="tagControl"
-      [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       (matChipInputTokenEnd)="onTagAdded($event)"
     />
   </mat-chip-list>
-  <mat-autocomplete
-    #auto="matAutocomplete"
-    (optionSelected)="addTagAndClear($event?.option?.viewValue)"
-  >
-    <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-      {{ tag }}
-    </mat-option>
-  </mat-autocomplete>
 </mat-form-field>
 <button mat-raised-button color="primary" (click)="searchDebateByTags()">Szukaj debat</button>
