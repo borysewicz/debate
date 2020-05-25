@@ -1,4 +1,4 @@
-FROM node
+FROM node:current-alpine
 
 RUN npm install --global http-server
 

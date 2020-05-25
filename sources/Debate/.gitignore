@@ -32,3 +32,5 @@ build/
 
 ## Web client dist ##
 /src/main/resources/static/
+
+application-prod.properties
