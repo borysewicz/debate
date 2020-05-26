@@ -34,6 +34,11 @@ export class RegistrationComponent implements OnInit {
       this.model.email = this.regform.controls.email.value;
       this.account.login = this.model.login;
       this.account.password = this.model.password;
+      if(this.model.password.length < 8 && !this.containsNumber(this.model.password))
+      {
+        alert("Hasło musi mieć minimum 8 znaków i zawierać cyfrę!")
+        return;
+      }
       this.userService.addUser(this.model).subscribe(
         tmp => {
                this.authService.logToAccount(this.account);
@@ -45,4 +50,14 @@ export class RegistrationComponent implements OnInit {
       alert('Wprowadzono różne hasła!');
     }
   }
+
+  containsNumber(mystring:string): boolean { 
+
+    var matches = mystring.match(/\d+/g)
+    if (matches != null) { 
+       return true;
+    } else {
+       return false;
+    }
+  } 
 }
